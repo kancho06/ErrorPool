@@ -1,4 +1,4 @@
-package com.sparta.errorpool.User;
+package com.sparta.errorpool.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

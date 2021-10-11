@@ -1,5 +1,6 @@
-package com.sparta.errorpool.User;
+package com.sparta.errorpool.user;
 
+import com.sparta.errorpool.article.Skill;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,9 +23,10 @@ public class User {
     @Column(unique = true)
     private String username;
 
-    private 
-
     private Long socialId;
+
+    @Enumerated(value = EnumType.STRING)
+    private Skill
 
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
