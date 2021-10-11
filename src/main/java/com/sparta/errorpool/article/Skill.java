@@ -9,6 +9,7 @@ public enum Skill {
         this.name = name;
     }
 
+
     public String getName() {
         return name;
     }
