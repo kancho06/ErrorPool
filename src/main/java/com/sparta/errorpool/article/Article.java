@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 @Entity
 @Data
@@ -21,7 +22,8 @@ public class Article {
     @Column(nullable = false)
     private String content;
 
-    private Integer like = 0;
+    private Integer viewCount;
+    private Integer likeCount;
 
     @Enumerated(EnumType.STRING)
     private Skill skill;
@@ -32,6 +34,9 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments = new ArrayList<>();
 
     public Article(ArticleCreateRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
@@ -55,7 +60,16 @@ public class Article {
     }
 
     public ArticleResponseDto toArticleResponseDto() {
-        //todo
-        return null;
+        return ArticleResponseDto.builder()
+                .articleId(this.id)
+                .title(this.title)
+                .content(this.content)
+                .viewCount(this.viewCount)
+                .skillId(skill.getNum())
+                .commentCount(this.comments.length())
+                .categoryId(category.getNum())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .build();
     }
 }
