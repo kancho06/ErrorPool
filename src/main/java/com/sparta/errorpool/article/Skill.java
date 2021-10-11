@@ -18,4 +18,18 @@ public enum Skill {
     public Integer getNum() {
         return num;
     }
+
+    public static Skill getSkillById(Integer id) {
+        if ( id.equals(1) ) {
+            return REACT;
+        } else if ( id.equals(2) ) {
+            return SPRING;
+        } else if ( id.equals(3) ) {
+            return NODEJS;
+        }
+        else {
+            //todo 예외 만들어서 변경하기
+            throw new RuntimeException();
+        }
+    }
 }
