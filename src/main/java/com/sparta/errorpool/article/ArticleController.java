@@ -4,6 +4,7 @@ import com.sparta.errorpool.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -13,9 +14,13 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/articles/skill/{skill_id}/{category_id}")
-    public List<Article> getArticlesInSkillAndCategory(@PathVariable("skill_id") Integer skillId,
+    public List<ArticleResponseDto> getArticlesInSkillAndCategory(@PathVariable("skill_id") Integer skillId,
                                       @PathVariable("category_id") Integer categoryId) {
-        return articleService.getArticlesInSkillAndCategory(skillId, categoryId);
+        List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
+        articleService.getArticlesInSkillAndCategory(skillId, categoryId)
+                .stream().forEach(artile -> artile.toArticleResponseDto());
+        //todo
+        return null;
     }
 
     @GetMapping("/articles/best")

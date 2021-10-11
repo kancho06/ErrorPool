@@ -53,4 +53,9 @@ public class Article {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
     }
+
+    public ArticleResponseDto toArticleResponseDto() {
+        //todo
+        return null;
+    }
 }
