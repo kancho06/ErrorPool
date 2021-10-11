@@ -19,12 +19,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/best")
-    public BestArticlesResponseDto getBestArticles() {
-        BestArticlesResponseDto responseDto = new BestArticlesResponseDto();
-        responseDto.setBestList(articleService.getBestArticleListOfAllSkill());
-        responseDto.setBestReactArticleList(articleService.getBestArticleListIn(Skill.REACT));
-        responseDto.setBestSpringArticleList(articleService.getBestArticleListIn(Skill.SPRING));
-        responseDto.setBestNodeJsArticleList(articleService.getBestArticleListIn(Skill.REACT));
+    public Top5ArticlesResponseDto getBestArticles() {
+        Top5ArticlesResponseDto responseDto = new Top5ArticlesResponseDto();
+        responseDto.setTop5Articles(articleService.getBestArticleListOfAllSkill());
+        responseDto.setTop5ReactArticleList(articleService.getBestArticleListIn(Skill.REACT));
+        responseDto.setTop5SpringArticleList(articleService.getBestArticleListIn(Skill.SPRING));
+        responseDto.setTop5NodeJsArticleList(articleService.getBestArticleListIn(Skill.REACT));
         return responseDto;
     }
 
