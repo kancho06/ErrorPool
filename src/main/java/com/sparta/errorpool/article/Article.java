@@ -1,11 +1,13 @@
 package com.sparta.errorpool.article;
 
+import com.sparta.errorpool.comment.Comment;
 import com.sparta.errorpool.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -66,7 +68,7 @@ public class Article {
                 .content(this.content)
                 .viewCount(this.viewCount)
                 .skillId(skill.getNum())
-                .commentCount(this.comments.length())
+                .commentCount(this.comments.size())
                 .categoryId(category.getNum())
                 .username(user.getUsername())
                 .email(user.getEmail())
