@@ -1,7 +1,7 @@
 package com.sparta.errorpool.security;
 
 
-import com.sparta.errorpool.User.UserRoleEnum;
+import com.sparta.errorpool.user.UserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package com.sparta.errorpool.User;
+package com.sparta.errorpool.user;
 
 public enum UserRoleEnum {
     USER(Authority.USER), // 사용자 권한

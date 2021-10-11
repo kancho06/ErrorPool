@@ -1,4 +1,4 @@
-package com.sparta.errorpool.User;
+package com.sparta.errorpool.user;
 
 public class KakaoUserInfoDto {
 }
