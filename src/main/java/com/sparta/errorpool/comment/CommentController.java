@@ -18,11 +18,14 @@ public class CommentController {
     }
 
     // 댓글 수정
-    //modified
-
-    @PostMapping("/comments/{id}")
-    public void modifyComment(@PathVariable Long commentId, @RequestBody CommentDto commentDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        commentService.addComment(articleId, commentDto, userDetails.getUser());
+    @PostMapping("/comments/{articleId}")
+    public void modifyComment(@PathVariable Long articleId, @RequestBody CommentDto commentDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        commentService.modifyComment(articleId, commentDto, userDetails.getUser());
     }
 
+    // 댓글 삭제
+    @DeleteMapping("/comments/{articleId}")
+    public void deleteComment(@PathVariable Long articleId, @RequestParam Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        commentService.deleteComment(articleId, commentId, userDetails.getUser());
+    }
 }

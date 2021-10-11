@@ -34,4 +34,13 @@ public class GlobalController {
     public ResponseEntity<String> PasswordContainsExceptionHandler(PasswordContainsException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
+    @ExceptionHandler
+    public ResponseEntity<String> NullPointerExceptionExceptionHandler(NullPointerException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+    @ExceptionHandler
+    public ResponseEntity<String> IllegalArgumentExceptionExceptionHandler(IllegalArgumentException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
 }
