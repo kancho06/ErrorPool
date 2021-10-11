@@ -4,6 +4,7 @@ import com.sparta.errorpool.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -30,6 +31,17 @@ public class ArticleService {
         Article article = getArticleById(articleId);
         if ( article.isWritedBy(user) ) {
             article.update(requestDto);
+            articleRepository.save(article);
+        } else {
+            //todo 권한 예외 생성 및 변경 필요
+            throw new RuntimeException();
+        }
+    }
+
+    public void deleteArticle(Long articleId, User user) {
+        Article article = getArticleById(articleId);
+        if ( article.isWritedBy(user) ) {
+            articleRepository.delete(article);
         } else {
             //todo 권한 예외 생성 및 변경 필요
             throw new RuntimeException();
