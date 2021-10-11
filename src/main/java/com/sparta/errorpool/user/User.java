@@ -26,25 +26,25 @@ public class User {
     private Long socialId;
 
     @Enumerated(value = EnumType.STRING)
-    private Skill skill;
+    private Skill skillId;
 
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
 
-    public User(String username, String password, String role, String email, UserRoleEnum skill) {
+    public User(String email, String password, String username ,UserRoleEnum role, Integer skillId) {
         this.email = email;
-        this.username = username;
         this.password = password;
-        this.skill = skill;
+        this.username = username;
+        this.skillId = Skill.getSkillById(skillId);
         this.socialId = null;
         this.role = role;
     }
-    public User(String username, String password, String email, UserRoleEnum role, Long socialId, Skill skill) {
+    public User( String email, String password, String username,  UserRoleEnum role, Long socialId, Integer skillId) {
         this.email = email;
         this.password = password;
         this.username = username;
-        this.skill = skill;
+        this.skillId = null;
         this.socialId = socialId;
         this.role = role;
     }

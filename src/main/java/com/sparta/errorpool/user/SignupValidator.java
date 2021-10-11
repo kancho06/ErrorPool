@@ -1,9 +1,13 @@
 package com.sparta.errorpool.user;
 
 
+import com.sparta.errorpool.article.Skill;
 import com.sparta.errorpool.exception.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,18 +17,25 @@ import java.util.regex.Pattern;
 public class SignupValidator {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
+    private final SignupRequestDto signupRequestDto;
 
-    public void validate(SignupRequestDto requestDto) {
+
+
+    public User validate(SignupRequestDto requestDto) {
 
         String email = requestDto.getEmail();
-        String skill = requestDto.getSkill();
+        Integer skill = requestDto.getSkillId();
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
+        UserRoleEnum role = UserRoleEnum.USER;
 
         Optional<User> found = repository.findByEmail(email);
         String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
         Pattern p = Pattern.compile(regex); Matcher m = p.matcher(email);
         String pattern = "^[a-zA-Z0-9가-힣]*$";
+
+
         if (found.isPresent()) {
             throw new DuplicateUserException("중복된 이메일 입니다");
         } else if (!isValidEmail(email)) {
@@ -40,6 +51,13 @@ public class SignupValidator {
         } else if (skill == null) {
             throw new SkillNullException("자신의 주특기를 골라주세요");
         }
+        // 패스워드 인코딩
+        password = passwordEncoder.encode(password);
+        requestDto.setPassword(password);
+
+        User user = new User(email,password, username, role, skill);
+
+        return user;
         }
 
 
