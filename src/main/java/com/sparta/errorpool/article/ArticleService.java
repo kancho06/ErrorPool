@@ -46,4 +46,12 @@ public class ArticleService {
             throw new RuntimeException();
         }
     }
+
+    public List<Article> getBestArticleListOfAllSkill() {
+        return articleRepository.findTop5ByOrderByLikeDesc();
+    }
+
+    public List<Article> getBestArticleListIn(Skill skill) {
+        return articleRepository.findTop5BySkillOrderByLikeDesc(skill);
+    }
 }

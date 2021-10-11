@@ -18,6 +18,16 @@ public class ArticleController {
         return articleService.getArticlesInSkillAndCategory(skillId, categoryId);
     }
 
+    @GetMapping("/articles/best")
+    public BestArticlesResponseDto getBestArticles() {
+        BestArticlesResponseDto responseDto = new BestArticlesResponseDto();
+        responseDto.setBestList(articleService.getBestArticleListOfAllSkill());
+        responseDto.setBestReactArticleList(articleService.getBestArticleListIn(Skill.REACT));
+        responseDto.setBestSpringArticleList(articleService.getBestArticleListIn(Skill.SPRING));
+        responseDto.setBestNodeJsArticleList(articleService.getBestArticleListIn(Skill.REACT));
+        return responseDto;
+    }
+
     @GetMapping("/articles/{article_id}")
     public Article getArticle(@PathVariable("article_id") Long articleId) {
         return articleService.getArticleById(articleId);
