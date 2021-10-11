@@ -1,7 +1,8 @@
 package com.sparta.errorpool.comment;
 
+import com.sparta.errorpool.article.Article;
+import com.sparta.errorpool.user.User;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 
@@ -15,11 +16,11 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
-    private USER article;
+    private User user;
 
+    @ManyToOne
     @JoinColumn(name = "ARTICLE_ID", nullable = false)
     private Article article;
 
     private String content;
-
 }
