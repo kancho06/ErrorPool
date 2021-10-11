@@ -12,26 +12,26 @@ public class GlobalController {
 
     @ExceptionHandler
     public ResponseEntity<String> DuplicateUserExceptionHandler(DuplicateUserException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
     @ExceptionHandler
     public ResponseEntity<String> EmailFormExceptionHandler(EmailFormException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
     @ExceptionHandler
     public ResponseEntity<String> UsernamePatternExceptionHandler(UsernamePatternException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
     @ExceptionHandler
     public ResponseEntity<String> UsernameLengthExceptionHandler(UsernameLengthException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
     @ExceptionHandler
     public ResponseEntity<String> PasswordLengthExceptionHandler(PasswordLengthException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
     @ExceptionHandler
     public ResponseEntity<String> PasswordContainsExceptionHandler(PasswordContainsException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 }

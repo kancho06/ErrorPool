@@ -21,7 +21,7 @@ public class SignupRequestDto {
 
     private String username;
 
-    private String skill;
+    private Integer skillId;
 
     private boolean admin = false;
 
