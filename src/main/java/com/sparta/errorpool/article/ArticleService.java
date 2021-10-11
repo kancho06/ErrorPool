@@ -7,6 +7,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,9 +57,9 @@ public class ArticleService {
     }
 
     public void likeArticle(Long article_id, User user) {
-        if ( likeRepository.findByArticleIdAndUserId(article_id, user.getId()).isPresent() ) {
-            //todo 이미 like 이력이 있으면 어떻게 할까?
-            return;
+        Optional<Like> optionalLike = likeRepository.findByArticleIdAndUserId(article_id, user.getId());
+        if ( optionalLike.isPresent() ) {
+            likeRepository.delete(optionalLike.get());
         } else {
             likeRepository.save(new Like(article_id, user.getId()));
         }
