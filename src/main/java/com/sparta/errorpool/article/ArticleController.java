@@ -17,10 +17,14 @@ public class ArticleController {
     public List<ArticleResponseDto> getArticlesInSkillAndCategory(@PathVariable("skill_id") Integer skillId,
                                       @PathVariable("category_id") Integer categoryId) {
         List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
-        articleService.getArticlesInSkillAndCategory(skillId, categoryId)
-                .stream().forEach(artile -> artile.toArticleResponseDto());
-        //todo
-        return null;
+        articleService.getArticlesInSkillAndCategory(skillId, categoryId).stream()
+                .map(article -> article.toArticleResponseDto())
+                .map(responseDto -> {
+                    Integer likeCountOfArticle = articleService.getLikesOfArticle(responseDto.getArticleId());
+                    return responseDto.setLike(likeCountOfArticle);
+                })
+                .forEach(responseDto -> articleResponseDtoList.add(responseDto));
+        return articleResponseDtoList;
     }
 
     @GetMapping("/articles/best")
@@ -59,5 +63,12 @@ public class ArticleController {
         //todo Principal 사용
         User user = null;
         articleService.deleteArticle(articleId, user);
+    }
+
+    @PostMapping("/articles/{article_id}")
+    public void likeArticle(@PathVariable Long article_id) {
+        //todo Principal 사용
+        User user = null;
+        articleService.likeArticle(article_id, user);
     }
 }

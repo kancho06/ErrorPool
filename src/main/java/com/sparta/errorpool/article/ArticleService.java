@@ -10,6 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private final LikeRepository likeRepository;
 
     public List<Article> getArticlesInSkillAndCategory(Integer skillId, Integer categoryId) {
         return articleRepository.findAllBySkillAndCategory(Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
@@ -53,5 +54,18 @@ public class ArticleService {
 
     public List<Article> getBestArticleListIn(Skill skill) {
         return articleRepository.findTop5BySkillOrderByLikeDesc(skill);
+    }
+
+    public void likeArticle(Long article_id, User user) {
+        if ( likeRepository.findByArticleIdAndUserId(article_id, user.getId()).isPresent() ) {
+            //todo 이미 like 이력이 있으면 어떻게 할까?
+            return;
+        } else {
+            likeRepository.save(new Like(article_id, user.getId()));
+        }
+    }
+
+    public Integer getLikesOfArticle(Long articleId) {
+        return likeRepository.countByArticleId(articleId);
     }
 }
