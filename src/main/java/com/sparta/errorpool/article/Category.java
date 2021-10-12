@@ -27,8 +27,7 @@ public enum Category {
         } else if ( id.equals(3) ) {
             return ERROR;
         } else {
-            //todo 예외 만들어서 변경하기
-            throw new RuntimeException();
+            throw new IllegalArgumentException("존재하지 않는 카테고리입니다.");
         }
     }
 }

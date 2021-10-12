@@ -18,9 +18,9 @@ public class CommentController {
     }
 
     // 댓글 수정
-    @PostMapping("/comments/{articleId}")
-    public void modifyComment(@PathVariable Long articleId, @RequestBody CommentDto commentDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        commentService.modifyComment(articleId, commentDto, userDetails.getUser());
+    @PutMapping("/comments/{commentId}")
+    public void modifyComment(@PathVariable Long commentId, @RequestBody CommentDto commentDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        commentService.modifyComment(commentId, commentDto, userDetails.getUser());
     }
 
     // 댓글 삭제
