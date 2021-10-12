@@ -80,6 +80,7 @@ public class ArticleController {
     private List<ArticleResponseDto> articleListToArticleResponseDto(List<Article> articleList) {
         List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
         articleList.stream()
+                .parallel()
                 .map(Article::toArticleResponseDto)
                 .peek(responseDto -> responseDto.setLike(articleService.getLikesOfArticle(responseDto.getArticleId())))
                 .forEach(articleResponseDtoList::add);

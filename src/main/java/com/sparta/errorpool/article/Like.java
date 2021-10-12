@@ -1,6 +1,5 @@
 package com.sparta.errorpool.article;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
