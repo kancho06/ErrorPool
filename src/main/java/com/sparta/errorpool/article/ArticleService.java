@@ -81,6 +81,6 @@ public class ArticleService {
     }
 
     public List<Comment> getComments(Long articleId) {
-        commentRepository.findAllByArticleId();
+        return commentRepository.findAllByArticleId(articleId);
     }
 }
