@@ -1,5 +1,6 @@
 package com.sparta.errorpool.article;
 
+import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
 import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.user.User;
 import lombok.RequiredArgsConstructor;

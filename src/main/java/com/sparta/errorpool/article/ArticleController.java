@@ -1,5 +1,6 @@
 package com.sparta.errorpool.article;
 
+import com.sparta.errorpool.article.dto.*;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.User;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class ArticleController {
 
     @GetMapping("/articles/skill/{skill_id}/{category_id}")
     public List<ArticleResponseDto> getArticlesInSkillAndCategory(@PathVariable("skill_id") Integer skillId,
-                                      @PathVariable("category_id") Integer categoryId) {
+                                                                  @PathVariable("category_id") Integer categoryId) {
         List<Article> articleList = articleService.getArticlesInSkillAndCategory(skillId, categoryId);
         return articleListToArticleResponseDto(articleList);
     }

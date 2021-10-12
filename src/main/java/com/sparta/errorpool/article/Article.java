@@ -1,5 +1,8 @@
 package com.sparta.errorpool.article;
 
+import com.sparta.errorpool.article.dto.ArticleCreateRequestDto;
+import com.sparta.errorpool.article.dto.ArticleResponseDto;
+import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
 import com.sparta.errorpool.comment.Comment;
 import com.sparta.errorpool.user.User;
 import lombok.Data;

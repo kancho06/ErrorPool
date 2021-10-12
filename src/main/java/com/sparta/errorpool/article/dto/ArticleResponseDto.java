@@ -1,4 +1,4 @@
-package com.sparta.errorpool.article;
+package com.sparta.errorpool.article.dto;
 
 import lombok.*;
 

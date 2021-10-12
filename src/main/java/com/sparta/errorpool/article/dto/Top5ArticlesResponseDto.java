@@ -1,5 +1,6 @@
-package com.sparta.errorpool.article;
+package com.sparta.errorpool.article.dto;
 
+import com.sparta.errorpool.article.dto.ArticleResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
