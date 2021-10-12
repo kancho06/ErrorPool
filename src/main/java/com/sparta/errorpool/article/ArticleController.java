@@ -43,10 +43,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{article_id}")
-    public ArticleDetailResponseDto getArticle(@PathVariable("article_id") Long articleId) {
+    public ArticleDetailResponseDto getArticleDetails(@PathVariable("article_id") Long articleId) {
         Article article = articleService.getArticleById(articleId);
+
         ArticleDetailResponseDto responseDto = article.toArticleDetailResponseDto();
         responseDto.setLikeCount(articleService.getLikesOfArticle(articleId));
+        //todo        responseDto.setComments(commentService);
         return responseDto;
     }
 

@@ -1,10 +1,10 @@
 package com.sparta.errorpool.article.dto;
 
-import com.sparta.errorpool.comment.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -21,7 +21,9 @@ public class ArticleDetailResponseDto {
     private Integer viewCount;
     private Integer commentCount;
     private String username;
-    private String email;
     private String userSkill;
-    private List<Comment> comments;
+    private String email;
+    //todo private File image
+    @Setter
+    private List<CommentResponseDto> comments = new ArrayList<>();
 }
