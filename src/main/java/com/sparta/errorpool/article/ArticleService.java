@@ -57,11 +57,12 @@ public class ArticleService {
     }
 
     public void likeArticle(Long article_id, User user) {
+        Article article = getArticleById(article_id);
         Optional<Like> optionalLike = likeRepository.findByArticleIdAndUserId(article_id, user.getId());
         if ( optionalLike.isPresent() ) {
             likeRepository.delete(optionalLike.get());
         } else {
-            likeRepository.save(new Like(article_id, user.getId()));
+            likeRepository.save(new Like(user, article));
         }
     }
 

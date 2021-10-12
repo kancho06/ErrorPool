@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -62,7 +61,7 @@ class ArticleControllerTest {
 
     @Test
     void likeArticle() throws Exception {
-        mvc.perform(get("/articles/{article_id}"))
+        mvc.perform(post("/articles/{article_id}"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
