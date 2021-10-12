@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+
 @ControllerAdvice
 public class GlobalController {
 
@@ -34,4 +35,23 @@ public class GlobalController {
     public ResponseEntity<String> PasswordContainsExceptionHandler(PasswordContainsException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
+<<<<<<< Updated upstream
+=======
+    public ResponseEntity<String> articleNotFoundExceptionHandler(ArticleNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+    @ExceptionHandler
+    public ResponseEntity<String> accessDeniedExceptionHandler(AccessDeniedException exception) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());
+    }
+    @ExceptionHandler
+    public ResponseEntity<String> illegalArgumentExceptionHandler(IllegalAccessException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+    public ResponseEntity<String> CommentNotFoundExceptionHandler(CommentNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+
+>>>>>>> Stashed changes
 }

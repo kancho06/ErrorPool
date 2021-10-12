@@ -3,6 +3,7 @@ package com.sparta.errorpool.user;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.errorpool.article.Skill;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -99,14 +100,14 @@ public class KakaoUserService {
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-        Long id = jsonNode.get("id").asLong();
-        String nickname = jsonNode.get("properties")
+        Long socialId = jsonNode.get("id").asLong();
+        String username = jsonNode.get("properties")
                 .get("nickname").asText();
         String email = jsonNode.get("kakao_account")
                 .get("email").asText();
 
 
-        return new KakaoUserInfoDto(id, nickname, email);
+        return new KakaoUserInfoDto(socialId, username, email);
     }
     //카카오 회원 가입 후 강제 로그인
     private void forceLogin(User kakaoUser) {
@@ -136,7 +137,7 @@ public class KakaoUserService {
                 //인코딩을 해줘서 암호화를 시켜야한다.
                 String password = UUID.randomUUID().toString();
                 String encodedPassword = passwordEncoder.encode(password);
-                Integer skillId = null;
+                Skill skillId = null;
 // email: kakao email
                 String email = kakaoUserInfo.getEmail();
 // role: 일반 사용자

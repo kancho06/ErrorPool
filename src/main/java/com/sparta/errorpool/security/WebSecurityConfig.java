@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
@@ -19,9 +21,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+
+
     @Override
     public void configure(WebSecurity web) {
-// h2-console 사용에 대한 허용 (CSRF, FrameOptions 무시)
         web
                 .ignoring()
                 .antMatchers("/h2-console/**");
@@ -29,34 +32,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //disable 은 POST 권한 제한 푸는것
-        http.csrf().disable();
-        //.ignoringAntMatchers("/user/**"); 이건 권한 각자 설정해 주는것
 
-        //나중에확인
-//        http.headers().frameOptions().disable();
+        http.csrf().disable();
 
         http.authorizeRequests()
 
-//javaScript
 
-// image 폴더를 login 없이 허용
-                .antMatchers("/chars/**").permitAll()
-                .antMatchers("/uikit/**").permitAll()
-                .antMatchers("/uikitjs/**").permitAll()
-                .antMatchers("/images/**").permitAll()
-// css 폴더를 login 없이 허용
-                .antMatchers("/css1/**").permitAll()
-// 회원 관리 처리 API 전부를 login 없이 허용
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/detail.html**").permitAll()
-                .antMatchers("/goPost").permitAll()
+// API comment
+                .antMatchers("/comment/{comment_id}").permitAll()
+
+// API articles
+                .antMatchers("/articles").permitAll()
+                .antMatchers("/articles/skill/{skill_id}/{category_id}").permitAll()
+                .antMatchers("/articles/mainList").permitAll()
+                .antMatchers("/articles/{article_id}").permitAll()
+                .antMatchers("/articles/mypage/{userid}").permitAll()
+                .antMatchers("/articles?query={value}").permitAll()
 
                 //어나니머스 설정 후 로그인시 출입하면 제한페이지 뜨게함
-                .antMatchers("/user/kakao/callback").anonymous()
-                .antMatchers("/user/signup").anonymous()
+                .antMatchers("/user/kakao").anonymous()
+                .antMatchers("/user/gogle").anonymous()
+                .antMatchers("/user/register").anonymous()
                 .antMatchers("/user/login").anonymous()
+
 // 그 외 어떤 요청이든 '인증'
                 .anyRequest().authenticated()
                 .and()
@@ -66,11 +64,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/user/login")
 // 로그인 처리 (POST /user/login)
                 .loginProcessingUrl("/user/login")
-// 로그인 처리 후 성공 시 URL
+// 로그인 처리 후 성공 시 URL GET
                 .defaultSuccessUrl("/")
-// 로그인 처리 후 실패 시 URL
-                .failureUrl("/user/login?error")
-
+//                .successHandler(successHandler())
+// 로그인 처리 후 실패 시 Handler
+                .failureUrl("/user/login?error=true")
+//                .failureHandler(failureHandler())
                 .and()
 // [로그아웃 기능]
                 .logout()
