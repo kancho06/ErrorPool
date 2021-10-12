@@ -6,6 +6,6 @@ import lombok.Getter;
 public class CommentDto {
     private Long commetId;
     private String username;
-    private Long ArticleId;
+    private Long articleId;
     private String content;
 }

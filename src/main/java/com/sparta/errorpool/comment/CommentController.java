@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
 
     private final CommentService commentService;
-    
+
     // 댓글 추가
     @PostMapping("/comments")
     public void addComment(@RequestParam Long articleId, @RequestBody CommentDto commentDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -24,8 +24,8 @@ public class CommentController {
     }
 
     // 댓글 삭제
-    @DeleteMapping("/comments/{articleId}")
-    public void deleteComment(@PathVariable Long articleId, @RequestParam Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @DeleteMapping("/comments/{commentId}")
+    public void deleteComment(@PathVariable Long commentId, @RequestParam Long articleId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         commentService.deleteComment(articleId, commentId, userDetails.getUser());
     }
 }
