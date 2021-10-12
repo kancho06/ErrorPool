@@ -2,10 +2,15 @@ package com.sparta.errorpool.comment;
 
 import com.sparta.errorpool.article.Article;
 import com.sparta.errorpool.article.ArticleRepository;
+import com.sparta.errorpool.defaultResponse.DefaultResponse;
+import com.sparta.errorpool.defaultResponse.StatusCode;
+import com.sparta.errorpool.defaultResponse.SuccessYn;
 import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.exception.CommentNotFoundException;
 import com.sparta.errorpool.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +22,7 @@ public class CommentService {
     public final ArticleRepository articleRepository;
 
     //댓글 추가
-    public Long addComment(Long articleId, CommentDto commentDto, User user) {
+    public ResponseEntity addComment(Long articleId, CommentDto commentDto, User user) {
 
         // 게시글 존재여부 확인
         Article article = articleRepository.findById(articleId).orElseThrow(
@@ -26,12 +31,12 @@ public class CommentService {
         Comment comment = new Comment(user, article, commentDto.getContent());
 
         //댓글 추가
-        return commentRepository.save(comment).getId();
-
+        commentRepository.save(comment).getId();
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "댓글 추가가 완료되었습니다.", null), HttpStatus.OK);
     }
 
     //댓글 수정
-    public Long modifyComment(Long commentId, CommentDto commentDto, User user) {
+    public ResponseEntity modifyComment(Long commentId, CommentDto commentDto, User user) {
 
         Long articleId = commentDto.getArticleId();
 
@@ -53,11 +58,12 @@ public class CommentService {
 
         // 댓글 update
         comment.setContent(commentDto.getContent());
-        return commentRepository.save(comment).getId();
+        commentRepository.save(comment);
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "댓글 수정이 완료되었습니다.", null), HttpStatus.OK);
     }
 
     //댓글 삭제
-    public void deleteComment(Long articleId, Long commentId,User user) {
+    public ResponseEntity deleteComment(Long articleId, Long commentId,User user) {
 
         // 게시글 존재여부 확인
         Article article = articleRepository.findById(articleId).orElseThrow(
@@ -77,5 +83,6 @@ public class CommentService {
             throw new AccessDeniedException("회원님의 댓글만 삭제 할 수 있습니다.");
 
         commentRepository.delete(comment);
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "댓글 삭제가 완료되었습니다.", null), HttpStatus.OK);
     }
 }

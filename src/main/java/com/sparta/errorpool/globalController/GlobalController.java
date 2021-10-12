@@ -1,6 +1,9 @@
 package com.sparta.errorpool.globalController;
 
 
+import com.sparta.errorpool.defaultResponse.DefaultResponse;
+import com.sparta.errorpool.defaultResponse.StatusCode;
+import com.sparta.errorpool.defaultResponse.SuccessYn;
 import com.sparta.errorpool.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,17 +40,17 @@ public class GlobalController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
     public ResponseEntity<String> articleNotFoundExceptionHandler(ArticleNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.NOT_FOUND, exception.getMessage(), null), HttpStatus.OK);
     }
     @ExceptionHandler
     public ResponseEntity<String> accessDeniedExceptionHandler(AccessDeniedException exception) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.FORBIDDEN, exception.getMessage(), null), HttpStatus.OK);
     }
     @ExceptionHandler
     public ResponseEntity<String> illegalArgumentExceptionHandler(IllegalAccessException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
     public ResponseEntity<String> CommentNotFoundExceptionHandler(CommentNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.NOT_FOUND, exception.getMessage(), null), HttpStatus.OK);
     }
 }
