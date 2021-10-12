@@ -21,7 +21,7 @@ public class ArticleDetailResponseDto {
     private Integer viewCount;
     private Integer commentCount;
     private String username;
-    private String userSkill;
+    private Integer userSkillId;
     private String email;
     //todo private File image
     @Setter

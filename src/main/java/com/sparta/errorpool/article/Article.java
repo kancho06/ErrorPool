@@ -77,7 +77,7 @@ public class Article {
                 .commentCount(this.comments.size())
                 .categoryId(category.getNum())
                 .username(user.getUsername())
-                .userSkill(user.getSkill().getNum())
+                .userSkillId(user.getSkill().getNum())
                 .email(user.getEmail())
                 .build();
     }
@@ -92,7 +92,7 @@ public class Article {
                 .commentCount(this.comments.size())
                 .categoryId(category.getNum())
                 .username(user.getUsername())
-                .userSkill(user.getSkill().getNum())
+                .userSkillId(user.getSkill().getNum())
                 .email(user.getEmail())
                 .build();
     }
