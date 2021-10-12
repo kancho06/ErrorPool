@@ -16,5 +16,6 @@ public class ArticleResponseDto {
     private Integer viewCount;
     private Integer commentCount;
     private String username;
+    private String userSkill;
     private String email;
 }

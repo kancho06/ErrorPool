@@ -67,10 +67,6 @@ public class Article {
         this.content = requestDto.getContent();
     }
 
-    public Integer likeCount() {
-        return likes.size();
-    }
-
     public ArticleResponseDto toArticleResponseDto() {
         return ArticleResponseDto.builder()
                 .articleId(this.id)

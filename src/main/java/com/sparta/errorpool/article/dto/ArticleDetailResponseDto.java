@@ -22,6 +22,6 @@ public class ArticleDetailResponseDto {
     private Integer commentCount;
     private String username;
     private String email;
-    private String imgUrl;
+    private String userSkill;
     private List<Comment> comments;
 }
