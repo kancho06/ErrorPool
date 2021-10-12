@@ -4,6 +4,8 @@ import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
 import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -49,12 +51,12 @@ public class ArticleService {
         }
     }
 
-    public List<Article> getBestArticleListOfAllSkill() {
-        return articleRepository.findTop5ByOrderByLikeDesc();
+    public Page<Article> getBestArticleListOfAllSkill() {
+        return articleRepository.findTop5ByOrderByLikeCountDesc(PageRequest.of(0, 5));
     }
 
-    public List<Article> getBestArticleListIn(Skill skill) {
-        return articleRepository.findTop5BySkillOrderByLikeDesc(skill);
+    public Page<Article> getBestArticleListIn(Skill skill) {
+        return articleRepository.findTop5BySkillOrderByLikeCountDesc(PageRequest.of(0, 5), skill);
     }
 
     public void likeArticle(Long article_id, User user) {

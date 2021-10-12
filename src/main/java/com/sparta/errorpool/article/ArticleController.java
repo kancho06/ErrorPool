@@ -4,6 +4,7 @@ import com.sparta.errorpool.article.dto.*;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,10 +43,10 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{article_id}")
-    public ArticleResponseDto getArticle(@PathVariable("article_id") Long articleId) {
+    public ArticleDetailResponseDto getArticle(@PathVariable("article_id") Long articleId) {
         Article article = articleService.getArticleById(articleId);
-        ArticleResponseDto responseDto = article.toArticleResponseDto();
-        responseDto.setLike(articleService.getLikesOfArticle(articleId));
+        ArticleDetailResponseDto responseDto = article.toArticleDetailResponseDto();
+        responseDto.setLikeCount(articleService.getLikesOfArticle(articleId));
         return responseDto;
     }
 
@@ -78,13 +79,25 @@ public class ArticleController {
         articleService.likeArticle(article_id, user);
     }
 
+    private List<ArticleResponseDto> articleListToArticleResponseDto(Page<Article> articleList) {
+        List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
+        articleList.stream()
+                .parallel()
+                .map(Article::toArticleResponseDto)
+                .peek(responseDto -> responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId())))
+                .forEach(articleResponseDtoList::add);
+        return articleResponseDtoList;
+    }
+
     private List<ArticleResponseDto> articleListToArticleResponseDto(List<Article> articleList) {
         List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
         articleList.stream()
                 .parallel()
                 .map(Article::toArticleResponseDto)
-                .peek(responseDto -> responseDto.setLike(articleService.getLikesOfArticle(responseDto.getArticleId())))
+                .peek(responseDto -> responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId())))
                 .forEach(articleResponseDtoList::add);
         return articleResponseDtoList;
     }
+
+
 }

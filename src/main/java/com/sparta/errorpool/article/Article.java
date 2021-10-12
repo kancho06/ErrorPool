@@ -1,6 +1,7 @@
 package com.sparta.errorpool.article;
 
 import com.sparta.errorpool.article.dto.ArticleCreateRequestDto;
+import com.sparta.errorpool.article.dto.ArticleDetailResponseDto;
 import com.sparta.errorpool.article.dto.ArticleResponseDto;
 import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
 import com.sparta.errorpool.comment.Comment;
@@ -28,7 +29,6 @@ public class Article {
     private String content;
 
     private Integer viewCount;
-    private Integer likeCount;
 
     @Enumerated(EnumType.STRING)
     private Skill skill;
@@ -37,11 +37,14 @@ public class Article {
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "article")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "article")
+    private List<Like> likes = new ArrayList<>();
 
     public Article(ArticleCreateRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
@@ -64,8 +67,26 @@ public class Article {
         this.content = requestDto.getContent();
     }
 
+    public Integer likeCount() {
+        return likes.size();
+    }
+
     public ArticleResponseDto toArticleResponseDto() {
         return ArticleResponseDto.builder()
+                .articleId(this.id)
+                .title(this.title)
+                .content(this.content)
+                .viewCount(this.viewCount)
+                .skillId(skill.getNum())
+                .commentCount(this.comments.size())
+                .categoryId(category.getNum())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .build();
+    }
+
+    public ArticleDetailResponseDto toArticleDetailResponseDto() {
+        return ArticleDetailResponseDto.builder()
                 .articleId(this.id)
                 .title(this.title)
                 .content(this.content)
