@@ -29,8 +29,7 @@ public enum Skill {
             return NODEJS;
         }
         else {
-            //todo 예외 만들어서 변경하기
-            throw new RuntimeException();
+            throw new IllegalArgumentException("존재하지 않는 주특기입니다.");
         }
     }
 }
