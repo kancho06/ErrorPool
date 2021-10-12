@@ -1,13 +1,10 @@
 package com.sparta.errorpool.user;
 
-
 import com.sparta.errorpool.article.Skill;
 import com.sparta.errorpool.exception.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,7 +15,7 @@ public class SignupValidator {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
-    private final SignupRequestDto signupRequestDto;
+
 
 
 
@@ -26,6 +23,7 @@ public class SignupValidator {
 
         String email = requestDto.getEmail();
         Integer skill = requestDto.getSkillId();
+        Skill skillId = Skill.getSkillById(skill);
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
         UserRoleEnum role = UserRoleEnum.USER;
@@ -46,16 +44,16 @@ public class SignupValidator {
             throw new UsernameLengthException("닉네임을 3자 이상 입력하세요");
         } else if (password.length() < 4) {
             throw new PasswordLengthException("비밀번호를 4자 이상 입력하세요");
-        } else if (password.contains(username)) {
-            throw new PasswordContainsException("패스워드는 닉네임을 포함할 수 없습니다.");
-        } else if (skill == null) {
+        } else if (password.contains(email)) {
+            throw new PasswordContainsException("패스워드는 아이디를 포함할 수 없습니다.");
+        } else if (skillId == null) {
             throw new SkillNullException("자신의 주특기를 골라주세요");
         }
         // 패스워드 인코딩
         password = passwordEncoder.encode(password);
         requestDto.setPassword(password);
 
-        User user = new User(email,password, username, role, skill);
+        User user = new User(email,password, username, role, skillId);
 
         return user;
         }

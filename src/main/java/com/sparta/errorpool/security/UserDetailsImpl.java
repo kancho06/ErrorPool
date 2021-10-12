@@ -22,6 +22,8 @@ public class UserDetailsImpl implements UserDetails {
         return user;
     }
     //인증관리자가 대조할때 쓰는 메서드
+
+    public String getName(){return user.getUsername();}
     @Override
     public String getPassword() {
         return user.getPassword();
@@ -29,7 +31,7 @@ public class UserDetailsImpl implements UserDetails {
     //인증관리자가 대조할때 쓰는 메서드
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getEmail();
     }
 
     @Override
