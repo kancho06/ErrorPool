@@ -12,6 +12,8 @@ public class ArticleResponseDto {
     private Integer categoryId;
 
     @Setter
+    private boolean liksStatus = false;
+    @Setter
     private Integer likeCount;
     private Integer viewCount;
     private Integer commentCount;

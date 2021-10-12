@@ -9,6 +9,6 @@ public class CommentResponseDto {
     private Long commentId;
     private String content;
     private String username;
-    private Integer userSkill;
+    private Integer userSkillId;
     private String email;
 }

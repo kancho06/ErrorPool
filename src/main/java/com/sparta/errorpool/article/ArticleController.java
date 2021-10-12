@@ -18,38 +18,66 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/articles/skill/{skill_id}/{category_id}")
-    public List<ArticleResponseDto> getArticlesInSkillAndCategory(@PathVariable("skill_id") Integer skillId,
+    public List<ArticleResponseDto> getArticlesInSkillAndCategory(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                  @PathVariable("skill_id") Integer skillId,
                                                                   @PathVariable("category_id") Integer categoryId) {
         List<Article> articleList = articleService.getArticlesInSkillAndCategory(skillId, categoryId);
-        return articleListToArticleResponseDto(articleList);
+        return articleListToArticleResponseDto(articleList, userDetails);
+    }
+
+    private ArticleDetailResponseDto getArticleDetailResponseDto(UserDetailsImpl userDetails,
+                                                                 Long articleId,
+                                                                 Article article) {
+        ArticleDetailResponseDto responseDto = article.toArticleDetailResponseDto();
+        setLikeAndLikeCountAndCommentsInto(responseDto, userDetails);
+        return responseDto;
+    }
+
+    private void setLikeAndLikeCountAndCommentsInto(ArticleDetailResponseDto responseDto,
+                                                    UserDetailsImpl userDetails) {
+        responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId()));
+        if ( userDetails != null ) {
+            responseDto.setLiksStatus(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
+        }
+        responseDto.addCommentsDtoListFrom(articleService.getComments(responseDto.getArticleId()));
     }
 
     @GetMapping("/articles/mainLists")
-    public Top5ArticlesResponseDto getBestArticles() {
-        Top5ArticlesResponseDto responseDto = new Top5ArticlesResponseDto();
-        responseDto.setTop5Articles(
-                articleListToArticleResponseDto(articleService.getBestArticleListOfAllSkill())
-        );
-        responseDto.setTop5ReactArticleList(
-                articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT))
-        );
-        responseDto.setTop5SpringArticleList(
-                articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.SPRING))
-        );
-        responseDto.setTop5NodeJsArticleList(
-                articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT))
-        );
+    public Top5ArticlesResponseDto getBestArticles(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return Top5ArticlesResponseDto.builder()
+                .top5Articles(articleListToArticleResponseDto(articleService.getBestArticleListOfAllSkill().toList(), userDetails))
+                .top5ReactArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT).toList(), userDetails))
+                .top5SpringArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.SPRING).toList(), userDetails))
+                .top5NodeJsArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT).toList(), userDetails))
+                .build();
+    }
+
+    private List<ArticleResponseDto> articleListToArticleResponseDto(List<Article> articleList,
+                                                                     UserDetailsImpl userDetails) {
+        List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
+        articleList.stream()
+                .parallel()
+                .map(Article::toArticleResponseDto)
+                .map(responseDto -> setLikeAndLikeCountOf(responseDto, userDetails))
+                .forEach(articleResponseDtoList::add);
+        return articleResponseDtoList;
+    }
+
+    private ArticleResponseDto setLikeAndLikeCountOf(ArticleResponseDto responseDto,
+                                                     UserDetailsImpl userDetails) {
+        responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId()));
+        if ( userDetails != null ) {
+            responseDto.setLiksStatus(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
+        }
         return responseDto;
     }
 
     @GetMapping("/articles/{article_id}")
-    public ArticleDetailResponseDto getArticleDetails(@PathVariable("article_id") Long articleId) {
+    public ArticleDetailResponseDto getArticleDetails(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                      @PathVariable("article_id") Long articleId) {
         Article article = articleService.getArticleById(articleId);
 
-        ArticleDetailResponseDto responseDto = article.toArticleDetailResponseDto();
-        responseDto.setLikeCount(articleService.getLikesOfArticle(articleId));
-        //todo        responseDto.setComments(commentService);
-        return responseDto;
+        return getArticleDetailResponseDto(userDetails, articleId, article);
     }
 
     @PostMapping("/articles")
@@ -80,26 +108,4 @@ public class ArticleController {
         User user = userDetails.getUser();
         articleService.likeArticle(article_id, user);
     }
-
-    private List<ArticleResponseDto> articleListToArticleResponseDto(Page<Article> articleList) {
-        List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
-        articleList.stream()
-                .parallel()
-                .map(Article::toArticleResponseDto)
-                .peek(responseDto -> responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId())))
-                .forEach(articleResponseDtoList::add);
-        return articleResponseDtoList;
-    }
-
-    private List<ArticleResponseDto> articleListToArticleResponseDto(List<Article> articleList) {
-        List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
-        articleList.stream()
-                .parallel()
-                .map(Article::toArticleResponseDto)
-                .peek(responseDto -> responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId())))
-                .forEach(articleResponseDtoList::add);
-        return articleResponseDtoList;
-    }
-
-
 }

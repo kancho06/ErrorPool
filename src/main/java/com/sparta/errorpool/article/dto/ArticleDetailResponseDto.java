@@ -1,5 +1,7 @@
 package com.sparta.errorpool.article.dto;
 
+import com.sparta.errorpool.comment.Comment;
+import com.sparta.errorpool.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +19,8 @@ public class ArticleDetailResponseDto {
     private Integer categoryId;
 
     @Setter
+    private boolean liksStatus;
+    @Setter
     private Integer likeCount;
     private Integer viewCount;
     private Integer commentCount;
@@ -24,6 +28,16 @@ public class ArticleDetailResponseDto {
     private Integer userSkillId;
     private String email;
     //todo private File image
-    @Setter
     private List<CommentResponseDto> comments = new ArrayList<>();
+
+    public void addCommentsDtoListFrom(List<Comment> comments) {
+        for (Comment comment : comments) {
+            this.comments.add(CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .content(comment.getContent())
+                    .username(comment.getUser().getUsername())
+                    .userSkillId(comment.getUser().getSkill().getNum())
+                    .email(comment.getUser().getEmail()).build());
+        }
+    }
 }

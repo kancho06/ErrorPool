@@ -1,6 +1,8 @@
 package com.sparta.errorpool.article;
 
 import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
+import com.sparta.errorpool.comment.Comment;
+import com.sparta.errorpool.comment.CommentRepository;
 import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.user.User;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final LikeRepository likeRepository;
+    private final CommentRepository commentRepository;
 
     public List<Article> getArticlesInSkillAndCategory(Integer skillId, Integer categoryId) {
         return articleRepository.findAllBySkillAndCategory(Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
@@ -71,5 +74,13 @@ public class ArticleService {
 
     public Integer getLikesOfArticle(Long articleId) {
         return likeRepository.countByArticleId(articleId);
+    }
+
+    public boolean IsLikedBy(Long userId, Long articleId) {
+        return likeRepository.findByArticleIdAndUserId(articleId, userId).isPresent();
+    }
+
+    public List<Comment> getComments(Long articleId) {
+        commentRepository.findAllByArticleId();
     }
 }
