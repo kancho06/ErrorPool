@@ -137,13 +137,13 @@ public class KakaoUserService {
                 //인코딩을 해줘서 암호화를 시켜야한다.
                 String password = UUID.randomUUID().toString();
                 String encodedPassword = passwordEncoder.encode(password);
-                Skill skillId = null;
+                Skill skill = null;
 // email: kakao email
                 String email = kakaoUserInfo.getEmail();
 // role: 일반 사용자
                 UserRoleEnum role = UserRoleEnum.USER;
 
-                kakaoUser = new User(email, encodedPassword, username, role, socialId, skillId);
+                kakaoUser = new User(email, encodedPassword, username, role, socialId, skill);
 
             }
             userRepository.save(kakaoUser);
