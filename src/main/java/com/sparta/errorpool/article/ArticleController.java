@@ -22,7 +22,7 @@ public class ArticleController {
         return articleListToArticleResponseDto(articleList);
     }
 
-    @GetMapping("/articles/best")
+    @GetMapping("/articles/mainLists")
     public Top5ArticlesResponseDto getBestArticles() {
         Top5ArticlesResponseDto responseDto = new Top5ArticlesResponseDto();
         responseDto.setTop5Articles(
