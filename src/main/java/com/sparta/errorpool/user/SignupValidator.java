@@ -22,8 +22,8 @@ public class SignupValidator {
     public User validate(SignupRequestDto requestDto) {
 
         String email = requestDto.getEmail();
-        Integer skill = requestDto.getSkillId();
-        Skill skillId = Skill.getSkillById(skill);
+        Integer skillId = requestDto.getSkillId();
+        Skill skill = Skill.getSkillById(skillId);
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
         UserRoleEnum role = UserRoleEnum.USER;
@@ -46,14 +46,14 @@ public class SignupValidator {
             throw new PasswordLengthException("비밀번호를 4자 이상 입력하세요");
         } else if (password.contains(email)) {
             throw new PasswordContainsException("패스워드는 아이디를 포함할 수 없습니다.");
-        } else if (skillId == null) {
+        } else if (skill == null) {
             throw new SkillNullException("자신의 주특기를 골라주세요");
         }
         // 패스워드 인코딩
         password = passwordEncoder.encode(password);
         requestDto.setPassword(password);
 
-        User user = new User(email,password, username, role, skillId);
+        User user = new User(email,password, username, role, skill);
 
         return user;
         }
