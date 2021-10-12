@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
-    private final LikeRepository likeRepository;
+    private final LikeInfoRepository likeRepository;
     private final CommentRepository commentRepository;
 
     public List<Article> getArticlesInSkillAndCategory(Integer skillId, Integer categoryId) {
@@ -64,11 +64,11 @@ public class ArticleService {
 
     public void likeArticle(Long article_id, User user) {
         Article article = getArticleById(article_id);
-        Optional<Like> optionalLike = likeRepository.findByArticleIdAndUserId(article_id, user.getId());
+        Optional<LikeInfo> optionalLike = likeRepository.findByArticleIdAndUserId(article_id, user.getId());
         if ( optionalLike.isPresent() ) {
             likeRepository.delete(optionalLike.get());
         } else {
-            likeRepository.save(new Like(user, article));
+            likeRepository.save(new LikeInfo(user, article));
         }
     }
 

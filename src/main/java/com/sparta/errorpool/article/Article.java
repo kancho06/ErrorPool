@@ -44,7 +44,7 @@ public class Article {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "article")
-    private List<Like> likes = new ArrayList<>();
+    private List<LikeInfo> likes = new ArrayList<>();
 
     public Article(ArticleCreateRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();

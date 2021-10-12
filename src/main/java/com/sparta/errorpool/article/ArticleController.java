@@ -4,7 +4,6 @@ import com.sparta.errorpool.article.dto.*;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,6 @@ public class ArticleController {
     }
 
     private ArticleDetailResponseDto getArticleDetailResponseDto(UserDetailsImpl userDetails,
-                                                                 Long articleId,
                                                                  Article article) {
         ArticleDetailResponseDto responseDto = article.toArticleDetailResponseDto();
         setLikeAndLikeCountAndCommentsInto(responseDto, userDetails);
@@ -77,7 +75,7 @@ public class ArticleController {
                                                       @PathVariable("article_id") Long articleId) {
         Article article = articleService.getArticleById(articleId);
 
-        return getArticleDetailResponseDto(userDetails, articleId, article);
+        return getArticleDetailResponseDto(userDetails, article);
     }
 
     @PostMapping("/articles")

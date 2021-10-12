@@ -7,14 +7,11 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-public class Like {
+public class LikeInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-//    private Long userId;
-//    private Long articleId;
 
     @ManyToOne
     private User user;
@@ -22,7 +19,7 @@ public class Like {
     @ManyToOne
     private Article article;
 
-    public Like(User user, Article article) {
+    public LikeInfo(User user, Article article) {
         this.user = user;
         this.article = article;
     }
