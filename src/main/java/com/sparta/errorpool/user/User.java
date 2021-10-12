@@ -52,4 +52,8 @@ public class User {
         this.role = role;
     }
 
+    public void update(SignupRequestDto requestDto){
+        this.skill = requestDto.getSkill();
+    }
+
 }

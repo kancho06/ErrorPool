@@ -6,10 +6,12 @@ import com.sparta.errorpool.defaultResponse.DefaultResponse;
 import com.sparta.errorpool.defaultResponse.ResponseMessage;
 import com.sparta.errorpool.defaultResponse.StatusCode;
 import com.sparta.errorpool.defaultResponse.SuccessYn;
+import com.sparta.errorpool.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.*;
@@ -41,15 +43,18 @@ public class UserController {
 
     @PostMapping("/kakao")
     public ResponseEntity kakaoLogin(@RequestParam String code) throws JsonProcessingException {
-        kakaoUserService.kakaoLogin(code);
+
+            kakaoUserService.kakaoLogin(code);
         return new ResponseEntity(DefaultResponse.res(SuccessYn.OK,StatusCode.OK ,ResponseMessage.CREATED_USER,null ), HttpStatus.OK);
     }
-
-
-
-
-
-
+    @PutMapping("/{userid}")
+    public ResponseEntity updateSkill(@PathVariable Long userid, @RequestBody SignupRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if(userDetails != null) {
+            userService.update(userid, requestDto);
+            return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.UPDATE_SKILL_SUCCESS,null ), HttpStatus.OK);
+        }
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);
+    }
 
 
 }

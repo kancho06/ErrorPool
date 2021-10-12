@@ -1,26 +1,32 @@
 package com.sparta.errorpool.security;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+
 
 @Configuration
-@EnableWebSecurity // 스프링 Security 지원을 가능하게 함
-@EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
+@EnableWebSecurity
+@AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
+//    private final JwtTokenProvider jwtTokenProvider;
+
+
+        @Bean
     public BCryptPasswordEncoder encodePassword() {
         return new BCryptPasswordEncoder();
     }
-
+//    @Bean
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 
 
     @Override
@@ -33,11 +39,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        //jwt
+//        http
+//                .headers().frameOptions().sameOrigin().and()
+//                .httpBasic().disable() // REST API만을 고려, 기본 설정 해제
+//                .csrf().disable() // csrf 사용 X
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                // 토큰 기반 인증이므로 세션도 사용 X
+//                .and()
+//                .authorizeRequests() // 요청에 대한 사용권한 체크
+//                .anyRequest().permitAll() // 나머지 요청은 누구나 접근 가능
+//                .and()
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+//                        UsernamePasswordAuthenticationFilter.class);
+
+
         http.csrf().disable();
-
         http.authorizeRequests()
-
-
 // API comment
                 .antMatchers("/comment/{comment_id}").permitAll()
 
@@ -82,6 +100,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 // "접근 불가" 페이지 URL 설정
                 .accessDeniedPage("/forbidden.html");
     }
+
 
 
 }

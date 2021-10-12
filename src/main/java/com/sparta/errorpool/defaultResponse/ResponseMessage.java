@@ -9,6 +9,8 @@ public class ResponseMessage {
     public static final String CREATED_USER_FAILED = "회원 가입 실패";
     public static final String UPDATE_USER = "회원 정보 수정 성공";
     public static final String DELETE_USER = "회원 탈퇴 성공";
+    public static final String UPDATE_SKILL_SUCCESS = "업데이트 성공";
+    public static final String UPDATE_SKILL_FAILED = "업데이트 실패";
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
     public static final String DB_ERROR = "데이터베이스 에러";
 }
