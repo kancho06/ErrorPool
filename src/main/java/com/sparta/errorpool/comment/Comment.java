@@ -2,6 +2,7 @@ package com.sparta.errorpool.comment;
 
 import com.sparta.errorpool.article.Article;
 import com.sparta.errorpool.user.User;
+import com.sparta.errorpool.util.Timestamped;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Entity
-public class Comment {
+public class Comment extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

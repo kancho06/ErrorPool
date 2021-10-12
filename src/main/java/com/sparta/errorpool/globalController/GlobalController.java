@@ -35,7 +35,6 @@ public class GlobalController {
     public ResponseEntity<String> PasswordContainsExceptionHandler(PasswordContainsException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
-    @ExceptionHandler
     public ResponseEntity<String> articleNotFoundExceptionHandler(ArticleNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
@@ -46,5 +45,8 @@ public class GlobalController {
     @ExceptionHandler
     public ResponseEntity<String> illegalArgumentExceptionHandler(IllegalAccessException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+    public ResponseEntity<String> CommentNotFoundExceptionHandler(CommentNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 }
