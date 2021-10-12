@@ -60,8 +60,7 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-//
-//        return Collections.emptyList();
+
         UserRoleEnum role = user.getRole();
         String authority = role.getAuthority();
 
