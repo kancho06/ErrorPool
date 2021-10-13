@@ -21,9 +21,9 @@ public class ArticleService {
     private final LikeInfoRepository likeRepository;
     private final CommentRepository commentRepository;
 
-    public List<Article> getArticlesInSkillAndCategory(Integer skillId, Integer categoryId) {
+    public Page<Article> getArticlesInSkillAndCategory(Integer skillId, Integer categoryId) {
         return articleRepository.findAllBySkillAndCategory
-                (Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
+                (PageRequest.of(0, 5), Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
 
     }
 
@@ -75,14 +75,6 @@ public class ArticleService {
         } else {
             likeRepository.save(new LikeInfo(user, article));
         }
-    }
-
-    public boolean IsLikedBy(Long userId, Long articleId) {
-        return likeRepository.findByArticleIdAndUserId(articleId, userId).isPresent();
-    }
-
-    public List<Comment> getComments(Long articleId) {
-        return commentRepository.findAllByArticleId(articleId);
     }
 
     public Page<Article> getArticles(User user) {

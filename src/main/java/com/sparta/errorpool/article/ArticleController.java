@@ -28,24 +28,14 @@ public class ArticleController {
     public ResponseEntity<DefaultResponse<List<ArticleResponseDto>>> getArticlesInSkillAndCategory(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                   @PathVariable("skill_id") Integer skillId,
                                                                   @PathVariable("category_id") Integer categoryId) {
-        List<Article> articleList = articleService.getArticlesInSkillAndCategory(skillId, categoryId);
+        List<Article> articleList = articleService.getArticlesInSkillAndCategory(skillId, categoryId).toList();
         List<ArticleResponseDto> data = articleListToArticleResponseDto(articleList, userDetails);
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, ResponseMessage.GET_ARTICLE_SUCCESS, data));
     }
 
     private ArticleDetailResponseDto getArticleDetailResponseDto(UserDetailsImpl userDetails,
                                                                  Article article) {
-        ArticleDetailResponseDto responseDto = article.toArticleDetailResponseDto();
-        setLikeAndLikeCountAndCommentsInto(responseDto, userDetails);
-        return responseDto;
-    }
-
-    private void setLikeAndLikeCountAndCommentsInto(ArticleDetailResponseDto responseDto,
-                                                    UserDetailsImpl userDetails) {
-        if ( userDetails != null ) {
-            responseDto.setLiked(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
-        }
-        responseDto.addCommentsDtoListFrom(articleService.getComments(responseDto.getArticleId()));
+        return article.toArticleDetailResponseDto(userDetails);
     }
 
     @GetMapping("/articles/mainLists")
