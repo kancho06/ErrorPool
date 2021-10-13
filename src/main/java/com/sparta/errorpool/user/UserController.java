@@ -44,14 +44,18 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity createUser (@RequestBody SignupRequestDto requestDto){
-        userService.registerUser(requestDto);
-        return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.CREATED_USER,null ), HttpStatus.OK);
+        if(userService.registerUser(requestDto)) {
+            return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.CREATED_USER,null ), HttpStatus.OK);
+        }
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);
     }
 
     @PostMapping("/kakao")
     public ResponseEntity kakaoLogin(@RequestParam String code) throws JsonProcessingException {
-        kakaoUserService.kakaoLogin(code);
-        return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.CREATED_USER,null ), HttpStatus.OK);
+        if (kakaoUserService.kakaoLogin(code)) {
+            return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.CREATED_USER,null ), HttpStatus.OK);
+        }
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);
     }
 
     @PutMapping("/{userid}")
