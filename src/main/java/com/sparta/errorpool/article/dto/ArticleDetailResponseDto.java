@@ -39,7 +39,9 @@ public class ArticleDetailResponseDto {
                     .content(comment.getContent())
                     .username(comment.getUser().getUsername())
                     .userSkillId(comment.getUser().getSkill().getNum())
-                    .email(comment.getUser().getEmail()).build());
+                    .email(comment.getUser().getEmail())
+                    .regDt(comment.getCreatedAt())
+                    .build());
         }
     }
 }
