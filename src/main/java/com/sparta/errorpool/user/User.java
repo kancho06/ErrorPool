@@ -1,5 +1,6 @@
 package com.sparta.errorpool.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.errorpool.article.Skill;
 import com.sparta.errorpool.user.dto.SignupRequestDto;
 import lombok.Data;
@@ -21,6 +22,8 @@ public class User {
     private String email;
 
     @Column
+    //제이슨은 Ignore
+    @JsonIgnore
     private String password;
 
     @Column(unique = true)
@@ -34,7 +37,7 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-
+    //회원가입유저
     public User(String email, String password, String username ,UserRoleEnum role, Skill skill) {
         this.email = email;
         this.password = password;
@@ -43,6 +46,7 @@ public class User {
         this.socialId = null;
         this.role = role;
     }
+    //소셜로그인용 유저
     public User( String email, String password, String username,  UserRoleEnum role, Long socialId, Skill skill) {
         this.email = email;
         this.password = password;
@@ -51,6 +55,9 @@ public class User {
         this.socialId = socialId;
         this.role = role;
     }
+
+
+
 
     public void update(SignupRequestDto requestDto){
         this.skill = requestDto.getSkill();

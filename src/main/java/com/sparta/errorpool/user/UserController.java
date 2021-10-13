@@ -5,6 +5,9 @@ import com.sparta.errorpool.defaultResponse.DefaultResponse;
 import com.sparta.errorpool.defaultResponse.ResponseMessage;
 import com.sparta.errorpool.defaultResponse.StatusCode;
 import com.sparta.errorpool.defaultResponse.SuccessYn;
+import com.sparta.errorpool.exception.JwtTokenExpiredException;
+import com.sparta.errorpool.exception.UnauthenticatedException;
+import com.sparta.errorpool.security.JwtTokenProvider;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.dto.LoginResDto;
 import com.sparta.errorpool.user.dto.SignupRequestDto;
@@ -12,6 +15,7 @@ import com.sparta.errorpool.user.dto.UserRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +27,13 @@ public class UserController {
 
     private final UserService userService;
     private final KakaoUserService kakaoUserService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public UserController(UserService userService, KakaoUserService kakaoUserService) {
+    public UserController(UserService userService, KakaoUserService kakaoUserService, JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
         this.kakaoUserService = kakaoUserService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/login")
@@ -67,5 +73,32 @@ public class UserController {
         return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);
     }
 
+    @GetMapping("/info")
+    @ResponseBody
+    public LoginResDto getUserInfoFromToken(@RequestHeader(value="token") String token) {
+        if ( jwtTokenProvider.validateToken(token) ) {
+            return getLoginResDtoFromToken(token);
+        } else {
+            throw new JwtTokenExpiredException("토큰이 만료되었습니다.");
+        }
+    }
 
+    private LoginResDto getLoginResDtoFromToken(String token) {
+        Authentication authentication = jwtTokenProvider.getAuthentication(token);
+        Object principal = authentication.getPrincipal();
+        if ( principal instanceof UserDetailsImpl ) {
+            LoginResDto loginResDto = getLoginResDtoFromPrincipal((UserDetailsImpl) principal);
+            loginResDto.setJwtToken(token);
+            return loginResDto;
+        } else {
+            throw new UnauthenticatedException("유효하지 않은 토큰입니다.");
+        }
+    }
+
+    private LoginResDto getLoginResDtoFromPrincipal(UserDetailsImpl principal) {
+        LoginResDto loginResDto = new LoginResDto();
+        User user = principal.getUser();
+        loginResDto.setUser(user);
+        return loginResDto;
+    }
 }
