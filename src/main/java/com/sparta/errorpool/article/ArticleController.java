@@ -2,6 +2,7 @@ package com.sparta.errorpool.article;
 
 import com.sparta.errorpool.article.dto.*;
 import com.sparta.errorpool.defaultResponse.DefaultResponse;
+import com.sparta.errorpool.defaultResponse.ResponseMessage;
 import com.sparta.errorpool.defaultResponse.StatusCode;
 import com.sparta.errorpool.defaultResponse.SuccessYn;
 import com.sparta.errorpool.security.UserDetailsImpl;
@@ -29,7 +30,7 @@ public class ArticleController {
                                                                   @PathVariable("category_id") Integer categoryId) {
         List<Article> articleList = articleService.getArticlesInSkillAndCategory(skillId, categoryId);
         List<ArticleResponseDto> data = articleListToArticleResponseDto(articleList, userDetails);
-        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, null, data));
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, ResponseMessage.GET_ARTICLE_SUCCESS, data));
     }
 
     private ArticleDetailResponseDto getArticleDetailResponseDto(UserDetailsImpl userDetails,
@@ -67,11 +68,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{article_id}")
-    public ArticleDetailResponseDto getArticleDetails(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                      @PathVariable("article_id") Long articleId) {
+    public ResponseEntity<DefaultResponse<ArticleDetailResponseDto>> getArticleDetails(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                                       @PathVariable("article_id") Long articleId) {
         Article article = articleService.getArticleById(articleId);
 
-        return getArticleDetailResponseDto(userDetails, article);
+        ArticleDetailResponseDto data = getArticleDetailResponseDto(userDetails, article);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, ResponseMessage.GET_ARTICLE_SUCCESS, data));
     }
 
     @PostMapping("/articles")
@@ -84,7 +86,7 @@ public class ArticleController {
         }
         articleService.createArticle(article);
 
-        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, null, null));
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 추가 성공", null));
     }
 
     @PutMapping("/articles/{article_id}")
@@ -93,7 +95,7 @@ public class ArticleController {
                               @RequestBody ArticleUpdateRequestDto requestDto) {
         User user = userDetails.getUser();
         articleService.updateArticle(articleId, requestDto, user);
-        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, null, null));
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 수정 성공", null));
     }
 
     @DeleteMapping("/articles/{article_id}")
@@ -101,7 +103,7 @@ public class ArticleController {
                               @PathVariable("article_id") Long articleId) {
         User user = userDetails.getUser();
         articleService.deleteArticle(articleId, user);
-        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, null, null));
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 삭제 성공", null));
     }
 
     @PostMapping("/articles/{article_id}")
@@ -109,6 +111,6 @@ public class ArticleController {
                             @PathVariable Long article_id) {
         User user = userDetails.getUser();
         articleService.likeArticle(article_id, user);
-        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, null, null));
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "좋아요 성공", null));
     }
 }
