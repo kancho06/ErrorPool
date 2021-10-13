@@ -11,6 +11,7 @@ import com.sparta.errorpool.util.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Path;
@@ -25,7 +26,7 @@ public class ArticleController {
     private final ImageService imageService;
 
     @GetMapping("/articles/skill/{skill_id}/{category_id}")
-    public ResponseEntity<DefaultResponse<List<ArticleResponseDto>>> getArticlesInSkillAndCategory(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<List<ArticleResponseDto>>> getArticlesInSkillAndCategory(@AuthenticationPrincipal UserDetails userDetails,
                                                                   @PathVariable("skill_id") Integer skillId,
                                                                   @PathVariable("category_id") Integer categoryId) {
         List<Article> articleList = articleService.getArticlesInSkillAndCategory(skillId, categoryId).toList();
@@ -33,13 +34,13 @@ public class ArticleController {
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, ResponseMessage.GET_ARTICLE_SUCCESS, data));
     }
 
-    private ArticleDetailResponseDto getArticleDetailResponseDto(UserDetailsImpl userDetails,
+    private ArticleDetailResponseDto getArticleDetailResponseDto(UserDetails userDetails,
                                                                  Article article) {
         return article.toArticleDetailResponseDto(userDetails);
     }
 
     @GetMapping("/articles/recommended")
-    public Top5ArticlesResponseDto getBestArticles(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public Top5ArticlesResponseDto getBestArticles(@AuthenticationPrincipal UserDetails userDetails) {
         return Top5ArticlesResponseDto.builder()
                 .top5Articles(articleListToArticleResponseDto(articleService.getBestArticleListOfAllSkill().toList(), userDetails))
                 .top5ReactArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT).toList(), userDetails))
@@ -49,7 +50,7 @@ public class ArticleController {
     }
 
     private List<ArticleResponseDto> articleListToArticleResponseDto(List<Article> articleList,
-                                                                     UserDetailsImpl userDetails) {
+                                                                     UserDetails userDetails) {
         List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
         articleList.stream()
                 .map(article -> article.toArticleResponseDto(userDetails))
@@ -58,7 +59,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{article_id}")
-    public ResponseEntity<DefaultResponse<ArticleDetailResponseDto>> getArticleDetails(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<ArticleDetailResponseDto>> getArticleDetails(@AuthenticationPrincipal UserDetails userDetails,
                                                                                        @PathVariable("article_id") Long articleId) {
         Article article = articleService.getArticleById(articleId);
 
@@ -67,40 +68,47 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public ResponseEntity<DefaultResponse<Void>> createArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<Void>> createArticle(@AuthenticationPrincipal UserDetails userDetails,
                               @RequestBody ArticleCreateRequestDto requestDto) {
-        Article article = Article.of(requestDto, userDetails.getUser());
-        if ( requestDto.getImg() != null ) {
-            Path imgUrl = imageService.saveFile(requestDto.getImg());
-            article.setImgUrl(imgUrl.toString());
+        if ( userDetails instanceof UserDetailsImpl ) {
+            Article article = Article.of(requestDto, ((UserDetailsImpl) userDetails).getUser());
+            if ( requestDto.getImg() != null ) {
+                Path imgUrl = imageService.saveFile(requestDto.getImg());
+                article.setImgUrl(imgUrl.toString());
+            }
+            articleService.createArticle(article);
         }
-        articleService.createArticle(article);
-
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 추가 성공", null));
     }
 
     @PutMapping("/articles/{article_id}")
-    public ResponseEntity<DefaultResponse<Void>> updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<Void>> updateArticle(@AuthenticationPrincipal UserDetails userDetails,
                               @PathVariable("article_id") Long articleId,
                               @RequestBody ArticleUpdateRequestDto requestDto) {
-        User user = userDetails.getUser();
-        articleService.updateArticle(articleId, requestDto, user);
+        if ( userDetails instanceof UserDetailsImpl ) {
+            User user = ((UserDetailsImpl) userDetails).getUser();
+            articleService.updateArticle(articleId, requestDto, user);
+        }
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 수정 성공", null));
     }
 
     @DeleteMapping("/articles/{article_id}")
-    public ResponseEntity<DefaultResponse<Void>> deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<Void>> deleteArticle(@AuthenticationPrincipal UserDetails userDetails,
                               @PathVariable("article_id") Long articleId) {
-        User user = userDetails.getUser();
-        articleService.deleteArticle(articleId, user);
+        if ( userDetails instanceof UserDetailsImpl ) {
+            User user = ((UserDetailsImpl) userDetails).getUser();
+            articleService.deleteArticle(articleId, user);
+        }
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 삭제 성공", null));
     }
 
-    @PostMapping("/articles/{article_id}")
-    public ResponseEntity<DefaultResponse<Void>> likeArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    @PostMapping("/articles/{article_id}/like")
+    public ResponseEntity<DefaultResponse<Void>> likeArticle(@AuthenticationPrincipal UserDetails userDetails,
                             @PathVariable Long article_id) {
-        User user = userDetails.getUser();
-        articleService.likeArticle(article_id, user);
+        if ( userDetails instanceof UserDetailsImpl ) {
+            User user = ((UserDetailsImpl) userDetails).getUser();
+            articleService.likeArticle(article_id, user);
+        }
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "좋아요 성공", null));
     }
 }
