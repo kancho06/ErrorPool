@@ -1,10 +1,12 @@
 package com.sparta.errorpool.user;
 
 import com.sparta.errorpool.article.Skill;
+import com.sparta.errorpool.user.dto.SignupRequestDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -33,6 +35,7 @@ public class UserServiceTest {
         String password = "nobodynoboy";
         Skill skill = null;
         boolean admin = false;
+
 
         SignupRequestDto signupRequestDto = new SignupRequestDto();
 
