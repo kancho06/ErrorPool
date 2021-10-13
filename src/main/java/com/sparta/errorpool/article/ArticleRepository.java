@@ -14,7 +14,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("select distinct a from Article a " +
             "join fetch a.user " +
             "where a.skill = :skill " +
-            "and a.category = :category")
+            "and a.category = :category " +
+            "order by a.createdAt desc")
     List<Article> findAllBySkillAndCategory(Skill skill, Category category);
 
     @Query("select a from Article a order by a.likes.size desc")
