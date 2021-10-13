@@ -52,6 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/gogle").anonymous()
                 .antMatchers("/user/register").anonymous()
                 .antMatchers("/user/login").anonymous()
+                //마이페이지
+                .antMatchers("/user/{userId}").permitAll()
 
 // 그 외 어떤 요청이든 '인증'
                 .anyRequest().authenticated()

@@ -1,7 +1,7 @@
 package com.sparta.errorpool.user;
 
 import com.sparta.errorpool.article.Skill;
-import lombok.CustomLog;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -39,7 +39,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.username = username;
-        this.skill = skill;
+        this.skill = null;
         this.socialId = null;
         this.role = role;
     }

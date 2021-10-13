@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity createUser (@RequestBody SignupRequestDto requestDto){
 
-        if (userService.registerUser(requestDto) == "") {
+        if (userService.registerUser(requestDto) != null) {
             userService.registerUser(requestDto);
             return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.CREATED_USER,null ), HttpStatus.OK);
         }
@@ -47,10 +47,11 @@ public class UserController {
             kakaoUserService.kakaoLogin(code);
         return new ResponseEntity(DefaultResponse.res(SuccessYn.OK,StatusCode.OK ,ResponseMessage.CREATED_USER,null ), HttpStatus.OK);
     }
+
     @PutMapping("/{userid}")
     public ResponseEntity updateSkill(@PathVariable Long userid, @RequestBody SignupRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(userDetails != null) {
-            userService.update(userid, requestDto);
+            userService.update(userid, requestDto, userDetails);
             return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.UPDATE_SKILL_SUCCESS,null ), HttpStatus.OK);
         }
         return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);
