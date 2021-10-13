@@ -21,11 +21,11 @@ public enum Category {
 
     public static Category getCategoryById(Integer id) {
         if ( id.equals(1) ) {
-            return TECH;
-        } else if ( id.equals(2) ) {
             return FREE_BOARD;
-        } else if ( id.equals(3) ) {
+        } else if ( id.equals(2) ) {
             return ERROR;
+        } else if ( id.equals(3) ) {
+            return TECH;
         } else {
             throw new IllegalArgumentException("존재하지 않는 카테고리입니다.");
         }
