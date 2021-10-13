@@ -38,7 +38,7 @@ public class ArticleController {
         return article.toArticleDetailResponseDto(userDetails);
     }
 
-    @GetMapping("/articles/mainLists")
+    @GetMapping("/articles/recommended")
     public Top5ArticlesResponseDto getBestArticles(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return Top5ArticlesResponseDto.builder()
                 .top5Articles(articleListToArticleResponseDto(articleService.getBestArticleListOfAllSkill().toList(), userDetails))
