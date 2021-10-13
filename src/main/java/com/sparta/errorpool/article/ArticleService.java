@@ -22,17 +22,18 @@ public class ArticleService {
     private final CommentRepository commentRepository;
 
     public List<Article> getArticlesInSkillAndCategory(Integer skillId, Integer categoryId) {
-        List<Article> articles = articleRepository.findAllBySkillAndCategory
+        return articleRepository.findAllBySkillAndCategory
                 (Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
-//        articles = articleRepository.findAllBySkillAndCategory(articles);
-        return articles;
 
     }
 
     public Article getArticleById(Long articleId) {
-        return articleRepository.findById(articleId).orElseThrow(
+        Article article = articleRepository.findById(articleId).orElseThrow(
                 () -> new ArticleNotFoundException("게시글을 찾을 수 없습니다.")
         );
+        article.setViewCount(article.getViewCount()+1);
+
+        return article;
     }
 
     public void createArticle(Article article) {
@@ -74,10 +75,6 @@ public class ArticleService {
         } else {
             likeRepository.save(new LikeInfo(user, article));
         }
-    }
-
-    public Integer getLikesOfArticle(Long articleId) {
-        return likeRepository.countByArticleId(articleId);
     }
 
     public boolean IsLikedBy(Long userId, Long articleId) {

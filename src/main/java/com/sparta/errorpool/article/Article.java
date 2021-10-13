@@ -33,7 +33,7 @@ public class Article extends Timestamped {
 
     private String imgUrl;
 
-    private Integer viewCount;
+    private Integer viewCount = 0;
 
     @Enumerated(EnumType.STRING)
     private Skill skill;
