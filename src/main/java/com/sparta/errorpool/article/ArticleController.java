@@ -1,9 +1,15 @@
 package com.sparta.errorpool.article;
 
 import com.sparta.errorpool.article.dto.*;
+import com.sparta.errorpool.defaultResponse.DefaultResponse;
+import com.sparta.errorpool.defaultResponse.StatusCode;
+import com.sparta.errorpool.defaultResponse.SuccessYn;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.User;
+import com.sparta.errorpool.util.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,11 +23,12 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/articles/skill/{skill_id}/{category_id}")
-    public List<ArticleResponseDto> getArticlesInSkillAndCategory(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<List<ArticleResponseDto>>> getArticlesInSkillAndCategory(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                   @PathVariable("skill_id") Integer skillId,
                                                                   @PathVariable("category_id") Integer categoryId) {
         List<Article> articleList = articleService.getArticlesInSkillAndCategory(skillId, categoryId);
-        return articleListToArticleResponseDto(articleList, userDetails);
+        List<ArticleResponseDto> data = articleListToArticleResponseDto(articleList, userDetails);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, null, data));
     }
 
     private ArticleDetailResponseDto getArticleDetailResponseDto(UserDetailsImpl userDetails,
@@ -78,31 +85,35 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public void createArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<Void>> createArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
                               @RequestBody ArticleCreateRequestDto requestDto) {
         Article article = Article.of(requestDto, userDetails.getUser());
         articleService.createArticle(article);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, null, null));
     }
 
     @PutMapping("/articles/{article_id}")
-    public void updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<Void>> updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
                               @PathVariable("article_id") Long articleId,
                               @RequestBody ArticleUpdateRequestDto requestDto) {
         User user = userDetails.getUser();
         articleService.updateArticle(articleId, requestDto, user);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, null, null));
     }
 
     @DeleteMapping("/articles/{article_id}")
-    public void deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<Void>> deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
                               @PathVariable("article_id") Long articleId) {
         User user = userDetails.getUser();
         articleService.deleteArticle(articleId, user);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, null, null));
     }
 
     @PostMapping("/articles/{article_id}")
-    public void likeArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<Void>> likeArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
                             @PathVariable Long article_id) {
         User user = userDetails.getUser();
         articleService.likeArticle(article_id, user);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, null, null));
     }
 }
