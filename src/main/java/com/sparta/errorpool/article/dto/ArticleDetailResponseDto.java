@@ -4,6 +4,7 @@ import com.sparta.errorpool.comment.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class ArticleDetailResponseDto {
     private Integer userSkillId;
     private String email;
     private LocalDateTime regDt;
-    //todo private File image
+    private MultipartFile file;
     private List<CommentResponseDto> comments = new ArrayList<>();
 
     public void addCommentsDtoListFrom(List<Comment> comments) {

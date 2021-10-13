@@ -8,11 +8,11 @@ import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.util.ImageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +21,7 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ImageService imageService;
 
     @GetMapping("/articles/skill/{skill_id}/{category_id}")
     public ResponseEntity<DefaultResponse<List<ArticleResponseDto>>> getArticlesInSkillAndCategory(@AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -40,7 +41,6 @@ public class ArticleController {
 
     private void setLikeAndLikeCountAndCommentsInto(ArticleDetailResponseDto responseDto,
                                                     UserDetailsImpl userDetails) {
-        responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId()));
         if ( userDetails != null ) {
             responseDto.setLiked(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
         }
@@ -62,18 +62,8 @@ public class ArticleController {
         List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
         articleList.stream()
                 .map(article -> article.toArticleResponseDto(userDetails))
-//                .map(responseDto -> setLikeAndLikeCountOf(responseDto, userDetails))
                 .forEach(articleResponseDtoList::add);
         return articleResponseDtoList;
-    }
-
-    private ArticleResponseDto setLikeAndLikeCountOf(ArticleResponseDto responseDto,
-                                                     UserDetailsImpl userDetails) {
-        responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId()));
-        if ( userDetails != null ) {
-            responseDto.setLiked(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
-        }
-        return responseDto;
     }
 
     @GetMapping("/articles/{article_id}")
@@ -88,7 +78,12 @@ public class ArticleController {
     public ResponseEntity<DefaultResponse<Void>> createArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
                               @RequestBody ArticleCreateRequestDto requestDto) {
         Article article = Article.of(requestDto, userDetails.getUser());
+        if ( requestDto.getImg() != null ) {
+            Path imgUrl = imageService.saveFile(requestDto.getImg());
+            article.setImgUrl(imgUrl.toString());
+        }
         articleService.createArticle(article);
+
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, null, null));
     }
 
