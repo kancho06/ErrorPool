@@ -1,5 +1,6 @@
 package com.sparta.errorpool.article;
 
+import com.sparta.errorpool.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -18,12 +19,11 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             "order by a.createdAt desc")
     List<Article> findAllBySkillAndCategory(Skill skill, Category category);
 
-    @Query("select distinct a from Article a " +
-            "order by a.likes.size desc")
+    @Query("select a from Article a order by a.likes.size desc")
     Page<Article> findTopByOrderByLikeCountDesc(Pageable pageable);
 
-    @Query("select distinct a from Article a " +
-            "where a.skill = :skill " +
-            "order by a.likes.size desc")
+    @Query("select a from Article a where a.skill = :skill order by a.likes.size desc")
     Page<Article> findTopBySkillOrderByLikeCountDesc(Pageable pageable, Skill skill);
+
+    Page<Article> findAllByUserOrderByCreatedAtDesc(User user, Pageable pageable);
 }

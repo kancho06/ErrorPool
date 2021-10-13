@@ -84,4 +84,8 @@ public class ArticleService {
     public List<Comment> getComments(Long articleId) {
         return commentRepository.findAllByArticleId(articleId);
     }
+
+    public Page<Article> getArticles(User user) {
+        return articleRepository.findAllByUserOrderByCreatedAtDesc(user, PageRequest.of(0,5));
+    }
 }

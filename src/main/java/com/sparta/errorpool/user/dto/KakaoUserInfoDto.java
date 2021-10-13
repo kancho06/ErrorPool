@@ -1,4 +1,4 @@
-package com.sparta.errorpool.user;
+package com.sparta.errorpool.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
