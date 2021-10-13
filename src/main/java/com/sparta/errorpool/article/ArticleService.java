@@ -22,13 +22,18 @@ public class ArticleService {
     private final CommentRepository commentRepository;
 
     public List<Article> getArticlesInSkillAndCategory(Integer skillId, Integer categoryId) {
-        return articleRepository.findAllBySkillAndCategory(Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
+        return articleRepository.findAllBySkillAndCategory
+                (Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
+
     }
 
     public Article getArticleById(Long articleId) {
-        return articleRepository.findById(articleId).orElseThrow(
+        Article article = articleRepository.findById(articleId).orElseThrow(
                 () -> new ArticleNotFoundException("게시글을 찾을 수 없습니다.")
         );
+        article.setViewCount(article.getViewCount()+1);
+
+        return article;
     }
 
     public void createArticle(Article article) {
@@ -55,11 +60,11 @@ public class ArticleService {
     }
 
     public Page<Article> getBestArticleListOfAllSkill() {
-        return articleRepository.findTop5ByOrderByLikeCountDesc(PageRequest.of(0, 5));
+        return articleRepository.findTopByOrderByLikeCountDesc(PageRequest.of(0, 5));
     }
 
     public Page<Article> getBestArticleListIn(Skill skill) {
-        return articleRepository.findTop5BySkillOrderByLikeCountDesc(PageRequest.of(0, 5), skill);
+        return articleRepository.findTopBySkillOrderByLikeCountDesc(PageRequest.of(0, 5), skill);
     }
 
     public void likeArticle(Long article_id, User user) {
@@ -72,15 +77,15 @@ public class ArticleService {
         }
     }
 
-    public Integer getLikesOfArticle(Long articleId) {
-        return likeRepository.countByArticleId(articleId);
-    }
-
     public boolean IsLikedBy(Long userId, Long articleId) {
         return likeRepository.findByArticleIdAndUserId(articleId, userId).isPresent();
     }
 
     public List<Comment> getComments(Long articleId) {
         return commentRepository.findAllByArticleId(articleId);
+    }
+
+    public Page<Article> getArticles(User user) {
+        return articleRepository.findAllByUserOrderByCreatedAtDesc(user, PageRequest.of(0,5));
     }
 }

@@ -1,12 +1,19 @@
 package com.sparta.errorpool.article;
 
 import com.sparta.errorpool.article.dto.*;
+import com.sparta.errorpool.defaultResponse.DefaultResponse;
+import com.sparta.errorpool.defaultResponse.ResponseMessage;
+import com.sparta.errorpool.defaultResponse.StatusCode;
+import com.sparta.errorpool.defaultResponse.SuccessYn;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.User;
+import com.sparta.errorpool.util.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +22,15 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ImageService imageService;
 
     @GetMapping("/articles/skill/{skill_id}/{category_id}")
-    public List<ArticleResponseDto> getArticlesInSkillAndCategory(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<List<ArticleResponseDto>>> getArticlesInSkillAndCategory(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                                   @PathVariable("skill_id") Integer skillId,
                                                                   @PathVariable("category_id") Integer categoryId) {
         List<Article> articleList = articleService.getArticlesInSkillAndCategory(skillId, categoryId);
-        return articleListToArticleResponseDto(articleList, userDetails);
+        List<ArticleResponseDto> data = articleListToArticleResponseDto(articleList, userDetails);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, ResponseMessage.GET_ARTICLE_SUCCESS, data));
     }
 
     private ArticleDetailResponseDto getArticleDetailResponseDto(UserDetailsImpl userDetails,
@@ -33,9 +42,8 @@ public class ArticleController {
 
     private void setLikeAndLikeCountAndCommentsInto(ArticleDetailResponseDto responseDto,
                                                     UserDetailsImpl userDetails) {
-        responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId()));
         if ( userDetails != null ) {
-            responseDto.setLiksStatus(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
+            responseDto.setLiked(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
         }
         responseDto.addCommentsDtoListFrom(articleService.getComments(responseDto.getArticleId()));
     }
@@ -54,56 +62,55 @@ public class ArticleController {
                                                                      UserDetailsImpl userDetails) {
         List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
         articleList.stream()
-                .parallel()
-                .map(Article::toArticleResponseDto)
-                .map(responseDto -> setLikeAndLikeCountOf(responseDto, userDetails))
+                .map(article -> article.toArticleResponseDto(userDetails))
                 .forEach(articleResponseDtoList::add);
         return articleResponseDtoList;
     }
 
-    private ArticleResponseDto setLikeAndLikeCountOf(ArticleResponseDto responseDto,
-                                                     UserDetailsImpl userDetails) {
-        responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId()));
-        if ( userDetails != null ) {
-            responseDto.setLiksStatus(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
-        }
-        return responseDto;
-    }
-
     @GetMapping("/articles/{article_id}")
-    public ArticleDetailResponseDto getArticleDetails(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                      @PathVariable("article_id") Long articleId) {
+    public ResponseEntity<DefaultResponse<ArticleDetailResponseDto>> getArticleDetails(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                                       @PathVariable("article_id") Long articleId) {
         Article article = articleService.getArticleById(articleId);
 
-        return getArticleDetailResponseDto(userDetails, article);
+        ArticleDetailResponseDto data = getArticleDetailResponseDto(userDetails, article);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, ResponseMessage.GET_ARTICLE_SUCCESS, data));
     }
 
     @PostMapping("/articles")
-    public void createArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<Void>> createArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
                               @RequestBody ArticleCreateRequestDto requestDto) {
         Article article = Article.of(requestDto, userDetails.getUser());
+        if ( requestDto.getImg() != null ) {
+            Path imgUrl = imageService.saveFile(requestDto.getImg());
+            article.setImgUrl(imgUrl.toString());
+        }
         articleService.createArticle(article);
+
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 추가 성공", null));
     }
 
     @PutMapping("/articles/{article_id}")
-    public void updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<Void>> updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
                               @PathVariable("article_id") Long articleId,
                               @RequestBody ArticleUpdateRequestDto requestDto) {
         User user = userDetails.getUser();
         articleService.updateArticle(articleId, requestDto, user);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 수정 성공", null));
     }
 
     @DeleteMapping("/articles/{article_id}")
-    public void deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<Void>> deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
                               @PathVariable("article_id") Long articleId) {
         User user = userDetails.getUser();
         articleService.deleteArticle(articleId, user);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 삭제 성공", null));
     }
 
     @PostMapping("/articles/{article_id}")
-    public void likeArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<DefaultResponse<Void>> likeArticle(@AuthenticationPrincipal UserDetailsImpl userDetails,
                             @PathVariable Long article_id) {
         User user = userDetails.getUser();
         articleService.likeArticle(article_id, user);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "좋아요 성공", null));
     }
 }

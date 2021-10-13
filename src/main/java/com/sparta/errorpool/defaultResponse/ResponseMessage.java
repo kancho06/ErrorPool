@@ -13,7 +13,7 @@ public class ResponseMessage {
     public static final String UPDATE_SKILL_FAILED = "업데이트 실패";
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
     public static final String DB_ERROR = "데이터베이스 에러";
-
+    public static final String GET_ARTICLE_SUCCESS = "게시글 조회 성공";
     public static final String DUPLICATE_EMAIL = "중복된 이메일 입니다.";
     public static final String USERNAME_LENGTH = "닉네임은 3자 이상 12자 이하로 입력해 주세요";
     public static final String USERNAME_PATTERN = "특수문자는 사용하실 수 없습니다.";

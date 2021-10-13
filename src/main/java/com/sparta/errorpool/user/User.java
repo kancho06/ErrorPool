@@ -1,7 +1,6 @@
 package com.sparta.errorpool.user;
 
 import com.sparta.errorpool.article.Skill;
-
 import com.sparta.errorpool.user.dto.SignupRequestDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;

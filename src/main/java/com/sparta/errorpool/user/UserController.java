@@ -1,7 +1,6 @@
 package com.sparta.errorpool.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import com.sparta.errorpool.defaultResponse.DefaultResponse;
 import com.sparta.errorpool.defaultResponse.ResponseMessage;
 import com.sparta.errorpool.defaultResponse.StatusCode;
@@ -11,12 +10,10 @@ import com.sparta.errorpool.user.dto.LoginResDto;
 import com.sparta.errorpool.user.dto.SignupRequestDto;
 import com.sparta.errorpool.user.dto.UserRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.*;
 
 

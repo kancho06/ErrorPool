@@ -1,9 +1,11 @@
 package com.sparta.errorpool.user.dto;
 
 
-
 import com.sparta.errorpool.article.Skill;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Getter
