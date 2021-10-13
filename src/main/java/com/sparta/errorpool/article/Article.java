@@ -1,9 +1,6 @@
 package com.sparta.errorpool.article;
 
-import com.sparta.errorpool.article.dto.ArticleCreateRequestDto;
-import com.sparta.errorpool.article.dto.ArticleDetailResponseDto;
-import com.sparta.errorpool.article.dto.ArticleResponseDto;
-import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
+import com.sparta.errorpool.article.dto.*;
 import com.sparta.errorpool.comment.Comment;
 import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.util.Timestamped;
@@ -92,7 +89,7 @@ public class Article extends Timestamped {
                 .build();
     }
 
-    public ArticleDetailResponseDto toArticleDetailResponseDto() {
+    public ArticleDetailResponseDto toArticleDetailResponseDto(UserDetails userDetails) {
         return ArticleDetailResponseDto.builder()
                 .articleId(this.id)
                 .title(this.title)
@@ -100,11 +97,30 @@ public class Article extends Timestamped {
                 .viewCount(this.viewCount)
                 .skillId(skill.getNum())
                 .commentCount(this.comments.size())
+                .likeCount(this.likes.size())
                 .categoryId(category.getNum())
                 .username(user.getUsername())
                 .userSkillId((user.getSkill() == null) ? null : user.getSkill().getNum())
+                .isLiked(this.likes.stream().anyMatch(likeInfo -> likeInfo.getUser().getEmail().equals(userDetails.getUsername())))
                 .email(user.getEmail())
                 .regDt(this.getCreatedAt())
+                .comments(addCommentsDtoListFrom(this.comments))
                 .build();
+    }
+
+    public List<CommentResponseDto> addCommentsDtoListFrom(List<Comment> comments) {
+        List<CommentResponseDto> result = new ArrayList<>();
+        for (Comment comment : comments) {
+            result.add(CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .content(comment.getContent())
+                    .username(comment.getUser().getUsername())
+                    .userSkillId((comment.getUser().getSkill() == null) ? null : comment.getUser().getSkill().getNum())
+                    .email(comment.getUser().getEmail())
+                    .regDt(comment.getCreatedAt())
+                    .build()
+            );
+        }
+        return result;
     }
 }

@@ -14,6 +14,7 @@ public class ArticleResponseDto {
     private Integer categoryId;
 
     @Setter
+    @Builder.Default
     private boolean isLiked = false;
     @Setter
     private Integer likeCount;

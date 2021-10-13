@@ -30,18 +30,6 @@ public class ArticleDetailResponseDto {
     private String email;
     private LocalDateTime regDt;
     private MultipartFile file;
+    @Builder.Default
     private List<CommentResponseDto> comments = new ArrayList<>();
-
-    public void addCommentsDtoListFrom(List<Comment> comments) {
-        for (Comment comment : comments) {
-            this.comments.add(CommentResponseDto.builder()
-                    .commentId(comment.getId())
-                    .content(comment.getContent())
-                    .username(comment.getUser().getUsername())
-                    .userSkillId(comment.getUser().getSkill().getNum())
-                    .email(comment.getUser().getEmail())
-                    .regDt(comment.getCreatedAt())
-                    .build());
-        }
-    }
 }
