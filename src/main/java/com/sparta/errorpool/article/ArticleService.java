@@ -60,11 +60,11 @@ public class ArticleService {
     }
 
     public Page<Article> getBestArticleListOfAllSkill() {
-        return articleRepository.findTop5ByOrderByLikeCountDesc(PageRequest.of(0, 5));
+        return articleRepository.findTopByOrderByLikeCountDesc(PageRequest.of(0, 5));
     }
 
     public Page<Article> getBestArticleListIn(Skill skill) {
-        return articleRepository.findTop5BySkillOrderByLikeCountDesc(PageRequest.of(0, 5), skill);
+        return articleRepository.findTopBySkillOrderByLikeCountDesc(PageRequest.of(0, 5), skill);
     }
 
     public void likeArticle(Long article_id, User user) {

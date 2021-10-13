@@ -18,9 +18,12 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             "order by a.createdAt desc")
     List<Article> findAllBySkillAndCategory(Skill skill, Category category);
 
-    @Query("select a from Article a order by a.likes.size desc")
-    Page<Article> findTop5ByOrderByLikeCountDesc(Pageable pageable);
+    @Query("select distinct a from Article a " +
+            "order by a.likes.size desc")
+    Page<Article> findTopByOrderByLikeCountDesc(Pageable pageable);
 
-    @Query("select a from Article a where a.skill = :skill order by a.likes.size desc")
-    Page<Article> findTop5BySkillOrderByLikeCountDesc(Pageable pageable, Skill skill);
+    @Query("select distinct a from Article a " +
+            "where a.skill = :skill " +
+            "order by a.likes.size desc")
+    Page<Article> findTopBySkillOrderByLikeCountDesc(Pageable pageable, Skill skill);
 }

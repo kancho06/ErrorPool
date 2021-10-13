@@ -45,6 +45,7 @@ public class Article extends Timestamped {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
+    @BatchSize(size = 20)
     @OneToMany(mappedBy = "article")
     private List<Comment> comments = new ArrayList<>();
 
