@@ -5,6 +5,7 @@ import com.sparta.errorpool.defaultResponse.DefaultResponse;
 import com.sparta.errorpool.defaultResponse.ResponseMessage;
 import com.sparta.errorpool.defaultResponse.StatusCode;
 import com.sparta.errorpool.defaultResponse.SuccessYn;
+import com.sparta.errorpool.exception.UnauthenticatedException;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.util.ImageService;
@@ -70,14 +71,12 @@ public class ArticleController {
     @PostMapping("/articles")
     public ResponseEntity<DefaultResponse<Void>> createArticle(@AuthenticationPrincipal UserDetails userDetails,
                               @RequestBody ArticleCreateRequestDto requestDto) {
-        if ( userDetails instanceof UserDetailsImpl ) {
-            Article article = Article.of(requestDto, ((UserDetailsImpl) userDetails).getUser());
+        Article article = Article.of(requestDto, userFromUserDetails(userDetails));
             if ( requestDto.getImg() != null ) {
                 Path imgUrl = imageService.saveFile(requestDto.getImg());
                 article.setImgUrl(imgUrl.toString());
             }
             articleService.createArticle(article);
-        }
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 추가 성공", null));
     }
 
@@ -85,21 +84,23 @@ public class ArticleController {
     public ResponseEntity<DefaultResponse<Void>> updateArticle(@AuthenticationPrincipal UserDetails userDetails,
                               @PathVariable("article_id") Long articleId,
                               @RequestBody ArticleUpdateRequestDto requestDto) {
-        if ( userDetails instanceof UserDetailsImpl ) {
-            User user = ((UserDetailsImpl) userDetails).getUser();
-            articleService.updateArticle(articleId, requestDto, user);
-        }
+        articleService.updateArticle(articleId, requestDto, userFromUserDetails(userDetails));
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 수정 성공", null));
     }
 
     @DeleteMapping("/articles/{article_id}")
     public ResponseEntity<DefaultResponse<Void>> deleteArticle(@AuthenticationPrincipal UserDetails userDetails,
                               @PathVariable("article_id") Long articleId) {
-        if ( userDetails instanceof UserDetailsImpl ) {
-            User user = ((UserDetailsImpl) userDetails).getUser();
-            articleService.deleteArticle(articleId, user);
-        }
+        articleService.deleteArticle(articleId, userFromUserDetails(userDetails));
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 삭제 성공", null));
+    }
+
+    private User userFromUserDetails(UserDetails userDetails) {
+        if ( userDetails instanceof UserDetailsImpl ) {
+            return ((UserDetailsImpl) userDetails).getUser();
+        } else {
+            throw new UnauthenticatedException("로그인이 필요합니다.");
+        }
     }
 
     @PostMapping("/articles/{article_id}/like")
