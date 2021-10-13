@@ -26,9 +26,10 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    public void registerUser(SignupRequestDto requestDto) {
+    public boolean registerUser(SignupRequestDto requestDto) {
         User user = signupValidator.validate(requestDto);
         userRepository.save(user);
+        return true;
     }
 
 
