@@ -36,7 +36,7 @@ public class KakaoUserService {
 
 
 
-    public void kakaoLogin(String code) throws JsonProcessingException {
+    public boolean kakaoLogin(String code) throws JsonProcessingException {
 // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
 
@@ -47,6 +47,8 @@ public class KakaoUserService {
         // 4. 강제 로그인 처리
         //UserDetails로 감싸주고 토큰으로 감싸준다
         forceLogin(kakaoUser);
+
+        return true;
 
     }
 
