@@ -1,14 +1,12 @@
 package com.sparta.errorpool.article.dto;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
 @Getter
-@Setter
-@NoArgsConstructor
+@Builder
 public class Top5ArticlesResponseDto {
     private List<ArticleResponseDto> top5Articles;
     private List<ArticleResponseDto> top5ReactArticleList;

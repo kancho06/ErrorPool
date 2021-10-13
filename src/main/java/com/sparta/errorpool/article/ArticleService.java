@@ -1,9 +1,10 @@
 package com.sparta.errorpool.article;
 
 import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
+import com.sparta.errorpool.comment.Comment;
+import com.sparta.errorpool.comment.CommentRepository;
 import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.user.User;
-import com.sparta.errorpool.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,17 +18,22 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
-    private final LikeRepository likeRepository;
-    private final UserRepository userRepository;
+    private final LikeInfoRepository likeRepository;
+    private final CommentRepository commentRepository;
 
     public List<Article> getArticlesInSkillAndCategory(Integer skillId, Integer categoryId) {
-        return articleRepository.findAllBySkillAndCategory(Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
+        return articleRepository.findAllBySkillAndCategory
+                (Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
+
     }
 
     public Article getArticleById(Long articleId) {
-        return articleRepository.findById(articleId).orElseThrow(
+        Article article = articleRepository.findById(articleId).orElseThrow(
                 () -> new ArticleNotFoundException("게시글을 찾을 수 없습니다.")
         );
+        article.setViewCount(article.getViewCount()+1);
+
+        return article;
     }
 
     public void createArticle(Article article) {
@@ -63,16 +69,20 @@ public class ArticleService {
 
     public void likeArticle(Long article_id, User user) {
         Article article = getArticleById(article_id);
-        Optional<Like> optionalLike = likeRepository.findByArticleIdAndUserId(article_id, user.getId());
+        Optional<LikeInfo> optionalLike = likeRepository.findByArticleIdAndUserId(article_id, user.getId());
         if ( optionalLike.isPresent() ) {
             likeRepository.delete(optionalLike.get());
         } else {
-            likeRepository.save(new Like(user, article));
+            likeRepository.save(new LikeInfo(user, article));
         }
     }
 
-    public Integer getLikesOfArticle(Long articleId) {
-        return likeRepository.countByArticleId(articleId);
+    public boolean IsLikedBy(Long userId, Long articleId) {
+        return likeRepository.findByArticleIdAndUserId(articleId, userId).isPresent();
+    }
+
+    public List<Comment> getComments(Long articleId) {
+        return commentRepository.findAllByArticleId(articleId);
     }
 
     public Page<Article> getArticles(User user) {

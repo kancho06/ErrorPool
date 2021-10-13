@@ -4,7 +4,10 @@ import com.sparta.errorpool.comment.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -17,11 +20,28 @@ public class ArticleDetailResponseDto {
     private Integer categoryId;
 
     @Setter
+    private boolean isLiked;
+    @Setter
     private Integer likeCount;
     private Integer viewCount;
     private Integer commentCount;
     private String username;
+    private Integer userSkillId;
     private String email;
-    private String imgUrl;
-    private List<Comment> comments;
+    private LocalDateTime regDt;
+    private MultipartFile file;
+    private List<CommentResponseDto> comments = new ArrayList<>();
+
+    public void addCommentsDtoListFrom(List<Comment> comments) {
+        for (Comment comment : comments) {
+            this.comments.add(CommentResponseDto.builder()
+                    .commentId(comment.getId())
+                    .content(comment.getContent())
+                    .username(comment.getUser().getUsername())
+                    .userSkillId(comment.getUser().getSkill().getNum())
+                    .email(comment.getUser().getEmail())
+                    .regDt(comment.getCreatedAt())
+                    .build());
+        }
+    }
 }

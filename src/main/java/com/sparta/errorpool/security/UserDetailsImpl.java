@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -58,7 +59,6 @@ public class UserDetailsImpl implements UserDetails {
     //스프링 시큐리티의 권한 파악 (유저권한으로 주소창에 api 주소치면 관리자로 접속되던 문제 해결)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
 
 
         UserRoleEnum role = user.getRole();

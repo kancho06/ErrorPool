@@ -9,6 +9,8 @@ import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.util.Timestamped;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,7 +31,9 @@ public class Article extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    private Integer viewCount;
+    private String imgUrl;
+
+    private Integer viewCount = 0;
 
     @Enumerated(EnumType.STRING)
     private Skill skill;
@@ -37,15 +41,16 @@ public class Article extends Timestamped {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "article")
     private List<Comment> comments = new ArrayList<>();
 
+    @BatchSize(size = 20)
     @OneToMany(mappedBy = "article")
-    private List<Like> likes = new ArrayList<>();
+    private List<LikeInfo> likes = new ArrayList<>();
 
     public Article(ArticleCreateRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
@@ -68,11 +73,7 @@ public class Article extends Timestamped {
         this.content = requestDto.getContent();
     }
 
-    public Integer likeCount() {
-        return likes.size();
-    }
-
-    public ArticleResponseDto toArticleResponseDto() {
+    public ArticleResponseDto toArticleResponseDto(UserDetails userDetails) {
         return ArticleResponseDto.builder()
                 .articleId(this.id)
                 .title(this.title)
@@ -80,9 +81,13 @@ public class Article extends Timestamped {
                 .viewCount(this.viewCount)
                 .skillId(skill.getNum())
                 .commentCount(this.comments.size())
+                .likeCount(this.likes.size())
                 .categoryId(category.getNum())
                 .username(user.getUsername())
+                .userSkillId((user.getSkill() == null) ? null : user.getSkill().getNum())
+                .isLiked(this.likes.stream().anyMatch(likeInfo -> likeInfo.getUser().getEmail().equals(userDetails.getUsername())))
                 .email(user.getEmail())
+                .regDt(this.getCreatedAt())
                 .build();
     }
 
@@ -96,7 +101,9 @@ public class Article extends Timestamped {
                 .commentCount(this.comments.size())
                 .categoryId(category.getNum())
                 .username(user.getUsername())
+                .userSkillId((user.getSkill() == null) ? null : user.getSkill().getNum())
                 .email(user.getEmail())
+                .regDt(this.getCreatedAt())
                 .build();
     }
 }

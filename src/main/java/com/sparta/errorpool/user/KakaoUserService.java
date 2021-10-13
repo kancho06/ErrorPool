@@ -3,7 +3,6 @@ package com.sparta.errorpool.user;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.errorpool.article.Skill;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -137,13 +136,13 @@ public class KakaoUserService {
                 //인코딩을 해줘서 암호화를 시켜야한다.
                 String password = UUID.randomUUID().toString();
                 String encodedPassword = passwordEncoder.encode(password);
-                Skill skill = null;
+
 // email: kakao email
                 String email = kakaoUserInfo.getEmail();
 // role: 일반 사용자
                 UserRoleEnum role = UserRoleEnum.USER;
 
-                kakaoUser = new User(email, encodedPassword, username, role, socialId, skill);
+                kakaoUser = new User(email, encodedPassword, username, role, socialId, null);
 
             }
             userRepository.save(kakaoUser);

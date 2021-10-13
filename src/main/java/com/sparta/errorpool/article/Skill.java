@@ -29,7 +29,9 @@ public enum Skill {
             return NODEJS;
         }
         else {
-            throw new IllegalArgumentException("존재하지 않는 주특기입니다.");
+            throw new IllegalArgumentException(
+
+            );
         }
     }
 }
