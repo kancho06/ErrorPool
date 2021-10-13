@@ -1,26 +1,26 @@
 package com.sparta.errorpool.security;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+
 
 @Configuration
-@EnableWebSecurity // 스프링 Security 지원을 가능하게 함
-@EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
+@EnableWebSecurity
+@AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
+
+        @Bean
     public BCryptPasswordEncoder encodePassword() {
         return new BCryptPasswordEncoder();
     }
-
 
 
     @Override
@@ -33,11 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+
         http.csrf().disable();
-
         http.authorizeRequests()
-
-
 // API comment
                 .antMatchers("/comment/{comment_id}").permitAll()
 
@@ -54,6 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/gogle").anonymous()
                 .antMatchers("/user/register").anonymous()
                 .antMatchers("/user/login").anonymous()
+                //마이페이지
+                .antMatchers("/user/{userId}").permitAll()
 
 // 그 외 어떤 요청이든 '인증'
                 .anyRequest().authenticated()
@@ -82,6 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 // "접근 불가" 페이지 URL 설정
                 .accessDeniedPage("/forbidden.html");
     }
+
 
 
 }

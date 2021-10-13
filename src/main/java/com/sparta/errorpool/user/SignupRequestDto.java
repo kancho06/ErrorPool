@@ -2,6 +2,7 @@ package com.sparta.errorpool.user;
 
 
 
+import com.sparta.errorpool.article.Skill;
 import lombok.*;
 
 
@@ -24,5 +25,5 @@ public class SignupRequestDto {
 
     private String adminToken = "";
 
-
+    private Skill skill;
 }
