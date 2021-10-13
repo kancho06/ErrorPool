@@ -2,45 +2,61 @@ package com.sparta.errorpool.user;
 
 
 import com.sparta.errorpool.article.Skill;
+import com.sparta.errorpool.security.JwtTokenProvider;
 import com.sparta.errorpool.security.UserDetailsImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sparta.errorpool.user.dto.SignupRequestDto;
+import com.sparta.errorpool.user.dto.UserRequestDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final SignupValidator signupValidator;
-
-
-    @Autowired
-    public UserService(UserRepository userRepository, SignupValidator signupValidator) {
-        this.userRepository = userRepository;
-        this.signupValidator = signupValidator;
-    }
-
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JwtTokenProvider jwtTokenProvider;
 
 
     public User registerUser(SignupRequestDto requestDto) {
-        return userRepository.save(signupValidator.validate(requestDto));
+        User user = signupValidator.validate(requestDto);
+        userRepository.save(user);
+        return user;
     }
 
 
-    public Long update(Long userId, SignupRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public boolean updateSkill(Long userId, SignupRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new NullPointerException("아이디가 존재하지 않습니다.")
         );
-        if(user.getEmail().equals(userDetails.getUsername())) {
-            Integer skillId = requestDto.getSkillId();
-            Skill skill = Skill.getSkillById(skillId);
-            requestDto.setSkill(skill);
-            user.update(requestDto);
-        }
-        return userId;
+        Integer skillId = requestDto.getSkillId();
+        Skill skill = Skill.getSkillById(skillId);
+        requestDto.setSkill(skill);
+        user.update(requestDto);
+        return true;
     }
+
+    public User findUserByEmail(UserRequestDto userRequestDto) {
+        String email = userRequestDto.getEmail();
+        User user = userRepository.findByEmail(email).orElseThrow(
+                ()-> new NullPointerException("아이디가 존재하지 않습니다.")
+        );
+        return user;
+    }
+    public String createToken(UserRequestDto userRequestDto) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(userRequestDto.getEmail(),userRequestDto.getPassword());
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        return jwtTokenProvider.createToken(authentication);
+
+    }
+
 
 
 }

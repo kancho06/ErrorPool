@@ -1,7 +1,7 @@
 package com.sparta.errorpool.user;
 
-import com.sparta.errorpool.article.Skill;
 import com.sparta.errorpool.exception.*;
+import com.sparta.errorpool.user.dto.SignupRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
