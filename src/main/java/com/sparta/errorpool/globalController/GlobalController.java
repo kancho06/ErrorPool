@@ -54,4 +54,7 @@ public class GlobalController {
     public ResponseEntity<String> CommentNotFoundExceptionHandler(CommentNotFoundException exception) {
         return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.NOT_FOUND, exception.getMessage(), null), HttpStatus.OK);
     }
+    public ResponseEntity<String> unauthenticatedExceptionHandler(UnauthenticatedException exception) {
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.UNAUTHORIZED, exception.getMessage(), null), HttpStatus.OK);
+    }
 }
