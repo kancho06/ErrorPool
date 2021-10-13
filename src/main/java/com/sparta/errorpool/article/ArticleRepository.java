@@ -1,5 +1,6 @@
 package com.sparta.errorpool.article;
 
+import com.sparta.errorpool.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query("select a from Article a where a.skill = :skill order by a.likes.size desc")
     Page<Article> findTop5BySkillOrderByLikeCountDesc(Pageable pageable, Skill skill);
+
+    Page<Article> findAllByUserOrderByCreatedAtDesc(User user, Pageable pageable);
 }

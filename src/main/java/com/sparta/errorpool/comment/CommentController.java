@@ -1,31 +1,48 @@
 package com.sparta.errorpool.comment;
 
 import com.sparta.errorpool.security.UserDetailsImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@Api(tags = "Comment Controller Api V1")
+//@RequestMapping("/comments")
 public class CommentController {
 
     private final CommentService commentService;
 
-    // 댓글 추가
+    @ApiOperation(value = "댓글 추가")
     @PostMapping("/comments")
-    public void addComment(@RequestParam Long articleId, @RequestBody CommentDto commentDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public void addComment(
+            @RequestParam @ApiParam(value = "게시글 아이디", required = true) Long articleId
+            , @RequestBody @ApiParam(value = "댓글 하나 정보를 갖는 객체", required = true) CommentDto commentDto
+            , @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         commentService.addComment(articleId, commentDto, userDetails.getUser());
     }
 
-    // 댓글 수정
+    @ApiOperation(value = "댓글 수정")
     @PutMapping("/comments/{commentId}")
-    public void modifyComment(@PathVariable Long commentId, @RequestBody CommentDto commentDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public void modifyComment(
+            @PathVariable @ApiParam(value = "댓글 아이디", required = true) Long commentId
+            , @RequestBody @ApiParam(value = "댓글 한개의 정보를 가진 객체", required = true) CommentDto commentDto
+            , @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         commentService.modifyComment(commentId, commentDto, userDetails.getUser());
     }
 
-    // 댓글 삭제
+    @ApiOperation(value = "댓글 삭제")
     @DeleteMapping("/comments/{commentId}")
-    public void deleteComment(@PathVariable Long commentId, @RequestParam Long articleId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public void deleteComment(
+            @PathVariable @ApiParam(value = "댓글 아이디", required = true) Long commentId
+            , @RequestParam @ApiParam(value = "댓글 한개의 정보를 가진 객체", required = true) Long articleId
+            , @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         commentService.deleteComment(articleId, commentId, userDetails.getUser());
     }
 }

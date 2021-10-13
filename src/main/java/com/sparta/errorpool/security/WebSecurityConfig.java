@@ -8,8 +8,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
@@ -27,7 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web
                 .ignoring()
-                .antMatchers("/h2-console/**");
+                .antMatchers("/h2-console/**")
+                .antMatchers("/v2/api-docs", "/configuration/ui/"
+                ,"/swagger-resources","/configuration/security"
+                ,"swagger-ui.html","/webjars/**","/swagger/**");
     }
 
     @Override
@@ -36,10 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-
-
+//                .antMatchers("/swagger-resources/**").permitAll()
 // API comment
-                .antMatchers("/comment/{comment_id}").permitAll()
+                .antMatchers("/comments/{comment_id}").permitAll()
 
 // API articles
                 .antMatchers("/articles").permitAll()

@@ -3,6 +3,7 @@ package com.sparta.errorpool.article;
 import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
 import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.user.User;
+import com.sparta.errorpool.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final LikeRepository likeRepository;
+    private final UserRepository userRepository;
 
     public List<Article> getArticlesInSkillAndCategory(Integer skillId, Integer categoryId) {
         return articleRepository.findAllBySkillAndCategory(Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
@@ -71,5 +73,9 @@ public class ArticleService {
 
     public Integer getLikesOfArticle(Long articleId) {
         return likeRepository.countByArticleId(articleId);
+    }
+
+    public Page<Article> getArticles(User user) {
+        return articleRepository.findAllByUserOrderByCreatedAtDesc(user, PageRequest.of(0,5));
     }
 }

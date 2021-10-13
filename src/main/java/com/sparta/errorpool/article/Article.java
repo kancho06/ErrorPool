@@ -6,6 +6,7 @@ import com.sparta.errorpool.article.dto.ArticleResponseDto;
 import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
 import com.sparta.errorpool.comment.Comment;
 import com.sparta.errorpool.user.User;
+import com.sparta.errorpool.util.Timestamped;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-public class Article {
+public class Article extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
