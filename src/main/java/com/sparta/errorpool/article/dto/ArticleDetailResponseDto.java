@@ -1,7 +1,6 @@
 package com.sparta.errorpool.article.dto;
 
 import com.sparta.errorpool.comment.Comment;
-import com.sparta.errorpool.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +18,7 @@ public class ArticleDetailResponseDto {
     private Integer categoryId;
 
     @Setter
-    private boolean liksStatus;
+    private boolean isLiked;
     @Setter
     private Integer likeCount;
     private Integer viewCount;

@@ -35,7 +35,7 @@ public class ArticleController {
                                                     UserDetailsImpl userDetails) {
         responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId()));
         if ( userDetails != null ) {
-            responseDto.setLiksStatus(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
+            responseDto.setLiked(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
         }
         responseDto.addCommentsDtoListFrom(articleService.getComments(responseDto.getArticleId()));
     }
@@ -54,9 +54,8 @@ public class ArticleController {
                                                                      UserDetailsImpl userDetails) {
         List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
         articleList.stream()
-                .parallel()
-                .map(Article::toArticleResponseDto)
-                .map(responseDto -> setLikeAndLikeCountOf(responseDto, userDetails))
+                .map(article -> article.toArticleResponseDto(userDetails))
+//                .map(responseDto -> setLikeAndLikeCountOf(responseDto, userDetails))
                 .forEach(articleResponseDtoList::add);
         return articleResponseDtoList;
     }
@@ -65,7 +64,7 @@ public class ArticleController {
                                                      UserDetailsImpl userDetails) {
         responseDto.setLikeCount(articleService.getLikesOfArticle(responseDto.getArticleId()));
         if ( userDetails != null ) {
-            responseDto.setLiksStatus(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
+            responseDto.setLiked(articleService.IsLikedBy(userDetails.getUser().getId(), responseDto.getArticleId()));
         }
         return responseDto;
     }

@@ -12,7 +12,7 @@ public class ArticleResponseDto {
     private Integer categoryId;
 
     @Setter
-    private boolean liksStatus = false;
+    private boolean isLiked = false;
     @Setter
     private Integer likeCount;
     private Integer viewCount;

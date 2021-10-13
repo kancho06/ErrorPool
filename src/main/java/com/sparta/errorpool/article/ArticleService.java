@@ -22,7 +22,11 @@ public class ArticleService {
     private final CommentRepository commentRepository;
 
     public List<Article> getArticlesInSkillAndCategory(Integer skillId, Integer categoryId) {
-        return articleRepository.findAllBySkillAndCategory(Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
+        List<Article> articles = articleRepository.findAllBySkillAndCategory
+                (Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
+//        articles = articleRepository.findAllBySkillAndCategory(articles);
+        return articles;
+
     }
 
     public Article getArticleById(Long articleId) {
