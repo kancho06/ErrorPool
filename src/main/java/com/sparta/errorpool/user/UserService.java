@@ -7,10 +7,12 @@ import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.dto.SignupRequestDto;
 import com.sparta.errorpool.user.dto.UserRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -24,10 +26,9 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    public User registerUser(SignupRequestDto requestDto) {
+    public void registerUser(SignupRequestDto requestDto) {
         User user = signupValidator.validate(requestDto);
         userRepository.save(user);
-        return user;
     }
 
 
@@ -37,8 +38,8 @@ public class UserService {
         );
         Integer skillId = requestDto.getSkillId();
         Skill skill = Skill.getSkillById(skillId);
-        requestDto.setSkill(skill);
-        user.update(requestDto);
+        user.setSkill(skill);
+        userRepository.save(user);
         return true;
     }
 

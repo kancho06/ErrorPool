@@ -1,7 +1,7 @@
 package com.sparta.errorpool.article;
 
 public enum Category {
-    TECH(1,"tech"), FREE_BOARD(2,"자유게시판"), ERROR(3,"오류공유");
+    FREE_BOARD(1,"자유게시판"), ERROR(2,"오류공유"), TECH(3,"tech");
 
     private final Integer num;
     private final String name;
