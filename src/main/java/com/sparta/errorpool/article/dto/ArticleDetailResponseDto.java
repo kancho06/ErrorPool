@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class ArticleDetailResponseDto {
     private String username;
     private Integer userSkillId;
     private String email;
+    private LocalDateTime regDt;
     //todo private File image
     private List<CommentResponseDto> comments = new ArrayList<>();
 

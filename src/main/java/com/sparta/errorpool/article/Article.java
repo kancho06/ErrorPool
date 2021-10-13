@@ -87,6 +87,7 @@ public class Article extends Timestamped {
                 .userSkillId((user.getSkill() == null) ? null : user.getSkill().getNum())
                 .isLiked(this.likes.stream().anyMatch(likeInfo -> likeInfo.getUser().getEmail().equals(userDetails.getUsername())))
                 .email(user.getEmail())
+                .regDt(this.getCreatedAt())
                 .build();
     }
 
@@ -102,6 +103,7 @@ public class Article extends Timestamped {
                 .username(user.getUsername())
                 .userSkillId((user.getSkill() == null) ? null : user.getSkill().getNum())
                 .email(user.getEmail())
+                .regDt(this.getCreatedAt())
                 .build();
     }
 }

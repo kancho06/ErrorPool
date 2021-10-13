@@ -2,6 +2,8 @@ package com.sparta.errorpool.article.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 public class ArticleResponseDto {
@@ -20,4 +22,5 @@ public class ArticleResponseDto {
     private String username;
     private Integer userSkillId;
     private String email;
+    private LocalDateTime regDt;
 }
