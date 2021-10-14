@@ -21,7 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
 
@@ -57,11 +57,11 @@ public class UserController {
     }
 
     @PostMapping("/kakao")
-    public ResponseEntity kakaoLogin(@RequestParam String code) throws JsonProcessingException {
-        if (kakaoUserService.kakaoLogin(code)) {
-            return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.CREATED_USER,null ), HttpStatus.OK);
-        }
-        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);
+    @ResponseBody
+    public LoginResDto kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+        LoginResDto loginResDto = kakaoUserService.kakaoLogin(code);
+
+        return loginResDto;
     }
 
     @PutMapping("/{userid}")
