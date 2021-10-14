@@ -4,6 +4,7 @@ package com.sparta.errorpool.user;
 import com.sparta.errorpool.article.Skill;
 import com.sparta.errorpool.security.JwtTokenProvider;
 import com.sparta.errorpool.security.UserDetailsImpl;
+import com.sparta.errorpool.security.UserDetailsServiceImpl;
 import com.sparta.errorpool.user.dto.SignupRequestDto;
 import com.sparta.errorpool.user.dto.UserRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class UserService {
     private final SignupValidator signupValidator;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserDetailsServiceImpl userDetailsService;
 
 
     public boolean registerUser(SignupRequestDto requestDto) {
@@ -51,9 +54,12 @@ public class UserService {
         );
         return user;
     }
-    public String createToken(UserRequestDto userRequestDto) {
+    public String createToken(UserRequestDto userRequestDto ) {
+        String email = userRequestDto.getEmail();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(userRequestDto.getEmail(),userRequestDto.getPassword());
+//                new UsernamePasswordAuthenticationToken(userRequestDto.getEmail(),userRequestDto.getPassword());
+                new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         return jwtTokenProvider.createToken(authentication);
 
@@ -61,4 +67,6 @@ public class UserService {
 
 
 
+
+//      new UsernamePasswordAuthenticationToken(UserDetails, "",UserDetails.getAuthorities());
 }

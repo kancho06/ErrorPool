@@ -57,6 +57,7 @@ public class UserController {
     }
 
     @PostMapping("/kakao")
+    @ResponseBody
     public LoginResDto kakaoLogin(@RequestParam String code) throws JsonProcessingException {
         LoginResDto loginResDto = kakaoUserService.kakaoLogin(code);
 

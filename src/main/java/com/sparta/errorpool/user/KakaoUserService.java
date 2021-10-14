@@ -74,7 +74,7 @@ public class KakaoUserService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", "0c207c8530bd178646fd2cbbc6a80e80");
-        body.add("redirect_uri", "http://52.79.87.216:8080/user/kakao");
+        body.add("redirect_uri", "http://localhost:3000/user/kakao");
         body.add("code", code);
 
 // HTTP 요청 보내기
@@ -115,9 +115,9 @@ public class KakaoUserService {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
         Long socialId = jsonNode.get("id").asLong();
-        String username = jsonNode.get("properties")
+        String email = jsonNode.get("properties")
                 .get("nickname").asText();
-        String email = jsonNode.get("kakao_account")
+        String username = jsonNode.get("kakao_account")
                 .get("email").asText();
 
 
