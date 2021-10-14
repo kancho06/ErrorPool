@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-@ApiModel(value = "게시글 목록 정보 응답", description = "게시글 목록 정보 응답 DTO")
+@ApiModel(value = "게시글 정보 응답", description = "게시글 정보 응답 DTO")
 public class ArticleResponseDto {
     private Long articleId;
     private String title;

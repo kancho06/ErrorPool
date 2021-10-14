@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,12 +34,16 @@ public class ArticleController {
 
     @ApiOperation(value = "항목 별 게시글 조회")
     @GetMapping("/articles/skill/{skill_id}/{category_id}")
-    public ResponseEntity<DefaultResponse<List<ArticleResponseDto>>>
+    public ResponseEntity<DefaultResponse<ArticlePageResponseDto>>
     getArticlesInSkillAndCategory(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
+                                  @ApiParam(value = "페이지 번호", required = true) @RequestParam("page") Integer page,
                                   @ApiParam(value = "주특기 번호", required = true) @PathVariable("skill_id") Integer skillId,
                                   @ApiParam(value = "카테고리 번호", required = true) @PathVariable("category_id") Integer categoryId) {
-        List<Article> articleList = articleService.getArticlesInSkillAndCategory(skillId,categoryId).toList();
-        List<ArticleResponseDto> data = articleListToArticleResponseDto(articleList, userDetails);
+        Page<Article> articlePage = articleService.getArticlesInSkillAndCategory(page,skillId,categoryId);
+        ArticlePageResponseDto data = ArticlePageResponseDto.builder()
+                .totalPage(articlePage.getTotalPages())
+                .page(articlePage.getNumber()+1)
+                .articleList(articleListToArticleResponseDto(articlePage, userDetails)).build();
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, ResponseMessage.GET_ARTICLE_SUCCESS, data));
     }
 
@@ -51,17 +56,17 @@ public class ArticleController {
     @GetMapping("/articles/recommended")
     public TopArticlesResponseDto getBestArticles(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails) {
         return TopArticlesResponseDto.builder()
-                .topArticles(articleListToArticleResponseDto(articleService.getBestArticleListOfAllSkill().toList(), userDetails))
-                .topReactArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT).toList(), userDetails))
-                .topSpringArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.SPRING).toList(), userDetails))
-                .topNodeJsArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT).toList(), userDetails))
+                .topArticles(articleListToArticleResponseDto(articleService.getBestArticleListOfAllSkill(), userDetails))
+                .topReactArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT), userDetails))
+                .topSpringArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.SPRING), userDetails))
+                .topNodeJsArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT), userDetails))
                 .build();
     }
 
-    private List<ArticleResponseDto> articleListToArticleResponseDto(List<Article> articleList,
+    private List<ArticleResponseDto> articleListToArticleResponseDto(Page<Article> articlePage,
                                                                      UserDetails userDetails) {
         List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
-        articleList.stream()
+        articlePage.stream()
                 .map(article -> article.toArticleResponseDto(userDetails))
                 .forEach(articleResponseDtoList::add);
         return articleResponseDtoList;

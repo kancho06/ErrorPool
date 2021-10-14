@@ -68,7 +68,7 @@ class ArticleControllerTest {
     @WithUserDetails
     public void getArticlesInSkillAndCategory() throws Exception {
         Page<Article> articlePages = new PageImpl<>(articleList);
-        given(articleService.getArticlesInSkillAndCategory(2,3))
+        given(articleService.getArticlesInSkillAndCategory(0,2,3))
                 .willReturn(articlePages);
 
         mvc.perform(get("/articles/skill/2/3"))
