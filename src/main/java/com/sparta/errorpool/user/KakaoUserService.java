@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.dto.KakaoUserInfoDto;
+import com.sparta.errorpool.user.dto.LoginResDto;
+import com.sparta.errorpool.user.dto.UserRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,17 +28,19 @@ import java.util.UUID;
 public class KakaoUserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final UserService userService;
 
 
     @Autowired
-    public KakaoUserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public KakaoUserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserService userService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
 
 
 
-    public boolean kakaoLogin(String code) throws JsonProcessingException {
+    public LoginResDto kakaoLogin(String code) throws JsonProcessingException {
 // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
 
@@ -46,9 +50,17 @@ public class KakaoUserService {
         User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
         // 4. 강제 로그인 처리
         //UserDetails로 감싸주고 토큰으로 감싸준다
-        forceLogin(kakaoUser);
+        UserRequestDto userRequestDto = new UserRequestDto();
+        userRequestDto.setEmail(kakaoUser.getEmail());
+        userRequestDto.setPassword(kakaoUser.getPassword());
+        String token = userService.createToken(userRequestDto);
+        LoginResDto loginResDto = new LoginResDto();
+        loginResDto.setUser(kakaoUser);
+        loginResDto.setJwtToken(token);
 
-        return true;
+
+
+        return loginResDto;
 
     }
 
@@ -62,7 +74,7 @@ public class KakaoUserService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", "0c207c8530bd178646fd2cbbc6a80e80");
-        body.add("redirect_uri", "http://localhost:8080/user/kakao");
+        body.add("redirect_uri", "http://52.79.87.216:8080/user/kakao");
         body.add("code", code);
 
 // HTTP 요청 보내기
@@ -112,11 +124,16 @@ public class KakaoUserService {
         return new KakaoUserInfoDto(socialId, username, email);
     }
     //카카오 회원 가입 후 강제 로그인
-    private void forceLogin(User kakaoUser) {
-        UserDetails userDetails = new UserDetailsImpl(kakaoUser);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
+    //jwt 토큰처리
+//    private void forceLogin(User kakaoUser) {
+//        UserDetails userDetails = new UserDetailsImpl(kakaoUser);
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//    }
+
+
+
     private User registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
         // DB 에 중복된 Kakao Id 가 있는지 확인
         Long socialId = kakaoUserInfo.getSocialId();

@@ -21,7 +21,7 @@ import java.util.StringJoiner;
 @Component
 public class JwtTokenProvider {
 
-    private String secretKey = "c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK";
+    private String secretKey = "17errorPool";
 
 
     private long tokenValidTime = 120 * 60 * 1000L;
