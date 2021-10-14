@@ -32,6 +32,7 @@ dependencies {
     //소셜 로그인 프레임 워크
     implementation('org.springframework.boot:spring-boot-starter-oauth2-client')
 
+    implementation 'commons-io:commons-io:2.5'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'

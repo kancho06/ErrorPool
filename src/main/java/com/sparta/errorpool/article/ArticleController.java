@@ -8,7 +8,6 @@ import com.sparta.errorpool.defaultResponse.SuccessYn;
 import com.sparta.errorpool.exception.UnauthenticatedException;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.User;
-import com.sparta.errorpool.user.UserService;
 import com.sparta.errorpool.util.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +25,6 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final ImageService imageService;
-    private final UserService userService;
 
     @GetMapping("/articles/skill/{skill_id}/{category_id}")
     public ResponseEntity<DefaultResponse<List<ArticleResponseDto>>> getArticlesInSkillAndCategory(@AuthenticationPrincipal UserDetails userDetails,
@@ -74,7 +71,7 @@ public class ArticleController {
     @PostMapping("/articles")
     public ResponseEntity<DefaultResponse<Void>> createArticle(
             @AuthenticationPrincipal UserDetails userDetails,
-            @ModelAttribute ArticleCreateRequestDto requestDto) throws IOException {
+            @ModelAttribute ArticleCreateRequestDto requestDto) {
         Article article = Article.of(requestDto, userFromUserDetails(userDetails));
             if ( requestDto.getImg() != null ) {
                 Path imgUrl = imageService.saveFile(requestDto.getImg());
@@ -100,8 +97,11 @@ public class ArticleController {
     }
 
     private User userFromUserDetails(UserDetails userDetails) {
-        System.out.println(userDetails);
-        return userService.findUserByUserEmail(userDetails.getUsername());
+        if ( userDetails instanceof UserDetailsImpl ) {
+            return ((UserDetailsImpl) userDetails).getUser();
+        } else {
+            throw new UnauthenticatedException("로그인이 필요합니다.");
+        }
     }
 
     @PostMapping("/articles/{article_id}/like")
