@@ -2,6 +2,7 @@ package com.sparta.errorpool.user;
 
 
 import com.sparta.errorpool.article.Skill;
+import com.sparta.errorpool.exception.UnauthenticatedException;
 import com.sparta.errorpool.security.JwtTokenProvider;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.security.UserDetailsServiceImpl;
@@ -58,8 +59,8 @@ public class UserService {
         String email = userRequestDto.getEmail();
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         UsernamePasswordAuthenticationToken authenticationToken =
-//                new UsernamePasswordAuthenticationToken(userRequestDto.getEmail(),userRequestDto.getPassword());
-                new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
+                new UsernamePasswordAuthenticationToken(userRequestDto.getEmail(),userRequestDto.getPassword());
+//                new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         return jwtTokenProvider.createToken(authentication);
 
@@ -69,4 +70,11 @@ public class UserService {
 
 
 //      new UsernamePasswordAuthenticationToken(UserDetails, "",UserDetails.getAuthorities());
+    public User userFromUserDetails(UserDetails userDetails) {
+        if ( userDetails instanceof UserDetailsImpl ) {
+            return ((UserDetailsImpl) userDetails).getUser();
+        } else {
+            throw new UnauthenticatedException("로그인이 필요합니다.");
+        }
+    }
 }
