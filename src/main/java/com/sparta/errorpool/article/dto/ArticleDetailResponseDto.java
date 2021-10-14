@@ -29,7 +29,7 @@ public class ArticleDetailResponseDto {
     private Integer userSkillId;
     private String email;
     private LocalDateTime regDt;
-    private MultipartFile file;
+    private String imgUrl;
     @Builder.Default
     private List<CommentResponseDto> comments = new ArrayList<>();
 }

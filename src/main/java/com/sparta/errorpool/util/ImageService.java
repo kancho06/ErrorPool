@@ -19,6 +19,9 @@ public class ImageService {
     @Value("${image.upload.directory}")
     private String uploadDir;
 
+    @Value("${image.upload.url}")
+    private String uploadUrl;
+
     public Path saveFile(MultipartFile multipartFile) {
         String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
         String fileName =
@@ -28,7 +31,7 @@ public class ImageService {
                         extension;
         try {
             byte[] data = multipartFile.getBytes();
-            FileOutputStream fos = new FileOutputStream(uploadDir + File.separator + StringUtils.cleanPath(fileName));
+            FileOutputStream fos = new FileOutputStream(uploadDir + StringUtils.cleanPath(fileName));
             fos.write(data);
             fos.close();
         } catch (IOException e) {
@@ -36,6 +39,6 @@ public class ImageService {
             throw new FileStorageException("파일을 저장할 수 없습니다. : " + fileName);
         }
 
-        return Paths.get(uploadDir + File.separator + StringUtils.cleanPath(fileName));
+        return Paths.get(uploadUrl + StringUtils.cleanPath(fileName));
     }
 }
