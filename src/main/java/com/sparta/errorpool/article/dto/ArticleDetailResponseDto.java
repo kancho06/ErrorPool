@@ -1,6 +1,7 @@
 package com.sparta.errorpool.article.dto;
 
 import com.sparta.errorpool.comment.Comment;
+import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Builder
+@ApiModel(value = "게시글 상세 정보 응답", description = "게시글 상세 정보 응답 DTO")
 public class ArticleDetailResponseDto {
     private Long articleId;
     private String title;
