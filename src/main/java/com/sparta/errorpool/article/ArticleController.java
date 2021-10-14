@@ -69,8 +69,9 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public ResponseEntity<DefaultResponse<Void>> createArticle(@AuthenticationPrincipal UserDetails userDetails,
-                              @RequestBody ArticleCreateRequestDto requestDto) {
+    public ResponseEntity<DefaultResponse<Void>> createArticle(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @ModelAttribute ArticleCreateRequestDto requestDto) {
         Article article = Article.of(requestDto, userFromUserDetails(userDetails));
             if ( requestDto.getImg() != null ) {
                 Path imgUrl = imageService.saveFile(requestDto.getImg());
