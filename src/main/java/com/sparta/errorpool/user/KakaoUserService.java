@@ -53,12 +53,10 @@ public class KakaoUserService {
         UserRequestDto userRequestDto = new UserRequestDto();
         userRequestDto.setEmail(kakaoUser.getEmail());
         userRequestDto.setPassword(kakaoUser.getPassword());
-        String token = userService.createToken(userRequestDto);
+        String token = userService.createTokenSocial(userRequestDto);
         LoginResDto loginResDto = new LoginResDto();
         loginResDto.setUser(kakaoUser);
         loginResDto.setJwtToken(token);
-
-
 
         return loginResDto;
 

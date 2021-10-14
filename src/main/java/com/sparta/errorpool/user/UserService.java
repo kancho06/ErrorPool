@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,14 +56,23 @@ public class UserService {
         return user;
     }
     public String createToken(UserRequestDto userRequestDto ) {
-        String email = userRequestDto.getEmail();
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+//        String email = userRequestDto.getEmail();
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         UsernamePasswordAuthenticationToken authenticationToken =
-//                new UsernamePasswordAuthenticationToken(userRequestDto.getEmail(),userRequestDto.getPassword());
-                new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
+                new UsernamePasswordAuthenticationToken(userRequestDto.getEmail(),userRequestDto.getPassword());
+//                new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         return jwtTokenProvider.createToken(authentication);
 
+    }
+
+    public String createTokenSocial (UserRequestDto userRequestDto) {
+        String email = userRequestDto.getEmail();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        UsernamePasswordAuthenticationToken authenticationToken =  new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return jwtTokenProvider.createToken(authentication);
     }
 
 

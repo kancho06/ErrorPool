@@ -56,7 +56,7 @@ public class UserController {
         return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);
     }
 
-    @PostMapping("/kakao")
+    @GetMapping("/kakao")
     @ResponseBody
     public LoginResDto kakaoLogin(@RequestParam String code) throws JsonProcessingException {
         LoginResDto loginResDto = kakaoUserService.kakaoLogin(code);
