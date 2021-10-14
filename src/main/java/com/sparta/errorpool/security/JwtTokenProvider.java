@@ -55,6 +55,9 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        System.out.println("============getAuthentication===========");
+        System.out.println(userDetails);
+        System.out.println("============getAuthentication===========");
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

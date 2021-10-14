@@ -51,6 +51,13 @@ public class UserService {
         );
         return user;
     }
+
+    public User findUserByUserEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(
+                ()-> new NullPointerException("아이디가 존재하지 않습니다.")
+        );
+    }
+
     public String createToken(UserRequestDto userRequestDto) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userRequestDto.getEmail(),userRequestDto.getPassword());
