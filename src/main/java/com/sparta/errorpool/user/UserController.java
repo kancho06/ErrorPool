@@ -64,7 +64,7 @@ public class UserController {
         return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);
     }
 
-    @PutMapping("/{userid}")
+    @PutMapping("/changeskill/{userid}")
     public ResponseEntity updateSkill(@PathVariable Long userid, @RequestBody SignupRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(userService.updateSkill(userid, requestDto, userDetails)) {
 
