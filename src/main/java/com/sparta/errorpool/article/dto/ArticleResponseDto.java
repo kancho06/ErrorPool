@@ -1,11 +1,13 @@
 package com.sparta.errorpool.article.dto;
 
+import io.swagger.annotations.ApiModel;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@ApiModel(value = "게시글 정보 응답", description = "게시글 정보 응답 DTO")
 public class ArticleResponseDto {
     private Long articleId;
     private String title;
