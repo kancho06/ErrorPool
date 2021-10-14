@@ -32,6 +32,7 @@ public class ArticleService {
                 () -> new ArticleNotFoundException("게시글을 찾을 수 없습니다.")
         );
         article.setViewCount(article.getViewCount()+1);
+        articleRepository.save(article);
 
         return article;
     }
