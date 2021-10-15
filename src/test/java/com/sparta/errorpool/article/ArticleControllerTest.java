@@ -352,6 +352,7 @@ class ArticleControllerTest {
         @DisplayName("Put 요청 성공")
         class PutSuccess {
             @Test
+            @DisplayName("PUT /articles/{article_id}")
             @WithUserDetails
             void updateArticle() throws Exception {
                 given(userService.userFromUserDetails(any(UserDetails.class)))
