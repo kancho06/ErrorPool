@@ -1,5 +1,6 @@
 package com.sparta.errorpool.user;
 
+import com.sparta.errorpool.article.Skill;
 import com.sparta.errorpool.exception.*;
 import com.sparta.errorpool.user.dto.SignupRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,7 @@ public class SignupValidator {
         password = passwordEncoder.encode(password);
         requestDto.setPassword(password);
 
-        User user = new User(email,password, username, role, null);
+        User user = new User(email,password, username, role, Skill.NONE);
 
         return user;
         }

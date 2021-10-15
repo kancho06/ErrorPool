@@ -1,7 +1,7 @@
 package com.sparta.errorpool.article;
 
 public enum Skill {
-    REACT(1,"react"), SPRING(2,"spring"), NODEJS(3,"node.js");
+    NONE(0,"none"), REACT(1,"react"), SPRING(2,"spring"), NODEJS(3,"node.js");
 
     private final Integer num;
     private final String name;
@@ -27,6 +27,8 @@ public enum Skill {
             return SPRING;
         } else if ( id.equals(3) ) {
             return NODEJS;
+        } else if ( id.equals(0) ) {
+            return NONE;
         }
         else {
             throw new IllegalArgumentException(
