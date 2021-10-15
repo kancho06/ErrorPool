@@ -75,7 +75,7 @@ public class UserController {
 
     @GetMapping("/info")
     @ResponseBody
-    public LoginResDto getUserInfoFromToken(@RequestHeader(value="token") String token) {
+    public LoginResDto getUserInfoFromToken(@RequestHeader(value="X-AUTH-TOKEN") String token) {
         if ( jwtTokenProvider.validateToken(token) ) {
             return getLoginResDtoFromToken(token);
         } else {

@@ -7,12 +7,10 @@ import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.dto.SignupRequestDto;
 import com.sparta.errorpool.user.dto.UserRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -51,6 +49,13 @@ public class UserService {
         );
         return user;
     }
+
+    public User findUserByUserEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(
+                ()-> new NullPointerException("아이디가 존재하지 않습니다.")
+        );
+    }
+
     public String createToken(UserRequestDto userRequestDto) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userRequestDto.getEmail(),userRequestDto.getPassword());

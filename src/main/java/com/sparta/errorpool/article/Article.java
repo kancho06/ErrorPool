@@ -104,6 +104,7 @@ public class Article extends Timestamped {
                 .isLiked(this.likes.stream().anyMatch(likeInfo -> likeInfo.getUser().getEmail().equals(userDetails.getUsername())))
                 .email(user.getEmail())
                 .regDt(this.getCreatedAt())
+                .imgUrl(this.imgUrl)
                 .comments(addCommentsDtoListFrom(this.comments))
                 .build();
     }

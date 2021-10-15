@@ -1,7 +1,6 @@
 package com.sparta.errorpool.article;
 
 import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
-import com.sparta.errorpool.comment.Comment;
 import com.sparta.errorpool.comment.CommentRepository;
 import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.user.User;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,10 +19,9 @@ public class ArticleService {
     private final LikeInfoRepository likeRepository;
     private final CommentRepository commentRepository;
 
-    public Page<Article> getArticlesInSkillAndCategory(Integer skillId, Integer categoryId) {
+    public Page<Article> getArticlesInSkillAndCategory(Integer page, Integer skillId, Integer categoryId) {
         return articleRepository.findAllBySkillAndCategory
-                (PageRequest.of(0, 5), Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
-
+                (PageRequest.of(page, 6), Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
     }
 
     public Article getArticleById(Long articleId) {
@@ -32,6 +29,7 @@ public class ArticleService {
                 () -> new ArticleNotFoundException("게시글을 찾을 수 없습니다.")
         );
         article.setViewCount(article.getViewCount()+1);
+        articleRepository.save(article);
 
         return article;
     }
