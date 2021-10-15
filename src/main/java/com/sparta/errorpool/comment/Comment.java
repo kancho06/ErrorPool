@@ -5,16 +5,16 @@ import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+
 @Entity
 @ApiModel(value = "댓글 정보", description = "댓글 아이디, 유저 정보, 게시글 정보, 댓글 내용을 가진 Domain Class")
 public class Comment extends Timestamped {

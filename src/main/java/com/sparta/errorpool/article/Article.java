@@ -5,7 +5,9 @@ import com.sparta.errorpool.comment.Comment;
 import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.util.Timestamped;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Article extends Timestamped {
 
@@ -161,5 +164,21 @@ public class Article extends Timestamped {
             );
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", viewCount=" + viewCount +
+                ", skill=" + skill +
+                ", category=" + category +
+                ", user=" + user +
+                ", comments=" + comments +
+                ", likes=" + likes +
+                '}';
     }
 }
