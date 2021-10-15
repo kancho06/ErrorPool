@@ -8,12 +8,11 @@ import com.sparta.errorpool.defaultResponse.SuccessYn;
 import com.sparta.errorpool.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class GlobalController {
