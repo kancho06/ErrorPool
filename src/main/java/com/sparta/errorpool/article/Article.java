@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -159,18 +160,22 @@ public class Article extends Timestamped {
 
     public List<CommentResponseDto> addCommentsDtoListFrom(List<Comment> comments) {
         List<CommentResponseDto> result = new ArrayList<>();
-        for (Comment comment : comments) {
-            result.add(CommentResponseDto.builder()
-                    .commentId(comment.getId())
-                    .content(comment.getContent())
-                    .username(comment.getUser().getUsername())
-                    .userSkillId((comment.getUser().getSkill() == null) ? null : comment.getUser().getSkill().getNum())
-                    .email(comment.getUser().getEmail())
-                    .regDt(comment.getCreatedAt())
-                    .build()
-            );
-        }
+        comments.stream()
+                .sorted(Comparator.comparing(Timestamped::getCreatedAt).reversed())
+                .forEach(comment -> commentToResponseDto(result, comment));
         return result;
+    }
+
+    private void commentToResponseDto(List<CommentResponseDto> responseDtoList, Comment comment) {
+        responseDtoList.add(CommentResponseDto.builder()
+                .commentId(comment.getId())
+                .content(comment.getContent())
+                .username(comment.getUser().getUsername())
+                .userSkillId((comment.getUser().getSkill() == null) ? null : comment.getUser().getSkill().getNum())
+                .email(comment.getUser().getEmail())
+                .regDt(comment.getCreatedAt())
+                .build()
+        );
     }
 
     @Override
