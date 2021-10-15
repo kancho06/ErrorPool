@@ -299,7 +299,7 @@ class ArticleControllerTest {
             @DisplayName("게시글 상세 조회")
             void getArticleDetails() throws Exception {
                 Article article = mockArticleList.get(0);
-                given(articleService.getArticleById(1L))
+                given(articleService.getArticleAndUpViewCountById(1L))
                         .willReturn(article);
 
                 mvc.perform(get("/articles/1"))
@@ -318,7 +318,7 @@ class ArticleControllerTest {
                         .andExpect(jsonPath("$.data.categoryId")
                                 .value(article.getCategory().getNum()));
 
-                verify(articleService).getArticleById(1L);
+                verify(articleService).getArticleAndUpViewCountById(1L);
             }
         }
         @Nested
@@ -329,7 +329,7 @@ class ArticleControllerTest {
             @DisplayName("없는 게시글 조회")
             void getArticleDetailsNotExist() throws Exception {
                 Article article = mockArticleList.get(0);
-                given(articleService.getArticleById(1L))
+                given(articleService.getArticleAndUpViewCountById(1L))
                         .willThrow(ArticleNotFoundException.class);
 
                 mvc.perform(get("/articles/1"))
@@ -340,7 +340,7 @@ class ArticleControllerTest {
                         .andExpect(jsonPath("$.statusCode")
                                 .value(404));
 
-                verify(articleService).getArticleById(1L);
+                verify(articleService).getArticleAndUpViewCountById(1L);
             }
         }
     }

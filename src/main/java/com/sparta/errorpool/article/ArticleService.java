@@ -27,13 +27,10 @@ public class ArticleService {
                 (PageRequest.of(page-1, 6), Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
     }
 
-    public Article getArticleById(Long articleId) {
-        Article article = articleRepository.findById(articleId).orElseThrow(
-                () -> new ArticleNotFoundException("게시글을 찾을 수 없습니다.")
-        );
+    public Article getArticleAndUpViewCountById(Long articleId) {
+        Article article = getArticleById(articleId);
         article.setViewCount(article.getViewCount()+1);
         articleRepository.save(article);
-
         return article;
     }
 
@@ -91,5 +88,11 @@ public class ArticleService {
 
     public Page<Article> getArticles(User user) {
         return articleRepository.findAllByUserOrderByCreatedAtDesc(user, PageRequest.of(0,5));
+    }
+
+    private Article getArticleById(Long articleId) {
+        return articleRepository.findById(articleId).orElseThrow(
+                () -> new ArticleNotFoundException("게시글을 찾을 수 없습니다.")
+        );
     }
 }

@@ -76,7 +76,7 @@ public class ArticleController {
     public ResponseEntity<DefaultResponse<ArticleDetailResponseDto>> getArticleDetails(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
             @ApiParam(value = "게시글 ID", required = true) @PathVariable("article_id") Long articleId) {
-        Article article = articleService.getArticleById(articleId);
+        Article article = articleService.getArticleAndUpViewCountById(articleId);
 
         ArticleDetailResponseDto data = getArticleDetailResponseDto(userDetails, article);
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, ResponseMessage.GET_ARTICLE_SUCCESS, data));
