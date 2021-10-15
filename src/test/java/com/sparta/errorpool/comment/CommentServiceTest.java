@@ -52,7 +52,7 @@ class CommentServiceTest {
     @Test
     @DisplayName("댓글 추가 에러-> 게시글NULL")
     void addCommentError_NotFoundArticle() {
-        User user = userRepository.findById(4L).orElse(null);
+        User user = userRepository.findById(13L).orElse(null);
 
         Long articleId = 300L;
 
@@ -87,7 +87,7 @@ class CommentServiceTest {
     @DisplayName("댓글 수정 성공")
     void modifyCommentNormal() {
         Long commentId = 1L;
-        User user = userRepository.findById(4L).orElse(null);
+        User user = userRepository.findById(13L).orElse(null);
         CommentDto commentDto = CommentDto.builder()
                 .articleId(21L)
                 .commentId(commentId)
@@ -98,14 +98,13 @@ class CommentServiceTest {
         commentService.modifyComment(commentId, commentDto, user);
     }
 
-
     @Test
     @DisplayName("댓글 수정 에러-> 게시글 NULL")
     void modifyCommentError_NotFoundArticle() {
 
         Long commentId = 1L;
         Long articleId = 300L;
-        User user = userRepository.findById(4L).orElse(null);
+        User user = userRepository.findById(13L).orElse(null);
         CommentDto commentDto = CommentDto.builder()
                 .articleId(articleId)
                 .commentId(commentId)
@@ -125,7 +124,7 @@ class CommentServiceTest {
     void modifyCommentError_NotFoundComment() {
         Long commentId = 400L;
         Long articleId = 21L;
-        User user = userRepository.findById(4L).orElse(null);
+        User user = userRepository.findById(13L).orElse(null);
 
         CommentDto commentDto = CommentDto.builder()
                 .articleId(articleId)
@@ -147,7 +146,7 @@ class CommentServiceTest {
     void modifyCommentError_NotEqualArticleDBAndCommentDB() {
         Long commentId = 1L;
         Long articleId = 30L;
-        User user = userRepository.findById(4L).orElse(null);
+        User user = userRepository.findById(13L).orElse(null);
 
         CommentDto commentDto = CommentDto.builder()
                 .articleId(articleId)
@@ -169,7 +168,7 @@ class CommentServiceTest {
     void modifyCommentError_() {
         Long commentId = 1L;
         Long articleId = 30L;
-        User user = userRepository.findById(4L).orElse(null);
+        User user = userRepository.findById(13L).orElse(null);
 
         CommentDto commentDto = CommentDto.builder()
                 .articleId(articleId)
@@ -182,7 +181,7 @@ class CommentServiceTest {
             commentService.modifyComment(commentId,commentDto, user);
         });
 
-        assertEquals("회원님의 댓글만 수정할 수 있습니다."
+        assertEquals("회원님의 댓글만 수정 할 수 있습니다."
                 , exception.getMessage());
     }
 
@@ -199,15 +198,99 @@ class CommentServiceTest {
                 .content("[정상 테스트] 댓글 삭제")
                 .build();
 
-        Exception exception = assertThrows(AccessDeniedException.class, () -> {
+        commentService.deleteComment(articleId,commentId, user);
+
+    }
+
+    @Test
+    @DisplayName("댓글 삭제 에러-> 게시글 NULL")
+    void deleteCommentError_NotFoundArticle() {
+        Long commentId = 1L;
+        Long articleId = 400L;
+        User user = userRepository.findById(1L).orElse(null);
+        CommentDto commentDto = CommentDto.builder()
+                .articleId(articleId)
+                .commentId(commentId)
+                .username("namelim@gmail.com")
+                .content("[에러 테스트] 댓글 수정 게시글 NULL")
+                .build();
+
+        Exception exception = assertThrows(ArticleNotFoundException.class, () -> {
             commentService.deleteComment(articleId,commentId, user);
         });
 
-        assertEquals("회원님의 댓글만 수정할 수 있습니다."
+        assertEquals("해당 게시물을 찾을 수 없어 댓글을 삭제 할 수 없습니다."
                 , exception.getMessage());
     }
 
     @Test
+    @DisplayName("댓글 수정 에러-> 댓글 NULL")
+    void deleteCommentError_NotFoundComment() {
+        Long commentId = 400L;
+        Long articleId = 21L;
+        User user = userRepository.findById(4L).orElse(null);
+
+        CommentDto commentDto = CommentDto.builder()
+                .articleId(articleId)
+                .commentId(commentId)
+                .username("namelim@gmail.com")
+                .content("[에러 테스트] 댓글 수정-> 댓글 NULL")
+                .build();
+
+        Exception exception = assertThrows(CommentNotFoundException.class, () -> {
+            commentService.deleteComment(articleId,commentId, user);
+        });
+
+        assertEquals("해당 댓글을 찾을 수 없어 수정할 수 없습니다.", exception.getMessage());
+    }
+
+
+    @Test
+    @DisplayName("댓글 수정 에러-> article DB,comment DB에서 게시글의 번호가 서로 다름")
+    void deleteCommentError_NotEqualArticleDBAndCommentDB() {
+//        Long commentId = 1L;
+//        Long articleId = 30L;
+//        User user = userRepository.findById(4L).orElse(null);
+//
+//        CommentDto commentDto = CommentDto.builder()
+//                .articleId(articleId)
+//                .commentId(commentId)
+//                .username("namelim@gmail.com")
+//                .content("[에러 테스트] 댓글 수정-> article DB,comment DB에서 게시글의 번호가 서로 다름")
+//                .build();
+//
+//        Exception exception = assertThrows(ArticleNotFoundException.class, () -> {
+//            commentService.modifyComment(commentId,commentDto, user);
+//        });
+//
+//        assertEquals("해당 게시글을 또는 댓글의 정보가 잘못되었습니다. 관리자 확인이 필요합니다."
+//                , exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("댓글 삭제 에러-> 나의 댓글이 아닌 경우")
+    void deleteCommentError_() {
+        Long commentId = 2L;
+        Long articleId = 40L;
+        User user = userRepository.findById(2L).orElse(null);
+
+        CommentDto commentDto = CommentDto.builder()
+                .articleId(articleId)
+                .commentId(commentId)
+                .username("123@gmail.com")
+                .content("[에러 테스트] 댓글 삭제-> 내 댓글이 아닌경우")
+                .build();
+
+        Exception exception = assertThrows(AccessDeniedException.class, () -> {
+            commentService.deleteComment(articleId,commentId, user);
+        });
+
+        assertEquals("회원님의 댓글만 삭제할 수 있습니다."
+                , exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("마이페이지 내 댓글 가져오기 성공")
     void getComments() {
     }
 }

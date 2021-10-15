@@ -20,11 +20,10 @@ public class CommentController {
     @ApiOperation(value = "댓글 추가")
     @PostMapping("/comments")
     public void addComment(
-            @RequestParam @ApiParam(value = "게시글 아이디", required = true) Long articleId
-            , @RequestBody @ApiParam(value = "댓글 하나 정보를 갖는 객체", required = true) CommentDto commentDto
+            @RequestBody @ApiParam(value = "댓글 하나 정보를 갖는 객체", required = false) CommentDto commentDto
             , @AuthenticationPrincipal @ApiIgnore UserDetailsImpl userDetails
     ) {
-        commentService.addComment(articleId, commentDto, userDetails.getUser());
+        commentService.addComment(commentDto.getArticleId(), commentDto, userDetails.getUser());
     }
 
     @ApiOperation(value = "댓글 수정")

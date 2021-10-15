@@ -90,6 +90,7 @@ public class CommentService {
         return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "댓글 삭제가 완료되었습니다.", null), HttpStatus.OK);
     }
 
+    // 마이 페이지 댓글 가져오기 
     public Page<Comment> getComments(User user) {
         return commentRepository.findAllByUserOrderByCreatedAtDesc(user, PageRequest.of(0,5));
     }
