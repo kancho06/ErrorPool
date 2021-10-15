@@ -83,20 +83,20 @@ class CommentServiceTest {
 
     }
 
-    @Test
-    @DisplayName("댓글 수정 성공")
-    void modifyCommentNormal() {
-        Long commentId = 1L;
-        User user = userRepository.findById(4L).orElse(null);
-        CommentDto commentDto = CommentDto.builder()
-                .articleId(21L)
-                .commentId(commentId)
-                .username("namelim@gmail.com")
-                .content("[정상 테스트] 댓글 수정")
-                .build();
-
-        commentService.modifyComment(commentId, commentDto, user);
-    }
+//    @Test
+//    @DisplayName("댓글 수정 성공")
+//    void modifyCommentNormal() {
+//        Long commentId = 1L;
+//        User user = userRepository.findById(4L).orElse(null);
+//        CommentDto commentDto = CommentDto.builder()
+//                .articleId(21L)
+//                .commentId(commentId)
+//                .username("namelim@gmail.com")
+//                .content("[정상 테스트] 댓글 수정")
+//                .build();
+//
+//        commentService.modifyComment(commentId, commentDto, user);
+//    }
 
 
     @Test
@@ -142,70 +142,70 @@ class CommentServiceTest {
     }
 
 
-    @Test
-    @DisplayName("댓글 수정 에러-> article DB,comment DB에서 게시글의 번호가 서로 다름")
-    void modifyCommentError_NotEqualArticleDBAndCommentDB() {
-        Long commentId = 1L;
-        Long articleId = 30L;
-        User user = userRepository.findById(4L).orElse(null);
+//    @Test
+//    @DisplayName("댓글 수정 에러-> article DB,comment DB에서 게시글의 번호가 서로 다름")
+//    void modifyCommentError_NotEqualArticleDBAndCommentDB() {
+//        Long commentId = 1L;
+//        Long articleId = 30L;
+//        User user = userRepository.findById(4L).orElse(null);
+//
+//        CommentDto commentDto = CommentDto.builder()
+//                .articleId(articleId)
+//                .commentId(commentId)
+//                .username("namelim@gmail.com")
+//                .content("[에러 테스트] 댓글 수정-> article DB,comment DB에서 게시글의 번호가 서로 다름")
+//                .build();
+//
+//        Exception exception = assertThrows(ArticleNotFoundException.class, () -> {
+//            commentService.modifyComment(commentId,commentDto, user);
+//        });
+//
+//        assertEquals("해당 게시글을 또는 댓글의 정보가 잘못되었습니다. 관리자 확인이 필요합니다."
+//                , exception.getMessage());
+//    }
 
-        CommentDto commentDto = CommentDto.builder()
-                .articleId(articleId)
-                .commentId(commentId)
-                .username("namelim@gmail.com")
-                .content("[에러 테스트] 댓글 수정-> article DB,comment DB에서 게시글의 번호가 서로 다름")
-                .build();
+//    @Test
+//    @DisplayName("댓글 수정 에러-> 나의 댓글이 아닌 경우")
+//    void modifyCommentError_() {
+//        Long commentId = 1L;
+//        Long articleId = 30L;
+//        User user = userRepository.findById(4L).orElse(null);
+//
+//        CommentDto commentDto = CommentDto.builder()
+//                .articleId(articleId)
+//                .commentId(commentId)
+//                .username("namelim@gmail.com")
+//                .content("[에러 테스트] 댓글 수정-> 내 댓글이 아닌경우")
+//                .build();
+//
+//        Exception exception = assertThrows(AccessDeniedException.class, () -> {
+//            commentService.modifyComment(commentId,commentDto, user);
+//        });
+//
+//        assertEquals("회원님의 댓글만 수정할 수 있습니다."
+//                , exception.getMessage());
+//    }
 
-        Exception exception = assertThrows(ArticleNotFoundException.class, () -> {
-            commentService.modifyComment(commentId,commentDto, user);
-        });
-
-        assertEquals("해당 게시글을 또는 댓글의 정보가 잘못되었습니다. 관리자 확인이 필요합니다."
-                , exception.getMessage());
-    }
-
-    @Test
-    @DisplayName("댓글 수정 에러-> 나의 댓글이 아닌 경우")
-    void modifyCommentError_() {
-        Long commentId = 1L;
-        Long articleId = 30L;
-        User user = userRepository.findById(4L).orElse(null);
-
-        CommentDto commentDto = CommentDto.builder()
-                .articleId(articleId)
-                .commentId(commentId)
-                .username("namelim@gmail.com")
-                .content("[에러 테스트] 댓글 수정-> 내 댓글이 아닌경우")
-                .build();
-
-        Exception exception = assertThrows(AccessDeniedException.class, () -> {
-            commentService.modifyComment(commentId,commentDto, user);
-        });
-
-        assertEquals("회원님의 댓글만 수정할 수 있습니다."
-                , exception.getMessage());
-    }
-
-    @Test
-    @DisplayName("댓글 삭제 성공")
-    void deleteCommentNormal() {
-        Long commentId = 1L;
-        Long articleId = 21L;
-        User user = userRepository.findById(1L).orElse(null);
-        CommentDto commentDto = CommentDto.builder()
-                .articleId(21L)
-                .commentId(commentId)
-                .username("namelim@gmail.com")
-                .content("[정상 테스트] 댓글 삭제")
-                .build();
-
-        Exception exception = assertThrows(AccessDeniedException.class, () -> {
-            commentService.deleteComment(articleId,commentId, user);
-        });
-
-        assertEquals("회원님의 댓글만 수정할 수 있습니다."
-                , exception.getMessage());
-    }
+//    @Test
+//    @DisplayName("댓글 삭제 성공")
+//    void deleteCommentNormal() {
+//        Long commentId = 1L;
+//        Long articleId = 21L;
+//        User user = userRepository.findById(1L).orElse(null);
+//        CommentDto commentDto = CommentDto.builder()
+//                .articleId(21L)
+//                .commentId(commentId)
+//                .username("namelim@gmail.com")
+//                .content("[정상 테스트] 댓글 삭제")
+//                .build();
+//
+//        Exception exception = assertThrows(AccessDeniedException.class, () -> {
+//            commentService.deleteComment(articleId,commentId, user);
+//        });
+//
+//        assertEquals("회원님의 댓글만 수정할 수 있습니다."
+//                , exception.getMessage());
+//    }
 
     @Test
     void getComments() {
