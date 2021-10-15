@@ -1,5 +1,6 @@
 package com.sparta.errorpool.article;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.errorpool.article.dto.*;
 import com.sparta.errorpool.comment.Comment;
 import com.sparta.errorpool.user.User;
@@ -45,14 +46,17 @@ public class Article extends Timestamped {
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @BatchSize(size = 20)
+    @JsonIgnore
     @OneToMany(mappedBy = "article")
     private List<Comment> comments = new ArrayList<>();
 
     @BatchSize(size = 20)
+    @JsonIgnore
     @OneToMany(mappedBy = "article")
     private List<LikeInfo> likes = new ArrayList<>();
 
