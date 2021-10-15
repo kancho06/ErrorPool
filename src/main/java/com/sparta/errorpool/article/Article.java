@@ -30,14 +30,18 @@ public class Article extends Timestamped {
     @Column(nullable = false)
     private String content;
 
+    @Column
     private String imgUrl;
 
+    @Column
     private Integer viewCount = 0;
 
     @Enumerated(EnumType.STRING)
+    @Column
     private Skill skill;
 
     @Enumerated(EnumType.STRING)
+    @Column
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)

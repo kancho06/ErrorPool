@@ -29,13 +29,11 @@ public class Comment extends Timestamped {
     private Long id;
 
     @ManyToOne
-    @Column
     @JoinColumn(name = "USER_ID", nullable = false)
     @ApiModelProperty(value = "유저 정보")
     private User user;
 
     @ManyToOne
-    @Column
     @JoinColumn(name = "ARTICLE_ID", nullable = false)
     @ApiModelProperty(value = "게시글 정보")
     private Article article;
