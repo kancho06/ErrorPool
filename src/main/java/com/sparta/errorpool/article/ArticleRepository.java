@@ -20,7 +20,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("select distinct a from Article a " +
             "where a.skill = ?1 " +
             "and a.category = ?2 " +
-            "and ( a.title like %?3% or a.content like %?3% ) " +
+            "and ( upper(a.title) like %?3% or upper(a.content) like %?3% ) " +
             "order by a.createdAt desc")
     Page<Article> findAllBySkillAndCategoryByQuery(Pageable pageable, Skill skillById, Category categoryById, String query);
 

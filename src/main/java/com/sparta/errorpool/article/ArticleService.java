@@ -24,7 +24,7 @@ public class ArticleService {
     public Page<Article> getArticlesInSkillAndCategory(Integer page, Integer skillId, Integer categoryId, String query) {
         if ( query != null ) {
             return articleRepository.findAllBySkillAndCategoryByQuery
-                    (PageRequest.of(page-1, 6), Skill.getSkillById(skillId), Category.getCategoryById(categoryId), query);
+                    (PageRequest.of(page-1, 6), Skill.getSkillById(skillId), Category.getCategoryById(categoryId), query.toUpperCase());
         } else {
             return articleRepository.findAllBySkillAndCategory
                     (PageRequest.of(page-1, 6), Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
