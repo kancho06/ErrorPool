@@ -8,7 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@EnableJpaAuditing
 @SpringBootApplication
 public class ErrorPoolApplication {
 

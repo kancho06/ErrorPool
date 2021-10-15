@@ -60,4 +60,7 @@ public class GlobalController {
     public ResponseEntity<String> tokenExpiredExceptionHandler(JwtTokenExpiredException exception) {
         return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.UNAUTHORIZED, exception.getMessage(), null), HttpStatus.OK);
     }
+    public ResponseEntity<String> fileStorageExceptionHandler(FileStorageException exception) {
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.INTERNAL_SERVER_ERROR, exception.getMessage(), null), HttpStatus.OK);
+    }
 }
