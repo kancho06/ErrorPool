@@ -5,8 +5,6 @@ import com.sparta.errorpool.defaultResponse.DefaultResponse;
 import com.sparta.errorpool.defaultResponse.ResponseMessage;
 import com.sparta.errorpool.defaultResponse.StatusCode;
 import com.sparta.errorpool.defaultResponse.SuccessYn;
-import com.sparta.errorpool.exception.UnauthenticatedException;
-import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.user.UserService;
 import com.sparta.errorpool.util.ImageService;
@@ -59,7 +57,7 @@ public class ArticleController {
                 .top5Articles(articleListToArticleResponseDto(articleService.getBestArticleListOfAllSkill(), userDetails))
                 .top5ReactArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT), userDetails))
                 .top5SpringArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.SPRING), userDetails))
-                .top5NodeJsArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT), userDetails))
+                .top5NodeJsArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.NODEJS), userDetails))
                 .build();
     }
 
