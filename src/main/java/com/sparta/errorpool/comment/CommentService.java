@@ -26,7 +26,7 @@ public class CommentService {
     public final ArticleRepository articleRepository;
 
     //댓글 추가
-    public ResponseEntity addComment(Long articleId, CommentDto commentDto, User user) {
+    public Comment addComment(Long articleId, CommentDto commentDto, User user) {
 
         // 게시글 존재여부 확인
         Article article = articleRepository.findById(articleId).orElseThrow(
@@ -35,8 +35,7 @@ public class CommentService {
         Comment comment = new Comment(user, article, commentDto.getContent());
 
         //댓글 추가
-        commentRepository.save(comment).getId();
-        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "댓글 추가가 완료되었습니다.", comment));
+        return commentRepository.save(comment);
     }
 
     //댓글 수정
