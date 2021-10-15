@@ -7,7 +7,7 @@ import com.sparta.errorpool.defaultResponse.StatusCode;
 import com.sparta.errorpool.defaultResponse.SuccessYn;
 import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.user.UserService;
-import com.sparta.errorpool.util.ImageService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
@@ -18,16 +18,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.nio.file.Path;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Api(tags = "Article Controller Api V1")
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final ImageService imageService;
     private final UserService userService;
 
     @ApiOperation(value = "항목 별 게시글 조회")
@@ -52,13 +52,14 @@ public class ArticleController {
 
     @ApiOperation(value = "추천 게시글 조회")
     @GetMapping("/articles/recommended")
-    public Top5ArticlesResponseDto getBestArticles(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails) {
-        return Top5ArticlesResponseDto.builder()
+    public ResponseEntity<DefaultResponse<Top5ArticlesResponseDto>> getBestArticles(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails) {
+        Top5ArticlesResponseDto data = Top5ArticlesResponseDto.builder()
                 .top5Articles(articleListToArticleResponseDto(articleService.getBestArticleListOfAllSkill(), userDetails))
                 .top5ReactArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.REACT), userDetails))
                 .top5SpringArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.SPRING), userDetails))
                 .top5NodeJsArticleList(articleListToArticleResponseDto(articleService.getBestArticleListIn(Skill.NODEJS), userDetails))
                 .build();
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, ResponseMessage.GET_ARTICLE_SUCCESS, data));
     }
 
     private List<ArticleResponseDto> articleListToArticleResponseDto(Page<Article> articlePage,
@@ -85,13 +86,9 @@ public class ArticleController {
     @PostMapping("/articles")
     public ResponseEntity<DefaultResponse<Void>> createArticle(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
-            @ApiParam(value = "게시글 생성 정보", required = true) @ModelAttribute ArticleCreateRequestDto requestDto) {
-        Article article = Article.of(requestDto, userService.userFromUserDetails(userDetails));
-            if ( requestDto.getImg() != null ) {
-                Path imgUrl = imageService.saveFile(requestDto.getImg());
-                article.setImgUrl(imgUrl.toString());
-            }
-            articleService.createArticle(article);
+            @ApiParam(value = "게시글 생성 정보", required = true) @Valid @ModelAttribute ArticleCreateRequestDto requestDto) {
+        User user = userService.userFromUserDetails(userDetails);
+        articleService.createArticle(requestDto, user);
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 추가 성공", null));
     }
 
