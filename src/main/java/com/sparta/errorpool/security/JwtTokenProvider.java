@@ -1,5 +1,7 @@
 package com.sparta.errorpool.security;
 
+import com.sparta.errorpool.exception.InvalidTokenException;
+import com.sparta.errorpool.exception.TokenNullException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -82,13 +84,16 @@ public class JwtTokenProvider {
 
 
     public boolean validateToken(String jwtToken) {
+        if ( jwtToken == null ) {
+            throw new TokenNullException("토큰이 존재하지 않습니다.");
+        }
         try {
             JwtParser parser = Jwts.parserBuilder().setSigningKey(getSigninKey()).build();
             Jws<Claims> claims = parser.parseClaimsJws(jwtToken);
 
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
-            return false;
+            throw new InvalidTokenException("정상적인 토큰이 아닙니다.");
         }
     }
 }

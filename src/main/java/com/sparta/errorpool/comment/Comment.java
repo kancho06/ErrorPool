@@ -5,7 +5,10 @@ import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.util.Timestamped;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -21,6 +24,7 @@ public class Comment extends Timestamped {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     @ApiModelProperty(value = "댓글 아이디")
     private Long id;
 
@@ -34,6 +38,7 @@ public class Comment extends Timestamped {
     @ApiModelProperty(value = "게시글 정보")
     private Article article;
 
+    @Column
     @ApiModelProperty(value = "댓글 내용")
     private String content;
 

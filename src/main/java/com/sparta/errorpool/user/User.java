@@ -44,7 +44,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.username = username;
-        this.skill = null;
+        this.skill = skill;
         this.socialId = null;
         this.role = role;
     }

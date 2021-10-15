@@ -1,16 +1,17 @@
 package com.sparta.errorpool.article;
 
+import com.sparta.errorpool.article.dto.ArticleCreateRequestDto;
 import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
-import com.sparta.errorpool.comment.Comment;
-import com.sparta.errorpool.comment.CommentRepository;
 import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.user.User;
+import com.sparta.errorpool.util.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,29 +20,38 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final LikeInfoRepository likeRepository;
+    private final ImageService imageService;
 
     public Page<Article> getArticlesInSkillAndCategory(Integer page, Integer skillId, Integer categoryId) {
         return articleRepository.findAllBySkillAndCategory
                 (PageRequest.of(page-1, 6), Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
     }
 
-    public Article getArticleById(Long articleId) {
-        Article article = articleRepository.findById(articleId).orElseThrow(
-                () -> new ArticleNotFoundException("게시글을 찾을 수 없습니다.")
-        );
+    public Article getArticleAndUpViewCountById(Long articleId) {
+        Article article = getArticleById(articleId);
         article.setViewCount(article.getViewCount()+1);
         articleRepository.save(article);
-
         return article;
     }
 
-    public void createArticle(Article article) {
+    public void createArticle(ArticleCreateRequestDto requestDto, User user) {
+        Article article = Article.of(requestDto,user);
+        if ( requestDto.getImg() != null ) {
+            Path imgUrl = imageService.saveFile(requestDto.getImg());
+            article.setImgUrl(imgUrl.toString());
+        }
         articleRepository.save(article);
     }
 
     public void updateArticle(Long articleId, ArticleUpdateRequestDto requestDto, User user) {
         Article article = getArticleById(articleId);
         if ( article.isWritedBy(user) ) {
+            if ( requestDto.getImg() != null ) {
+                Path imgUrl = imageService.saveFile(requestDto.getImg());
+                article.setImgUrl(imgUrl.toString());
+            } else {
+                article.setImgUrl(null);
+            }
             article.update(requestDto);
             articleRepository.save(article);
         } else {
@@ -78,5 +88,11 @@ public class ArticleService {
 
     public Page<Article> getArticles(User user) {
         return articleRepository.findAllByUserOrderByCreatedAtDesc(user, PageRequest.of(0,5));
+    }
+
+    private Article getArticleById(Long articleId) {
+        return articleRepository.findById(articleId).orElseThrow(
+                () -> new ArticleNotFoundException("게시글을 찾을 수 없습니다.")
+        );
     }
 }

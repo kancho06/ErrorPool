@@ -7,11 +7,11 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RequiredArgsConstructor
 @RestController
 @Api(tags = "Comment Controller Api V1")
-//@RequestMapping("/comments")
 public class CommentController {
 
     private final CommentService commentService;
@@ -19,10 +19,10 @@ public class CommentController {
     @ApiOperation(value = "댓글 추가")
     @PostMapping("/comments")
     public void addComment(
-            @RequestParam @ApiParam(value = "게시글 아이디", required = true) Long articleId
-            , @RequestBody @ApiParam(value = "댓글 하나 정보를 갖는 객체", required = true) CommentDto commentDto
-            , @AuthenticationPrincipal UserDetailsImpl userDetails
+            @RequestBody @ApiParam(value = "댓글 하나 정보를 갖는 객체", required = true) CommentDto commentDto
+            ,@AuthenticationPrincipal @ApiIgnore UserDetailsImpl userDetails
     ) {
+        Long articleId = commentDto.getArticleId();
         commentService.addComment(articleId, commentDto, userDetails.getUser());
     }
 
@@ -31,7 +31,7 @@ public class CommentController {
     public void modifyComment(
             @PathVariable @ApiParam(value = "댓글 아이디", required = true) Long commentId
             , @RequestBody @ApiParam(value = "댓글 한개의 정보를 가진 객체", required = true) CommentDto commentDto
-            , @AuthenticationPrincipal UserDetailsImpl userDetails
+            , @AuthenticationPrincipal @ApiIgnore UserDetailsImpl userDetails
     ) {
         commentService.modifyComment(commentId, commentDto, userDetails.getUser());
     }
@@ -41,7 +41,7 @@ public class CommentController {
     public void deleteComment(
             @PathVariable @ApiParam(value = "댓글 아이디", required = true) Long commentId
             , @RequestParam @ApiParam(value = "댓글 한개의 정보를 가진 객체", required = true) Long articleId
-            , @AuthenticationPrincipal UserDetailsImpl userDetails
+            , @AuthenticationPrincipal @ApiIgnore UserDetailsImpl userDetails
     ) {
         commentService.deleteComment(articleId, commentId, userDetails.getUser());
     }
