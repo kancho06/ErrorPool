@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +37,7 @@ public class ArticleController {
             @ApiParam(value = "페이지 번호", required = true) @RequestParam("page") Integer page,
             @ApiParam(value = "주특기 번호", required = true) @PathVariable("skill_id") Integer skillId,
             @ApiParam(value = "카테고리 번호", required = true) @PathVariable("category_id") Integer categoryId,
-            @ApiParam(value = "검색키", required = false) @RequestParam("query") @Nullable String query) {
+            @ApiParam(value = "검색키", required = false) @RequestParam(value = "query", required = false) String query) {
         Page<Article> articlePage = articleService.getArticlesInSkillAndCategory(page,skillId,categoryId, query);
         ArticlePageResponseDto data = ArticlePageResponseDto.builder()
                 .totalPage(articlePage.getTotalPages())
