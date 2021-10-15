@@ -100,7 +100,7 @@ public class ArticleController {
     public ResponseEntity<DefaultResponse<Void>> updateArticle(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
             @ApiParam(value = "게시글 ID", required = true) @PathVariable("article_id") Long articleId,
-            @ApiParam(value = "게시글 수정 정보", required = true) @RequestBody ArticleUpdateRequestDto requestDto) {
+            @ApiParam(value = "게시글 수정 정보", required = true) @ModelAttribute ArticleUpdateRequestDto requestDto) {
         articleService.updateArticle(articleId, requestDto, userService.userFromUserDetails(userDetails));
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 수정 성공", null));
     }

@@ -5,12 +5,14 @@ import com.sparta.errorpool.comment.Comment;
 import com.sparta.errorpool.comment.CommentRepository;
 import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.user.User;
+import com.sparta.errorpool.util.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final LikeInfoRepository likeRepository;
+    private final ImageService imageService;
 
     public Page<Article> getArticlesInSkillAndCategory(Integer page, Integer skillId, Integer categoryId) {
         return articleRepository.findAllBySkillAndCategory
@@ -42,6 +45,12 @@ public class ArticleService {
     public void updateArticle(Long articleId, ArticleUpdateRequestDto requestDto, User user) {
         Article article = getArticleById(articleId);
         if ( article.isWritedBy(user) ) {
+            if ( requestDto.getImg() != null ) {
+                Path imgUrl = imageService.saveFile(requestDto.getImg());
+                article.setImgUrl(imgUrl.toString());
+            } else {
+                article.setImgUrl(null);
+            }
             article.update(requestDto);
             articleRepository.save(article);
         } else {
