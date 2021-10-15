@@ -67,4 +67,10 @@ public class GlobalController {
     public ResponseEntity<String> usernameNotFoundExceptionHandler(UsernameNotFoundException exception) {
         return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.NOT_FOUND, exception.getMessage(), null), HttpStatus.OK);
     }
+    public ResponseEntity<String> tokenNullExceptionHandler(TokenNullException exception) {
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, exception.getMessage(), null), HttpStatus.OK);
+    }
+    public ResponseEntity<String> invalidTokenExceptionHandler(InvalidTokenException exception) {
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, exception.getMessage(), null), HttpStatus.OK);
+    }
 }
