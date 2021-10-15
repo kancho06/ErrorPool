@@ -36,7 +36,7 @@ public class CommentService {
 
         //댓글 추가
         commentRepository.save(comment).getId();
-        return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "댓글 추가가 완료되었습니다.", null), HttpStatus.OK);
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "댓글 추가가 완료되었습니다.", comment));
     }
 
     //댓글 수정
