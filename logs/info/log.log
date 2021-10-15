@@ -1,0 +1,150 @@
+INFO  21-10-16 00:03:29[SpringApplicationShutdownHook] [LocalContainerEntityManagerFactoryBean:651] - Closing JPA EntityManagerFactory for persistence unit 'default'
+INFO  21-10-16 00:03:29[SpringApplicationShutdownHook] [HikariDataSource:350] - HikariPool-1 - Shutdown initiated...
+INFO  21-10-16 00:03:29[SpringApplicationShutdownHook] [HikariDataSource:352] - HikariPool-1 - Shutdown completed.
+INFO  21-10-16 00:03:34[main] [ErrorPoolApplication:55] - Starting ErrorPoolApplication using Java 1.8.0_302 on DESKTOP-LL5MSO4 with PID 8204 (C:\Users\user\Desktop\gits\ErrorPool\ErrorPool\build\classes\java\main started by user in C:\Users\user\Desktop\gits\ErrorPool\ErrorPool)
+INFO  21-10-16 00:03:34[background-preinit] [Version:21] - HV000001: Hibernate Validator 6.2.0.Final
+INFO  21-10-16 00:03:34[main] [ErrorPoolApplication:659] - No active profile set, falling back to default profiles: default
+INFO  21-10-16 00:03:35[main] [RepositoryConfigurationDelegate:132] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+INFO  21-10-16 00:03:35[main] [RepositoryConfigurationDelegate:201] - Finished Spring Data repository scanning in 91 ms. Found 4 JPA repository interfaces.
+INFO  21-10-16 00:03:35[main] [PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376] - Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@2b22a1cc' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO  21-10-16 00:03:35[main] [PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376] - Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO  21-10-16 00:03:35[main] [TomcatWebServer:108] - Tomcat initialized with port(s): 8080 (http)
+INFO  21-10-16 00:03:35[main] [Http11NioProtocol:173] - Initializing ProtocolHandler ["http-nio-8080"]
+INFO  21-10-16 00:03:35[main] [StandardService:173] - Starting service [Tomcat]
+INFO  21-10-16 00:03:35[main] [StandardEngine:173] - Starting Servlet engine: [Apache Tomcat/9.0.53]
+INFO  21-10-16 00:03:36[main] [[/]:173] - Initializing Spring embedded WebApplicationContext
+INFO  21-10-16 00:03:36[main] [ServletWebServerApplicationContext:290] - Root WebApplicationContext: initialization completed in 2051 ms
+INFO  21-10-16 00:03:36[main] [LogHelper:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+INFO  21-10-16 00:03:36[main] [Version:44] - HHH000412: Hibernate ORM core version 5.4.32.Final
+INFO  21-10-16 00:03:36[main] [Version:56] - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+INFO  21-10-16 00:03:36[main] [HikariDataSource:110] - HikariPool-1 - Starting...
+INFO  21-10-16 00:03:37[main] [HikariDataSource:123] - HikariPool-1 - Start completed.
+INFO  21-10-16 00:03:37[main] [Dialect:175] - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+INFO  21-10-16 00:03:39[main] [JtaPlatformInitiator:52] - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+INFO  21-10-16 00:03:39[main] [LocalContainerEntityManagerFactoryBean:437] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+WARN  21-10-16 00:03:40[main] [JpaBaseConfiguration$JpaWebConfiguration:219] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+INFO  21-10-16 00:03:40[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/h2-console/**'] with []
+INFO  21-10-16 00:03:40[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/v2/api-docs'] with []
+INFO  21-10-16 00:03:40[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/configuration/ui/'] with []
+INFO  21-10-16 00:03:40[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/swagger-resources'] with []
+INFO  21-10-16 00:03:40[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/configuration/security'] with []
+INFO  21-10-16 00:03:40[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='swagger-ui.html'] with []
+INFO  21-10-16 00:03:40[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/webjars/**'] with []
+INFO  21-10-16 00:03:40[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/swagger/**'] with []
+INFO  21-10-16 00:03:40[main] [DefaultSecurityFilterChain:51] - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@51468039, org.springframework.security.web.context.SecurityContextPersistenceFilter@2d2a8819, org.springframework.security.web.header.HeaderWriterFilter@5649f55, org.springframework.security.web.authentication.logout.LogoutFilter@6de5ad56, com.sparta.errorpool.security.JwtAuthenticationFilter@1d654b5f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6b64bf61, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4b7e4d14, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@575d48db, org.springframework.security.web.session.SessionManagementFilter@fb2c2f3, org.springframework.security.web.access.ExceptionTranslationFilter@5a8b42a3, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@51f4439e]
+INFO  21-10-16 00:03:40[main] [Http11NioProtocol:173] - Starting ProtocolHandler ["http-nio-8080"]
+INFO  21-10-16 00:03:40[main] [TomcatWebServer:220] - Tomcat started on port(s): 8080 (http) with context path ''
+INFO  21-10-16 00:03:41[main] [ErrorPoolApplication:61] - Started ErrorPoolApplication in 8.016 seconds (JVM running for 9.183)
+INFO  21-10-16 00:05:53[http-nio-8080-exec-1] [Cookie:173] - A cookie header was received [JSESSIONID=5D49C0FE3E2F0E8F89C57735C51E1429] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+INFO  21-10-16 00:05:53[http-nio-8080-exec-1] [[/]:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+INFO  21-10-16 00:05:53[http-nio-8080-exec-1] [DispatcherServlet:525] - Initializing Servlet 'dispatcherServlet'
+INFO  21-10-16 00:05:53[http-nio-8080-exec-1] [DispatcherServlet:547] - Completed initialization in 2 ms
+DEBUG 21-10-16 00:05:54[http-nio-8080-exec-1] [sqltiming:368] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select user0_.id as id1_3_, user0_.email as email2_3_, user0_.password as password3_3_, user0_.role as role4_3_, user0_.skill as skill5_3_, user0_.social_id as social_i6_3_, user0_.username as username7_3_ from user user0_ where user0_.email='wotjd1134@naver.com'
+ {executed in 39 msec}
+DEBUG 21-10-16 00:05:54[http-nio-8080-exec-1] [sqltiming:368] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select user0_.id as id1_3_, user0_.email as email2_3_, user0_.password as password3_3_, user0_.role as role4_3_, user0_.skill as skill5_3_, user0_.social_id as social_i6_3_, user0_.username as username7_3_ from user user0_ where user0_.email='wotjd1134@naver.com'
+ {executed in 37 msec}
+INFO  21-10-16 00:05:54[http-nio-8080-exec-1] [UserController:48] - info
+INFO  21-10-16 00:09:19[SpringApplicationShutdownHook] [LocalContainerEntityManagerFactoryBean:651] - Closing JPA EntityManagerFactory for persistence unit 'default'
+INFO  21-10-16 00:09:19[SpringApplicationShutdownHook] [HikariDataSource:350] - HikariPool-1 - Shutdown initiated...
+INFO  21-10-16 00:09:19[SpringApplicationShutdownHook] [HikariDataSource:352] - HikariPool-1 - Shutdown completed.
+INFO  21-10-16 00:22:11[main] [ErrorPoolApplication:55] - Starting ErrorPoolApplication using Java 1.8.0_302 on DESKTOP-LL5MSO4 with PID 18456 (C:\Users\user\Desktop\gits\ErrorPool\ErrorPool\build\classes\java\main started by user in C:\Users\user\Desktop\gits\ErrorPool\ErrorPool)
+INFO  21-10-16 00:22:11[background-preinit] [Version:21] - HV000001: Hibernate Validator 6.2.0.Final
+INFO  21-10-16 00:22:11[main] [ErrorPoolApplication:659] - No active profile set, falling back to default profiles: default
+INFO  21-10-16 00:22:12[main] [RepositoryConfigurationDelegate:132] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+INFO  21-10-16 00:22:12[main] [RepositoryConfigurationDelegate:201] - Finished Spring Data repository scanning in 90 ms. Found 4 JPA repository interfaces.
+INFO  21-10-16 00:22:13[main] [PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376] - Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@2b22a1cc' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO  21-10-16 00:22:13[main] [PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376] - Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO  21-10-16 00:22:13[main] [TomcatWebServer:108] - Tomcat initialized with port(s): 8080 (http)
+INFO  21-10-16 00:22:13[main] [Http11NioProtocol:173] - Initializing ProtocolHandler ["http-nio-8080"]
+INFO  21-10-16 00:22:13[main] [StandardService:173] - Starting service [Tomcat]
+INFO  21-10-16 00:22:13[main] [StandardEngine:173] - Starting Servlet engine: [Apache Tomcat/9.0.53]
+INFO  21-10-16 00:22:13[main] [[/]:173] - Initializing Spring embedded WebApplicationContext
+INFO  21-10-16 00:22:13[main] [ServletWebServerApplicationContext:290] - Root WebApplicationContext: initialization completed in 2034 ms
+INFO  21-10-16 00:22:13[main] [LogHelper:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+INFO  21-10-16 00:22:13[main] [Version:44] - HHH000412: Hibernate ORM core version 5.4.32.Final
+INFO  21-10-16 00:22:14[main] [Version:56] - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+INFO  21-10-16 00:22:14[main] [HikariDataSource:110] - HikariPool-1 - Starting...
+INFO  21-10-16 00:22:15[main] [HikariDataSource:123] - HikariPool-1 - Start completed.
+INFO  21-10-16 00:22:15[main] [Dialect:175] - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+INFO  21-10-16 00:22:17[main] [JtaPlatformInitiator:52] - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+INFO  21-10-16 00:22:17[main] [LocalContainerEntityManagerFactoryBean:437] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+WARN  21-10-16 00:22:17[main] [JpaBaseConfiguration$JpaWebConfiguration:219] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+INFO  21-10-16 00:22:18[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/h2-console/**'] with []
+INFO  21-10-16 00:22:18[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/v2/api-docs'] with []
+INFO  21-10-16 00:22:18[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/configuration/ui/'] with []
+INFO  21-10-16 00:22:18[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/swagger-resources'] with []
+INFO  21-10-16 00:22:18[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/configuration/security'] with []
+INFO  21-10-16 00:22:18[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='swagger-ui.html'] with []
+INFO  21-10-16 00:22:18[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/webjars/**'] with []
+INFO  21-10-16 00:22:18[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/swagger/**'] with []
+INFO  21-10-16 00:22:18[main] [DefaultSecurityFilterChain:51] - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@602a3237, org.springframework.security.web.context.SecurityContextPersistenceFilter@55397d15, org.springframework.security.web.header.HeaderWriterFilter@66abb2fa, org.springframework.security.web.authentication.logout.LogoutFilter@2270f58d, com.sparta.errorpool.security.JwtAuthenticationFilter@4b511e61, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@24ac6fef, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4ebd8d2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@74a74070, org.springframework.security.web.session.SessionManagementFilter@5ca4c88a, org.springframework.security.web.access.ExceptionTranslationFilter@7846913f, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@66dd04e2]
+INFO  21-10-16 00:22:18[main] [Http11NioProtocol:173] - Starting ProtocolHandler ["http-nio-8080"]
+INFO  21-10-16 00:22:18[main] [TomcatWebServer:220] - Tomcat started on port(s): 8080 (http) with context path ''
+INFO  21-10-16 00:22:18[main] [ErrorPoolApplication:61] - Started ErrorPoolApplication in 7.809 seconds (JVM running for 9.206)
+INFO  21-10-16 00:22:22[http-nio-8080-exec-1] [Cookie:173] - A cookie header was received [JSESSIONID=5D49C0FE3E2F0E8F89C57735C51E1429] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+INFO  21-10-16 00:22:22[http-nio-8080-exec-1] [[/]:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+INFO  21-10-16 00:22:22[http-nio-8080-exec-1] [DispatcherServlet:525] - Initializing Servlet 'dispatcherServlet'
+INFO  21-10-16 00:22:22[http-nio-8080-exec-1] [DispatcherServlet:547] - Completed initialization in 2 ms
+DEBUG 21-10-16 00:22:22[http-nio-8080-exec-1] [sqltiming:368] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select user0_.id as id1_3_, user0_.email as email2_3_, user0_.password as password3_3_, user0_.role as role4_3_, user0_.skill as skill5_3_, user0_.social_id as social_i6_3_, user0_.username as username7_3_ from user user0_ where user0_.email='wotjd1134@naver.com'
+ {executed in 61 msec}
+DEBUG 21-10-16 00:22:22[http-nio-8080-exec-1] [sqltiming:368] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select user0_.id as id1_3_, user0_.email as email2_3_, user0_.password as password3_3_, user0_.role as role4_3_, user0_.skill as skill5_3_, user0_.social_id as social_i6_3_, user0_.username as username7_3_ from user user0_ where user0_.email='wotjd1134@naver.com'
+ {executed in 76 msec}
+INFO  21-10-16 00:22:22[http-nio-8080-exec-1] [UserController:49] - 얍얍이야아아님 로그인을 환영합니다
+INFO  21-10-16 00:22:38[SpringApplicationShutdownHook] [LocalContainerEntityManagerFactoryBean:651] - Closing JPA EntityManagerFactory for persistence unit 'default'
+INFO  21-10-16 00:22:38[SpringApplicationShutdownHook] [HikariDataSource:350] - HikariPool-1 - Shutdown initiated...
+INFO  21-10-16 00:22:38[SpringApplicationShutdownHook] [HikariDataSource:352] - HikariPool-1 - Shutdown completed.
+INFO  21-10-16 00:37:35[main] [ErrorPoolApplication:55] - Starting ErrorPoolApplication using Java 1.8.0_302 on DESKTOP-LL5MSO4 with PID 21372 (C:\Users\user\Desktop\gits\ErrorPool\ErrorPool\build\classes\java\main started by user in C:\Users\user\Desktop\gits\ErrorPool\ErrorPool)
+INFO  21-10-16 00:37:35[background-preinit] [Version:21] - HV000001: Hibernate Validator 6.2.0.Final
+INFO  21-10-16 00:37:35[main] [ErrorPoolApplication:659] - No active profile set, falling back to default profiles: default
+INFO  21-10-16 00:37:36[main] [RepositoryConfigurationDelegate:132] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+INFO  21-10-16 00:37:37[main] [RepositoryConfigurationDelegate:201] - Finished Spring Data repository scanning in 103 ms. Found 4 JPA repository interfaces.
+INFO  21-10-16 00:37:37[main] [PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376] - Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@12d1f1d4' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO  21-10-16 00:37:37[main] [PostProcessorRegistrationDelegate$BeanPostProcessorChecker:376] - Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+INFO  21-10-16 00:37:37[main] [TomcatWebServer:108] - Tomcat initialized with port(s): 8080 (http)
+INFO  21-10-16 00:37:37[main] [Http11NioProtocol:173] - Initializing ProtocolHandler ["http-nio-8080"]
+INFO  21-10-16 00:37:37[main] [StandardService:173] - Starting service [Tomcat]
+INFO  21-10-16 00:37:37[main] [StandardEngine:173] - Starting Servlet engine: [Apache Tomcat/9.0.53]
+INFO  21-10-16 00:37:37[main] [[/]:173] - Initializing Spring embedded WebApplicationContext
+INFO  21-10-16 00:37:37[main] [ServletWebServerApplicationContext:290] - Root WebApplicationContext: initialization completed in 2007 ms
+INFO  21-10-16 00:37:38[main] [LogHelper:31] - HHH000204: Processing PersistenceUnitInfo [name: default]
+INFO  21-10-16 00:37:38[main] [Version:44] - HHH000412: Hibernate ORM core version 5.4.32.Final
+INFO  21-10-16 00:37:38[main] [Version:56] - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+INFO  21-10-16 00:37:38[main] [HikariDataSource:110] - HikariPool-1 - Starting...
+INFO  21-10-16 00:37:39[main] [HikariDataSource:123] - HikariPool-1 - Start completed.
+INFO  21-10-16 00:37:39[main] [Dialect:175] - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+INFO  21-10-16 00:37:41[main] [JtaPlatformInitiator:52] - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+INFO  21-10-16 00:37:41[main] [LocalContainerEntityManagerFactoryBean:437] - Initialized JPA EntityManagerFactory for persistence unit 'default'
+WARN  21-10-16 00:37:41[main] [JpaBaseConfiguration$JpaWebConfiguration:219] - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+INFO  21-10-16 00:37:42[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/h2-console/**'] with []
+INFO  21-10-16 00:37:42[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/v2/api-docs'] with []
+INFO  21-10-16 00:37:42[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/configuration/ui/'] with []
+INFO  21-10-16 00:37:42[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/swagger-resources'] with []
+INFO  21-10-16 00:37:42[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/configuration/security'] with []
+INFO  21-10-16 00:37:42[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='swagger-ui.html'] with []
+INFO  21-10-16 00:37:42[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/webjars/**'] with []
+INFO  21-10-16 00:37:42[main] [DefaultSecurityFilterChain:51] - Will secure Ant [pattern='/swagger/**'] with []
+INFO  21-10-16 00:37:42[main] [DefaultSecurityFilterChain:51] - Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@66dd04e2, org.springframework.security.web.context.SecurityContextPersistenceFilter@5d93ff21, org.springframework.security.web.header.HeaderWriterFilter@7846913f, org.springframework.security.web.authentication.logout.LogoutFilter@7831d1aa, com.sparta.errorpool.security.JwtAuthenticationFilter@495e8a3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5ca4c88a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@13f36d75, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6a7aa675, org.springframework.security.web.session.SessionManagementFilter@5c2a3f0c, org.springframework.security.web.access.ExceptionTranslationFilter@6b64bf61, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@22ff11ef]
+INFO  21-10-16 00:37:42[main] [Http11NioProtocol:173] - Starting ProtocolHandler ["http-nio-8080"]
+INFO  21-10-16 00:37:42[main] [TomcatWebServer:220] - Tomcat started on port(s): 8080 (http) with context path ''
+INFO  21-10-16 00:37:42[main] [ErrorPoolApplication:61] - Started ErrorPoolApplication in 7.645 seconds (JVM running for 8.867)
+INFO  21-10-16 00:37:53[http-nio-8080-exec-1] [Cookie:173] - A cookie header was received [JSESSIONID=5D49C0FE3E2F0E8F89C57735C51E1429] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+INFO  21-10-16 00:37:53[http-nio-8080-exec-1] [[/]:173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+INFO  21-10-16 00:37:53[http-nio-8080-exec-1] [DispatcherServlet:525] - Initializing Servlet 'dispatcherServlet'
+INFO  21-10-16 00:37:53[http-nio-8080-exec-1] [DispatcherServlet:547] - Completed initialization in 2 ms
+DEBUG 21-10-16 00:37:53[http-nio-8080-exec-1] [sqltiming:368] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select user0_.id as id1_3_, user0_.email as email2_3_, user0_.password as password3_3_, user0_.role as role4_3_, user0_.skill as skill5_3_, user0_.social_id as social_i6_3_, user0_.username as username7_3_ from user user0_ where user0_.email='wotjd1134@naver.com'
+ {executed in 36 msec}
+DEBUG 21-10-16 00:37:53[http-nio-8080-exec-1] [sqltiming:368] -  com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52)
+1. select user0_.id as id1_3_, user0_.email as email2_3_, user0_.password as password3_3_, user0_.role as role4_3_, user0_.skill as skill5_3_, user0_.social_id as social_i6_3_, user0_.username as username7_3_ from user user0_ where user0_.email='wotjd1134@naver.com'
+ {executed in 35 msec}
+INFO  21-10-16 00:37:53[http-nio-8080-exec-1] [UserController:49] - 얍얍이야아아님 로그인을 환영합니다
+INFO  21-10-16 00:38:15[SpringApplicationShutdownHook] [LocalContainerEntityManagerFactoryBean:651] - Closing JPA EntityManagerFactory for persistence unit 'default'
+INFO  21-10-16 00:38:15[SpringApplicationShutdownHook] [HikariDataSource:350] - HikariPool-1 - Shutdown initiated...
+INFO  21-10-16 00:38:15[SpringApplicationShutdownHook] [HikariDataSource:352] - HikariPool-1 - Shutdown completed.
