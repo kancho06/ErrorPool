@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -75,7 +76,7 @@ public class ArticleService {
         }
     }
 
-    public Page<Article> getArticles(User user) {
-        return articleRepository.findAllByUserOrderByCreatedAtDesc(user, PageRequest.of(0,5));
+    public List<Article> getArticles(User user) {
+        return articleRepository.findAllByUserOrderByCreatedAtDesc(user);
     }
 }

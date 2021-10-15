@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @EntityGraph(attributePaths = {"likes"})
@@ -22,5 +24,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("select a from Article a where a.skill = :skill order by size(a.likes) desc")
     Page<Article> findTopBySkillOrderByLikeCountDesc(Pageable pageable, Skill skill);
 
-    Page<Article> findAllByUserOrderByCreatedAtDesc(User user, Pageable pageable);
+    List<Article> findAllByUserOrderByCreatedAtDesc(User user);
 }

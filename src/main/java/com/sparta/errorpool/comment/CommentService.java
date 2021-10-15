@@ -9,12 +9,12 @@ import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.exception.CommentNotFoundException;
 import com.sparta.errorpool.user.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -88,7 +88,7 @@ public class CommentService {
         return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "댓글 삭제가 완료되었습니다.", null), HttpStatus.OK);
     }
 
-    public Page<Comment> getComments(User user) {
-        return commentRepository.findAllByUserOrderByCreatedAtDesc(user, PageRequest.of(0,5));
+    public List<Comment> getComments(User user) {
+        return commentRepository.findAllByUserOrderByCreatedAtDesc(user);
     }
 }
