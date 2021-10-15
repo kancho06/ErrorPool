@@ -4,8 +4,9 @@ import com.sparta.errorpool.article.dto.*;
 import com.sparta.errorpool.comment.Comment;
 import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.util.Timestamped;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Article extends Timestamped {
 
@@ -72,41 +74,79 @@ public class Article extends Timestamped {
     }
 
     public ArticleResponseDto toArticleResponseDto(UserDetails userDetails) {
-        return ArticleResponseDto.builder()
-                .articleId(this.id)
-                .title(this.title)
-                .content(this.content)
-                .viewCount(this.viewCount)
-                .skillId(skill.getNum())
-                .commentCount(this.comments.size())
-                .likeCount(this.likes.size())
-                .categoryId(category.getNum())
-                .username(user.getUsername())
-                .userSkillId((user.getSkill() == null) ? null : user.getSkill().getNum())
-                .isLiked(this.likes.stream().anyMatch(likeInfo -> likeInfo.getUser().getEmail().equals(userDetails.getUsername())))
-                .email(user.getEmail())
-                .regDt(this.getCreatedAt())
-                .build();
+        if ( userDetails == null ) {
+            return ArticleResponseDto.builder()
+                    .articleId(this.id)
+                    .title(this.title)
+                    .content(this.content)
+                    .viewCount(this.viewCount)
+                    .skillId(skill.getNum())
+                    .commentCount(this.comments.size())
+                    .likeCount(this.likes.size())
+                    .categoryId(category.getNum())
+                    .username(user.getUsername())
+                    .userSkillId((user.getSkill() == null) ? null : user.getSkill().getNum())
+                    .isLiked(false)
+                    .email(user.getEmail())
+                    .regDt(this.getCreatedAt())
+                    .build();
+        } else {
+            return ArticleResponseDto.builder()
+                    .articleId(this.id)
+                    .title(this.title)
+                    .content(this.content)
+                    .viewCount(this.viewCount)
+                    .skillId(skill.getNum())
+                    .commentCount(this.comments.size())
+                    .likeCount(this.likes.size())
+                    .categoryId(category.getNum())
+                    .username(user.getUsername())
+                    .userSkillId((user.getSkill() == null) ? null : user.getSkill().getNum())
+                    .isLiked(this.likes.stream().anyMatch(likeInfo -> likeInfo.getUser().getEmail().equals(userDetails.getUsername())))
+                    .email(user.getEmail())
+                    .regDt(this.getCreatedAt())
+                    .build();
+        }
     }
 
     public ArticleDetailResponseDto toArticleDetailResponseDto(UserDetails userDetails) {
-        return ArticleDetailResponseDto.builder()
-                .articleId(this.id)
-                .title(this.title)
-                .content(this.content)
-                .viewCount(this.viewCount)
-                .skillId(skill.getNum())
-                .commentCount(this.comments.size())
-                .likeCount(this.likes.size())
-                .categoryId(category.getNum())
-                .username(user.getUsername())
-                .userSkillId((user.getSkill() == null) ? null : user.getSkill().getNum())
-                .isLiked(this.likes.stream().anyMatch(likeInfo -> likeInfo.getUser().getEmail().equals(userDetails.getUsername())))
-                .email(user.getEmail())
-                .regDt(this.getCreatedAt())
-                .imgUrl(this.imgUrl)
-                .comments(addCommentsDtoListFrom(this.comments))
-                .build();
+        if ( userDetails == null ) {
+            return ArticleDetailResponseDto.builder()
+                    .articleId(this.id)
+                    .title(this.title)
+                    .content(this.content)
+                    .viewCount(this.viewCount)
+                    .skillId(skill.getNum())
+                    .commentCount(this.comments.size())
+                    .likeCount(this.likes.size())
+                    .categoryId(category.getNum())
+                    .username(user.getUsername())
+                    .userSkillId((user.getSkill() == null) ? null : user.getSkill().getNum())
+                    .isLiked(false)
+                    .email(user.getEmail())
+                    .regDt(this.getCreatedAt())
+                    .imgUrl(this.imgUrl)
+                    .comments(addCommentsDtoListFrom(this.comments))
+                    .build();
+        } else {
+            return ArticleDetailResponseDto.builder()
+                    .articleId(this.id)
+                    .title(this.title)
+                    .content(this.content)
+                    .viewCount(this.viewCount)
+                    .skillId(skill.getNum())
+                    .commentCount(this.comments.size())
+                    .likeCount(this.likes.size())
+                    .categoryId(category.getNum())
+                    .username(user.getUsername())
+                    .userSkillId((user.getSkill() == null) ? null : user.getSkill().getNum())
+                    .isLiked(this.likes.stream().anyMatch(likeInfo -> likeInfo.getUser().getEmail().equals(userDetails.getUsername())))
+                    .email(user.getEmail())
+                    .regDt(this.getCreatedAt())
+                    .imgUrl(this.imgUrl)
+                    .comments(addCommentsDtoListFrom(this.comments))
+                    .build();
+        }
     }
 
     public List<CommentResponseDto> addCommentsDtoListFrom(List<Comment> comments) {
@@ -123,5 +163,21 @@ public class Article extends Timestamped {
             );
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", viewCount=" + viewCount +
+                ", skill=" + skill +
+                ", category=" + category +
+                ", user=" + user +
+                ", comments=" + comments +
+                ", likes=" + likes +
+                '}';
     }
 }

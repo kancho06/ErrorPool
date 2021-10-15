@@ -5,9 +5,8 @@ import com.sparta.errorpool.defaultResponse.DefaultResponse;
 import com.sparta.errorpool.defaultResponse.ResponseMessage;
 import com.sparta.errorpool.defaultResponse.StatusCode;
 import com.sparta.errorpool.defaultResponse.SuccessYn;
-import com.sparta.errorpool.exception.UnauthenticatedException;
-import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.User;
+import com.sparta.errorpool.user.UserService;
 import com.sparta.errorpool.util.ImageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -29,6 +28,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final ImageService imageService;
+    private final UserService userService;
 
     @ApiOperation(value = "항목 별 게시글 조회")
     @GetMapping("/articles/skill/{skill_id}/{category_id}")
@@ -86,7 +86,7 @@ public class ArticleController {
     public ResponseEntity<DefaultResponse<Void>> createArticle(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
             @ApiParam(value = "게시글 생성 정보", required = true) @ModelAttribute ArticleCreateRequestDto requestDto) {
-        Article article = Article.of(requestDto, userFromUserDetails(userDetails));
+        Article article = Article.of(requestDto, userService.userFromUserDetails(userDetails));
             if ( requestDto.getImg() != null ) {
                 Path imgUrl = imageService.saveFile(requestDto.getImg());
                 article.setImgUrl(imgUrl.toString());
@@ -101,7 +101,7 @@ public class ArticleController {
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
             @ApiParam(value = "게시글 ID", required = true) @PathVariable("article_id") Long articleId,
             @ApiParam(value = "게시글 수정 정보", required = true) @RequestBody ArticleUpdateRequestDto requestDto) {
-        articleService.updateArticle(articleId, requestDto, userFromUserDetails(userDetails));
+        articleService.updateArticle(articleId, requestDto, userService.userFromUserDetails(userDetails));
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 수정 성공", null));
     }
 
@@ -110,16 +110,8 @@ public class ArticleController {
     public ResponseEntity<DefaultResponse<Void>> deleteArticle(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
             @ApiParam(value = "게시글 ID", required = true) @PathVariable("article_id") Long articleId) {
-        articleService.deleteArticle(articleId, userFromUserDetails(userDetails));
+        articleService.deleteArticle(articleId, userService.userFromUserDetails(userDetails));
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "게시글 삭제 성공", null));
-    }
-
-    private User userFromUserDetails(UserDetails userDetails) {
-        if ( userDetails instanceof UserDetailsImpl ) {
-            return ((UserDetailsImpl) userDetails).getUser();
-        } else {
-            throw new UnauthenticatedException("로그인이 필요합니다.");
-        }
     }
 
     @ApiOperation(value = "게시글 좋아요")
@@ -127,7 +119,7 @@ public class ArticleController {
     public ResponseEntity<DefaultResponse<Void>> likeArticle(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
             @ApiParam(value = "게시글 ID", required = true) @PathVariable Long article_id) {
-        User user = userFromUserDetails(userDetails);
+        User user = userService.userFromUserDetails(userDetails);
         articleService.likeArticle(article_id, user);
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "좋아요 성공", null));
     }

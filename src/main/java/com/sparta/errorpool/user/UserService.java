@@ -2,6 +2,7 @@ package com.sparta.errorpool.user;
 
 
 import com.sparta.errorpool.article.Skill;
+import com.sparta.errorpool.exception.UnauthenticatedException;
 import com.sparta.errorpool.security.JwtTokenProvider;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.dto.SignupRequestDto;
@@ -11,8 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 
 
 @Service
@@ -64,6 +65,11 @@ public class UserService {
 
     }
 
-
-
+    public User userFromUserDetails(UserDetails userDetails) {
+        if ( userDetails instanceof UserDetailsImpl ) {
+            return ((UserDetailsImpl) userDetails).getUser();
+        } else {
+            throw new UnauthenticatedException("로그인이 필요합니다.");
+        }
+    }
 }

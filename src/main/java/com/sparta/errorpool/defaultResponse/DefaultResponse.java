@@ -11,6 +11,7 @@ public class DefaultResponse<T> {
 
     private int statusCode;
     private String responseMessage;
+    @Builder.Default
     private boolean successYn = true;
     private T data;
 
