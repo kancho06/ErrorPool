@@ -12,7 +12,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,9 +21,14 @@ public class ArticleService {
     private final LikeInfoRepository likeRepository;
     private final ImageService imageService;
 
-    public Page<Article> getArticlesInSkillAndCategory(Integer page, Integer skillId, Integer categoryId) {
-        return articleRepository.findAllBySkillAndCategory
-                (PageRequest.of(page-1, 6), Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
+    public Page<Article> getArticlesInSkillAndCategory(Integer page, Integer skillId, Integer categoryId, String query) {
+        if ( query != null ) {
+            return articleRepository.findAllBySkillAndCategoryByQuery
+                    (PageRequest.of(page-1, 6), Skill.getSkillById(skillId), Category.getCategoryById(categoryId), query);
+        } else {
+            return articleRepository.findAllBySkillAndCategory
+                    (PageRequest.of(page-1, 6), Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
+        }
     }
 
     public Article getArticleAndUpViewCountById(Long articleId) {

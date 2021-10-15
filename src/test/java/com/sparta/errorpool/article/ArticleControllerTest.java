@@ -213,7 +213,7 @@ class ArticleControllerTest {
             @DisplayName("항목 별 게시글 조회")
             public void getArticlesInSkillAndCategory() throws Exception {
                 Page<Article> articlePages = new PageImpl<>(mockArticleList);
-                given(articleService.getArticlesInSkillAndCategory(1,2,3))
+                given(articleService.getArticlesInSkillAndCategory(1,2,3, null))
                         .willReturn(articlePages);
 
                 mvc.perform(get("/articles/skill/2/3")
@@ -235,7 +235,7 @@ class ArticleControllerTest {
                         .andExpect(jsonPath("$.data.articleList[0].categoryId")
                                 .value(mockArticleList.get(0).getCategory().getNum()));
 
-                verify(articleService).getArticlesInSkillAndCategory(1, 2,3);
+                verify(articleService).getArticlesInSkillAndCategory(1, 2,3, null);
             }
 
             @Test

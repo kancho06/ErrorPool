@@ -83,7 +83,7 @@ class ArticleServiceTest {
                         .willReturn(new PageImpl<>(mockArticleList));
 
                 Page<Article> articlePage =
-                        articleService.getArticlesInSkillAndCategory(page,skill.getNum(),category.getNum());
+                        articleService.getArticlesInSkillAndCategory(page,skill.getNum(),category.getNum(), null);
 
                 SoftAssertions softly = new SoftAssertions();
                 softly.assertThat(articlePage.getTotalElements()).isEqualTo(mockArticleList.size());
