@@ -1,8 +1,6 @@
 package com.sparta.errorpool.article;
 
 import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
-import com.sparta.errorpool.comment.Comment;
-import com.sparta.errorpool.comment.CommentRepository;
 import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.util.ImageService;
@@ -85,7 +83,7 @@ public class ArticleService {
         }
     }
 
-    public Page<Article> getArticles(User user) {
-        return articleRepository.findAllByUserOrderByCreatedAtDesc(user, PageRequest.of(0,5));
+    public List<Article> getArticles(User user) {
+        return articleRepository.findAllByUserOrderByCreatedAtDesc(user);
     }
 }

@@ -1,11 +1,9 @@
 package com.sparta.errorpool.article.dto;
 
-import com.sparta.errorpool.comment.Comment;
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

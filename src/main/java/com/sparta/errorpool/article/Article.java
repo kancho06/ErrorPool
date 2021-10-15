@@ -4,7 +4,6 @@ import com.sparta.errorpool.article.dto.*;
 import com.sparta.errorpool.comment.Comment;
 import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.util.Timestamped;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

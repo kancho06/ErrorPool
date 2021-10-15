@@ -1,10 +1,7 @@
 package com.sparta.errorpool.article;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.errorpool.article.dto.ArticleCreateRequestDto;
-import com.sparta.errorpool.security.UserDetailsImpl;
-import com.sparta.errorpool.security.UserDetailsServiceImpl;
 import com.sparta.errorpool.security.WebSecurityConfig;
 import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.user.UserRoleEnum;
@@ -21,8 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.test.context.support.TestExecutionEvent;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
