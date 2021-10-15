@@ -12,6 +12,7 @@ import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.dto.LoginResDto;
 import com.sparta.errorpool.user.dto.SignupRequestDto;
 import com.sparta.errorpool.user.dto.UserRequestDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-
+@Slf4j
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -44,6 +45,8 @@ public class UserController {
         loginResDto.setJwtToken(token);
         User user = userService.findUserByEmail(userRequestDto);
         loginResDto.setUser(user);
+        String username = user.getUsername();
+        log.info(username + "님 로그인을 환영합니다");
         return loginResDto;
     }
 
@@ -51,6 +54,8 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity createUser (@RequestBody SignupRequestDto requestDto){
         if(userService.registerUser(requestDto)) {
+            String username = requestDto.getUsername();
+            log.info(username + "님 환영합니다!");
             return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.CREATED_USER,null ), HttpStatus.OK);
         }
         return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);
@@ -67,7 +72,8 @@ public class UserController {
     @PutMapping("/{userid}")
     public ResponseEntity updateSkill(@PathVariable Long userid, @RequestBody SignupRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(userService.updateSkill(userid, requestDto, userDetails)) {
-
+            String username = userDetails.getName();
+            log.info(username + "님 주특기가 변경되었습니다.");
             return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.UPDATE_SKILL_SUCCESS,null ), HttpStatus.OK);
         }
         return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);

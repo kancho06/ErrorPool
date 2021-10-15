@@ -41,6 +41,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    //JDBC 로그 설정
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+
+
     // swagger
 //    compileOnly 'io.springfox:springfox-swagger2:2.9.2'
 //    compileOnly 'io.springfox:springfox-swagger-ui:2.9.2'
