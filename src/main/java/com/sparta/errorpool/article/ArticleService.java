@@ -1,5 +1,6 @@
 package com.sparta.errorpool.article;
 
+import com.sparta.errorpool.article.dto.ArticleCreateRequestDto;
 import com.sparta.errorpool.article.dto.ArticleUpdateRequestDto;
 import com.sparta.errorpool.exception.ArticleNotFoundException;
 import com.sparta.errorpool.user.User;
@@ -36,7 +37,12 @@ public class ArticleService {
         return article;
     }
 
-    public void createArticle(Article article) {
+    public void createArticle(ArticleCreateRequestDto requestDto, User user) {
+        Article article = Article.of(requestDto,user);
+        if ( requestDto.getImg() != null ) {
+            Path imgUrl = imageService.saveFile(requestDto.getImg());
+            article.setImgUrl(imgUrl.toString());
+        }
         articleRepository.save(article);
     }
 
