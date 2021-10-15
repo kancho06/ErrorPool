@@ -19,11 +19,10 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final LikeInfoRepository likeRepository;
-    private final CommentRepository commentRepository;
 
     public Page<Article> getArticlesInSkillAndCategory(Integer page, Integer skillId, Integer categoryId) {
         return articleRepository.findAllBySkillAndCategory
-                (PageRequest.of(page, 6), Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
+                (PageRequest.of(page-1, 6), Skill.getSkillById(skillId), Category.getCategoryById(categoryId));
     }
 
     public Article getArticleById(Long articleId) {
