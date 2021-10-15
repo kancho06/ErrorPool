@@ -8,6 +8,7 @@ import com.sparta.errorpool.defaultResponse.SuccessYn;
 import com.sparta.errorpool.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -62,5 +63,8 @@ public class GlobalController {
     }
     public ResponseEntity<String> fileStorageExceptionHandler(FileStorageException exception) {
         return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.INTERNAL_SERVER_ERROR, exception.getMessage(), null), HttpStatus.OK);
+    }
+    public ResponseEntity<String> usernameNotFoundExceptionHandler(UsernameNotFoundException exception) {
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.NOT_FOUND, exception.getMessage(), null), HttpStatus.OK);
     }
 }
