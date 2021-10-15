@@ -24,5 +24,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("select a from Article a where a.skill = :skill order by size(a.likes) desc")
     Page<Article> findTopBySkillOrderByLikeCountDesc(Pageable pageable, Skill skill);
 
-    List<Article> findAllByUserOrderByCreatedAtDesc(User user);
+    Page<Article> findAllByUserOrderByCreatedAtDesc(User user, Pageable pageable);
 }

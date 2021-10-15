@@ -89,7 +89,7 @@ public class ArticleService {
         }
     }
 
-    public List<Article> getArticles(User user) {
-        return articleRepository.findAllByUserOrderByCreatedAtDesc(user);
+    public Page<Article> getArticles(User user) {
+        return articleRepository.findAllByUserOrderByCreatedAtDesc(user, PageRequest.of(0,5));
     }
 }
