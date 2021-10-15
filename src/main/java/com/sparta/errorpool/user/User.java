@@ -37,13 +37,10 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-<<<<<<< Updated upstream
+
     //회원가입유저
     public User(String email, String password, String username ,UserRoleEnum role, Skill skill) {
-=======
-
-    public User(String username, String password, UserRoleEnum role, String email, Skill skill) {
->>>>>>> Stashed changes
+        
         this.email = email;
         this.password = password;
         this.username = username;
