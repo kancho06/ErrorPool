@@ -20,6 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(indexes = @Index(name = "idx_skill_category", columnList = "skill, category"))
 public class Article extends Timestamped {
 
     @Id
