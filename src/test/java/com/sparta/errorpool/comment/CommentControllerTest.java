@@ -1,7 +1,9 @@
 package com.sparta.errorpool.comment;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.errorpool.article.Article;
+import com.sparta.errorpool.article.Category;
 import com.sparta.errorpool.article.Skill;
 import com.sparta.errorpool.article.dto.ArticleCreateRequestDto;
 import com.sparta.errorpool.security.UserDetailsImpl;
@@ -9,6 +11,7 @@ import com.sparta.errorpool.security.WebSecurityConfig;
 import com.sparta.errorpool.user.User;
 import com.sparta.errorpool.user.UserRoleEnum;
 import com.sparta.errorpool.user.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +31,12 @@ import java.security.Principal;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -42,72 +48,91 @@ class CommentControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    private Principal mockPrincipal;
-
     @Autowired
     private ObjectMapper objectMapper;
 
     @MockBean
-    UserService userService;
-
-    @MockBean
     CommentService commentService;
-
-//    @BeforeEach
-//    public void setup() {
-//        MockMvcBuilders.webAppContextSetup(context)
-//                .apply(springSecurity(new MockSpringSecurityFilter())).build();
-//    }
+    @MockBean
+    UserService userService;
 
     User testUser;
     Article mockArticle;
 
-    private void mockUserSetup() {
-// Mock 테스트 유져 생성
-        String username = "namelim@gmail.com";
-        String password = "1111";
-        String email = "namelim@gmail.com";
-        String socialId = "namelim@gmail.com";
-        UserRoleEnum role = UserRoleEnum.USER;
-        testUser = new User(email,password,username,role, Skill.SPRING);
-        UserDetailsImpl testUserDetails = new UserDetailsImpl(testUser);
-        mockPrincipal = new UsernamePasswordAuthenticationToken(testUserDetails, "", testUserDetails.getAuthorities());
+    @BeforeEach
+    public void setup() {
+        testUser = new User(
+                "testuser@test.com",
+                "password",
+                "tester",
+                UserRoleEnum.USER,
+                Skill.NONE
+        );
 
-        mockArticle = Article.of(
-                new ArticleCreateRequestDto
-                        ("test title 5", null, "test content 5", 2, 2), testUser);
-
+        mockArticle = new Article(
+                new ArticleCreateRequestDto(
+                        "test title",
+                        null,
+                        "test content",
+                        2,
+                        2
+                ), testUser);
+        mockArticle.setId(1L);
     }
 
+    @Test
+    @WithUserDetails
+    @DisplayName("댓글 추가-input 확인-성공")
+    void addComment_CheckInputNormal() throws Exception {
+        CommentDto commentDto = CommentDto.builder()
+                .articleId(1L)
+                .commentId(1L)
+                .username(testUser.getEmail())
+                .content("댓글1")
+                .build();
+        String commentInfo = objectMapper.writeValueAsString(commentDto);
+        given(commentService.addComment(any(), any(), any()))
+                .willReturn(new Comment(testUser, mockArticle, "댓글1"));
+        given(userService.userFromUserDetails(any()))
+                .willReturn(testUser);
 
-//    @Test
-//    @WithMockUser( username="namelim@gmail.com", password = "custom_password", roles = {"USER"})
-//    @DisplayName("댓글 추가-input 확인-성공")
-//    void addComment_CheckInputNormal() throws Exception {
-//        this.mockUserSetup();
-//        CommentDto commentDto = CommentDto.builder()
-//                .articleId(30L)
-//                .commentId(1L)
-//                .username("namelim@gmail.com")
-//                .content("댓글1")
-//                .build();
-//        String commentInfo = objectMapper.writeValueAsString(commentDto);
-//        given(commentService.addComment(eq(30L), eq(commentDto), any(User.class)))
-//                .willReturn(new Comment(testUser, mockArticle, "댓글1"));
-//
-//        mvc.perform(post("/comments")
-//                        .with(csrf())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(commentInfo))
-////                        .principal(mockPrincipal))
-//                .andDo(print())
-//                .andExpect(status().isOk());
-//    }
+        mvc.perform(post("/comments")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(commentInfo))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.successYn").value(true))
+                .andExpect(jsonPath("$.statusCode").value(200))
+                .andExpect(jsonPath("$.data.content").value("댓글1"))
+                .andExpect(jsonPath("$.data.article.id").value(1L));
+    }
 
     @Test
+    @WithUserDetails
     @DisplayName("댓글 추가-input 확인-오류발생(Request게시글 아이디가 비어있음)")
-    void addComment_CheckInput_RequestNullError() {
+    void addComment_CheckInput_RequestNullError() throws Exception {
+        CommentDto commentDto = CommentDto.builder()
+                .commentId(1L)
+                .username(testUser.getEmail())
+                .content("댓글1")
+                .build();
+        String commentInfo = objectMapper.writeValueAsString(commentDto);
+        given(commentService.addComment(any(), any(), any()))
+                .willThrow(IllegalArgumentException.class);
+        given(userService.userFromUserDetails(any()))
+                .willReturn(testUser);
 
+        mvc.perform(post("/comments")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(commentInfo))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.successYn").value(false))
+                .andExpect(jsonPath("$.statusCode").value(400));
+
+        verify(commentService).addComment(eq(null), any(CommentDto.class), any(User.class));
     }
 
     @Test

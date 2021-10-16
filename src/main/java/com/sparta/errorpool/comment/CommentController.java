@@ -4,6 +4,8 @@ import com.sparta.errorpool.defaultResponse.DefaultResponse;
 import com.sparta.errorpool.defaultResponse.StatusCode;
 import com.sparta.errorpool.defaultResponse.SuccessYn;
 import com.sparta.errorpool.security.UserDetailsImpl;
+import com.sparta.errorpool.user.User;
+import com.sparta.errorpool.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -19,6 +21,7 @@ import springfox.documentation.annotations.ApiIgnore;
 public class CommentController {
 
     private final CommentService commentService;
+    private final UserService userService;
 
     @ApiOperation(value = "댓글 추가")
     @PostMapping("/comments")
@@ -26,8 +29,9 @@ public class CommentController {
             @RequestBody @ApiParam(value = "댓글 하나 정보를 갖는 객체", required = true) CommentDto commentDto
             ,@AuthenticationPrincipal @ApiIgnore UserDetailsImpl userDetails
     ) {
+        User user = userService.userFromUserDetails(userDetails);
         Long articleId = commentDto.getArticleId();
-        Comment comment = commentService.addComment(articleId, commentDto, userDetails.getUser());
+        Comment comment = commentService.addComment(articleId, commentDto, user);
         return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "댓글 추가가 완료되었습니다.", comment));
     }
 

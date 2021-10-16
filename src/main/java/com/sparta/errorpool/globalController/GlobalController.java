@@ -61,8 +61,8 @@ public class GlobalController {
     }
     @ExceptionHandler
     @ResponseBody
-    public ResponseEntity<String> illegalArgumentExceptionHandler(IllegalAccessException exception) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    public ResponseEntity<String> illegalArgumentExceptionHandler(IllegalArgumentException exception) {
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, exception.getMessage(), null), HttpStatus.OK);
     }
     @ExceptionHandler
     @ResponseBody
