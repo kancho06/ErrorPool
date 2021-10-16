@@ -61,7 +61,8 @@
 - 쿼리 최적화
 
   - JPA의 N+1 문제로 인하여 조회되는 게시글 건 수 만큼 다량의 쿼리 발생
-
+    - fech join을 통해 쿼리 수 감소
+  
   ```java
   @EntityGraph(attributePaths = {"likes"})
       @Query("select distinct a from Article a " +
@@ -70,8 +71,24 @@
               "order by a.createdAt desc")
       Page<Article> findAllBySkillAndCategory(Pageable pageable, Skill skill, Category category);
   ```
-
-
+  
+  - Page를 사용하여 fetch join을 못하게 됨
+  
+    - batch size를 수정하여 쿼리 수 감소
+  
+    ```java
+    @BatchSize(size = 20)
+        @JsonIgnore
+        @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+        private List<Comment> comments = new ArrayList<>();
+    
+        @BatchSize(size = 20)
+        @JsonIgnore
+        @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+        private List<LikeInfo> likes = new ArrayList<>();
+    ```
+  
+    
 
 
 
