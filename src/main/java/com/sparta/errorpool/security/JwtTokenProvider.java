@@ -1,6 +1,7 @@
 package com.sparta.errorpool.security;
 
 import com.sparta.errorpool.exception.InvalidTokenException;
+import com.sparta.errorpool.exception.JwtTokenExpiredException;
 import com.sparta.errorpool.exception.TokenNullException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -20,15 +22,15 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.StringJoiner;
 
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
     @Value("${jwt.token.key}")
     private String secretKey;
 
 
-    private long tokenValidTime = 120 * 60 * 1000L;
+    private long tokenValidTime = 4 * 60 * 60 * 1000L;
     private final UserDetailsServiceImpl userDetailsService;
 
 
@@ -54,19 +56,16 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("authorities", authorities)
+                .setIssuer("group17")
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + tokenValidTime))
                 .signWith(getSigninKey(), SignatureAlgorithm.HS256)
                 .compact();
-
     }
 
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        System.out.println("============getAuthentication===========");
-        System.out.println(userDetails);
-        System.out.println("============getAuthentication===========");
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -85,15 +84,16 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String jwtToken) {
         if ( jwtToken == null ) {
-            throw new TokenNullException("토큰이 존재하지 않습니다.");
+            throw new TokenNullException("Token Not Exist.");
         }
         try {
             JwtParser parser = Jwts.parserBuilder().setSigningKey(getSigninKey()).build();
             Jws<Claims> claims = parser.parseClaimsJws(jwtToken);
-
             return !claims.getBody().getExpiration().before(new Date());
+        } catch (ExpiredJwtException e) {
+            throw new JwtTokenExpiredException("Token Expired.");
         } catch (Exception e) {
-            throw new InvalidTokenException("정상적인 토큰이 아닙니다." +e.getClass()+"//"+e.getMessage() +"//" +e.getCause());
+            throw new InvalidTokenException("Invalid Token.");
         }
     }
 }

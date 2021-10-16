@@ -88,11 +88,8 @@ public class UserController {
         System.out.println("==============receieveToken==============");
         System.out.println(token);
         System.out.println("==============receieveToken==============");
-        if ( jwtTokenProvider.validateToken(token) ) {
-            return getLoginResDtoFromToken(token);
-        } else {
-            throw new JwtTokenExpiredException("토큰이 만료되었습니다.");
-        }
+        jwtTokenProvider.validateToken(token);
+        return getLoginResDtoFromToken(token);
     }
 
     private LoginResDto getLoginResDtoFromToken(String token) {
