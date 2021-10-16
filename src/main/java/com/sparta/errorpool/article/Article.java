@@ -52,12 +52,12 @@ public class Article extends Timestamped {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    @BatchSize(size = 20)
+    @BatchSize(size = 100)
     @JsonIgnore
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @BatchSize(size = 20)
+    @BatchSize(size = 100)
     @JsonIgnore
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<LikeInfo> likes = new ArrayList<>();
