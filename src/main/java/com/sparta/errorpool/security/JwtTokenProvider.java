@@ -29,8 +29,7 @@ public class JwtTokenProvider {
     @Value("${jwt.token.key}")
     private String secretKey;
 
-
-    private long tokenValidTime = 4 * 60 * 60 * 1000L;
+    private long tokenValidTime = 24 * 60 * 60 * 1000L;
     private final UserDetailsServiceImpl userDetailsService;
 
 

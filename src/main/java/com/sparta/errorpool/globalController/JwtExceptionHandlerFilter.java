@@ -28,12 +28,6 @@ public class JwtExceptionHandlerFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
             filterChain.doFilter(request,response);
-        } catch (JwtTokenExpiredException ex){
-            setErrorResponse(response,ex);
-        } catch (TokenNullException ex) {
-            setErrorResponse(response,ex);
-        } catch (InvalidTokenException ex) {
-            setErrorResponse(response,ex);
         } catch (RuntimeException ex){
             setErrorResponse(response,ex);
         }
