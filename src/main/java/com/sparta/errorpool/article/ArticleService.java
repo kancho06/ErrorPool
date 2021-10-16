@@ -80,13 +80,15 @@ public class ArticleService {
         return articleRepository.findTopBySkillOrderByLikeCountDesc(PageRequest.of(0, 5), skill);
     }
 
-    public void likeArticle(Long article_id, User user) {
+    public boolean likeArticle(Long article_id, User user) {
         Article article = getArticleById(article_id);
         Optional<LikeInfo> optionalLike = likeRepository.findByArticleIdAndUserId(article_id, user.getId());
         if ( optionalLike.isPresent() ) {
             likeRepository.delete(optionalLike.get());
+            return false;
         } else {
             likeRepository.save(new LikeInfo(user, article));
+            return true;
         }
     }
 

@@ -114,11 +114,11 @@ public class ArticleController {
 
     @ApiOperation(value = "게시글 좋아요")
     @PostMapping("/articles/{article_id}/like")
-    public ResponseEntity<DefaultResponse<Void>> likeArticle(
+    public ResponseEntity<DefaultResponse<LikeResponseDto>> likeArticle(
             @ApiIgnore @AuthenticationPrincipal UserDetails userDetails,
             @ApiParam(value = "게시글 ID", required = true) @PathVariable Long article_id) {
         User user = userService.userFromUserDetails(userDetails);
-        articleService.likeArticle(article_id, user);
-        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "좋아요 성공", null));
+        LikeResponseDto responseDto = LikeResponseDto.of(articleService.likeArticle(article_id, user));
+        return ResponseEntity.ok(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "좋아요 성공", responseDto));
     }
 }
