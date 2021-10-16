@@ -17,7 +17,7 @@ public class ArticleCreateRequestDto {
     @NotBlank
     private final String title;
 
-    private MultipartFile img;
+    private MultipartFile img = null;
 
     @NotBlank
     private final String content;
