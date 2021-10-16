@@ -2,7 +2,7 @@
 
 ## 프로젝트 소개
 
-<Errorpool>![errorpool](C:\Users\user\Desktop\errorpool.png)
+![errorpool](C:\Users\user\Desktop\17조 미니프로젝트\errorpool.png)
 
 > **개발자들을 위한 커뮤니티**
 
