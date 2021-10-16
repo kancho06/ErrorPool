@@ -54,12 +54,12 @@ public class Article extends Timestamped {
 
     @BatchSize(size = 20)
     @JsonIgnore
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     @BatchSize(size = 20)
     @JsonIgnore
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<LikeInfo> likes = new ArrayList<>();
 
     public Article(ArticleCreateRequestDto requestDto, User user) {
