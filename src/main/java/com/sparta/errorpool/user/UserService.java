@@ -6,6 +6,7 @@ import com.sparta.errorpool.exception.UnauthenticatedException;
 import com.sparta.errorpool.security.JwtTokenProvider;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.dto.SignupRequestDto;
+import com.sparta.errorpool.user.dto.UpdateSkillRequestDto;
 import com.sparta.errorpool.user.dto.UserRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,12 +33,8 @@ public class UserService {
     }
 
 
-    public boolean updateSkill(Long userId, SignupRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new NullPointerException("아이디가 존재하지 않습니다.")
-        );
-        Integer skillId = requestDto.getSkillId();
-        Skill skill = Skill.getSkillById(skillId);
+    public boolean updateSkill(Skill skill, UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
         user.setSkill(skill);
         userRepository.save(user);
         return true;

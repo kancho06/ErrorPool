@@ -1,6 +1,7 @@
 package com.sparta.errorpool.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sparta.errorpool.article.Skill;
 import com.sparta.errorpool.defaultResponse.DefaultResponse;
 import com.sparta.errorpool.defaultResponse.ResponseMessage;
 import com.sparta.errorpool.defaultResponse.StatusCode;
@@ -11,6 +12,7 @@ import com.sparta.errorpool.security.JwtTokenProvider;
 import com.sparta.errorpool.security.UserDetailsImpl;
 import com.sparta.errorpool.user.dto.LoginResDto;
 import com.sparta.errorpool.user.dto.SignupRequestDto;
+import com.sparta.errorpool.user.dto.UpdateSkillRequestDto;
 import com.sparta.errorpool.user.dto.UserRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,7 @@ public class UserController {
 
 
     @PostMapping("/register")
+    @ResponseBody
     public ResponseEntity createUser (@RequestBody SignupRequestDto requestDto){
         if(userService.registerUser(requestDto)) {
             String username = requestDto.getUsername();
@@ -62,6 +65,7 @@ public class UserController {
     }
 
     @PostMapping("/kakao")
+    @ResponseBody
     public ResponseEntity kakaoLogin(@RequestParam String code) throws JsonProcessingException {
         if (kakaoUserService.kakaoLogin(code)) {
             return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.CREATED_USER,null ), HttpStatus.OK);
@@ -69,14 +73,13 @@ public class UserController {
         return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);
     }
 
-    @PutMapping("/{userid}")
-    public ResponseEntity updateSkill(@PathVariable Long userid, @RequestBody SignupRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if(userService.updateSkill(userid, requestDto, userDetails)) {
-            String username = userDetails.getName();
-            log.info(username + "님 주특기가 변경되었습니다.");
-            return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.UPDATE_SKILL_SUCCESS,null ), HttpStatus.OK);
-        }
-        return new ResponseEntity(DefaultResponse.res(SuccessYn.NO, StatusCode.BAD_REQUEST, ResponseMessage.UPDATE_SKILL_FAILED, null), HttpStatus.OK);
+    @PutMapping("/changeskill")
+    @ResponseBody
+    public ResponseEntity updateSkill(@RequestBody UpdateSkillRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        userService.updateSkill(Skill.getSkillById(requestDto.getSkillId()), userDetails);
+        String username = userDetails.getName();
+        log.info(username + "님 주특기가 변경되었습니다.");
+        return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK , ResponseMessage.UPDATE_SKILL_SUCCESS,null ), HttpStatus.OK);
     }
 
     @GetMapping("/info")
