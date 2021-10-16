@@ -24,7 +24,7 @@
 
 ## 프로젝트 구조
 
-![17조 프로젝트 구조 다이어그램.pnp.drawio123](./readMe_img/17조 프로젝트 구조 다이어그램.pnp.drawio123.png)
+![kouzo](./readMe_img/kouzo.png)
 
 
 
@@ -89,7 +89,7 @@
 
 #### Git Flow 
 
-![git 활용](./readMe_img/git 활용.png)
+![git](./readMe_img/git.png)
 
 - main, feature branch를 사용하여 main에서는 release 버전만 사용함
 - feature branch는 개인당 2개씩 이용하여 한곳은 main merge 후 기본 CRUD를 탄탄히 다지기 위해 진행
