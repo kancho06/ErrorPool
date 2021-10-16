@@ -2,7 +2,7 @@
 
 ## 프로젝트 소개
 
-![errorpool](C:\Users\user\Desktop\17조 미니프로젝트\errorpool.png)
+![errorpool](./readMe_img/errorpool.png)
 
 > **개발자들을 위한 커뮤니티**
 
@@ -24,9 +24,7 @@
 
 ## 프로젝트 구조
 
-![17조 프로젝트 구조 다이어그램.pnp.drawio123](C:\Users\user\Desktop\17조 프로젝트 구조 다이어그램.pnp.drawio123.png)
-
-
+![17조 프로젝트 구조 다이어그램.pnp.drawio123](./readMe_img/17조 프로젝트 구조 다이어그램.pnp.drawio123.png)
 
 
 
@@ -91,7 +89,7 @@
 
 #### Git Flow 
 
-![git 활용](C:\Users\user\Desktop\git 활용.png)
+![git 활용](./readMe_img/git 활용.png)
 
 - main, feature branch를 사용하여 main에서는 release 버전만 사용함
 - feature branch는 개인당 2개씩 이용하여 한곳은 main merge 후 기본 CRUD를 탄탄히 다지기 위해 진행
@@ -111,11 +109,7 @@
 
 ## DB ERD
 
-![image-20211016163348589](C:\Users\user\AppData\Roaming\Typora\typora-user-images\image-20211016163348589.png)
-
-
-
-
+![ERD](./readMe_img/ERD.png)
 
 
 
