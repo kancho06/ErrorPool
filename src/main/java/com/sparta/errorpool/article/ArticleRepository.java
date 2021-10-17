@@ -16,6 +16,14 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             "order by a.createdAt desc")
     Page<Article> findAllBySkillAndCategory(Pageable pageable, Skill skill, Category category);
 
+    @EntityGraph(attributePaths = {"likes"})
+    @Query("select distinct a from Article a " +
+            "where a.skill = ?1 " +
+            "and a.category = ?2 " +
+            "and ( upper(a.title) like %?3% or upper(a.content) like %?3% ) " +
+            "order by a.createdAt desc")
+    Page<Article> findAllBySkillAndCategoryByQuery(Pageable pageable, Skill skillById, Category categoryById, String query);
+
     @Query("select a from Article a order by size(a.likes) desc")
     Page<Article> findTopByOrderByLikeCountDesc(Pageable pageable);
 

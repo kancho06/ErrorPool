@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class CommentService {
@@ -24,17 +26,16 @@ public class CommentService {
     public final ArticleRepository articleRepository;
 
     //댓글 추가
-    public ResponseEntity addComment(Long articleId, CommentDto commentDto, User user) {
+    public Comment addComment(Long articleId, CommentDto commentDto, User user) {
 
         // 게시글 존재여부 확인
         Article article = articleRepository.findById(articleId).orElseThrow(
-                () -> new ArticleNotFoundException("해당 게시글을 찾을 수 없어 댓글 추가할 수 없습니다."));
+                () -> new ArticleNotFoundException("해당 게시글을 찾을 수 없어 댓글을 추가할 수 없습니다."));
 
         Comment comment = new Comment(user, article, commentDto.getContent());
 
         //댓글 추가
-        commentRepository.save(comment).getId();
-        return new ResponseEntity(DefaultResponse.res(SuccessYn.OK, StatusCode.OK, "댓글 추가가 완료되었습니다.", null), HttpStatus.OK);
+        return commentRepository.save(comment);
     }
 
     //댓글 수정

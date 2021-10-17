@@ -35,7 +35,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.sparta.errorpool.comment"))
-                .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.sparta.errorpool.user"))
+                .apis(RequestHandlerSelectors.basePackage("com.sparta.errorpool.article"))
                 .build();
     }
 

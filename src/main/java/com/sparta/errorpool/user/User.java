@@ -37,12 +37,14 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
+
     //회원가입유저
     public User(String email, String password, String username ,UserRoleEnum role, Skill skill) {
+        
         this.email = email;
         this.password = password;
         this.username = username;
-        this.skill = null;
+        this.skill = skill;
         this.socialId = null;
         this.role = role;
     }
