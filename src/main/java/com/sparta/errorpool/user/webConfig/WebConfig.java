@@ -22,23 +22,23 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:"+uploadDir);
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        //프론트랑 합칠때 localhost:3000 으로 해야한대서
-                        .allowedOrigins("http://localhost:3000", "http://errorpool.s3-website.ap-northeast-2.amazonaws.com/")
-                        .maxAge(3000)
-                        .allowedMethods(
-                                HttpMethod.GET.name(),
-                                HttpMethod.HEAD.name(),
-                                HttpMethod.POST.name(),
-                                HttpMethod.PUT.name(),
-                                HttpMethod.DELETE.name());
-            }
-        };
-    }
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        //프론트랑 합칠때 localhost:3000 으로 해야한대서
+//                        .allowedOrigins("http://localhost:8080", "http://localhost:3000", "http://errorpool.s3-website.ap-northeast-2.amazonaws.com/")
+//                        .maxAge(3000)
+//                        .allowedMethods(
+//                                HttpMethod.GET.name(),
+//                                HttpMethod.HEAD.name(),
+//                                HttpMethod.POST.name(),
+//                                HttpMethod.PUT.name(),
+//                                HttpMethod.DELETE.name());
+//            }
+//        };
+//    }
 
 }
