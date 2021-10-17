@@ -104,12 +104,10 @@
 
 ## 브랜치 관리 및 커뮤니케이션 전략
 
-#### Git Flow 
+#### Git 관리
 
-![git](./readMe_img/git.png)
-
-- main, feature branch를 사용하여 main에서는 release 버전만 사용함
-- feature branch는 개인당 2개씩 이용하여 한곳은 main merge 후 기본 CRUD를 탄탄히 다지기 위해 진행
+- main, 개인 branch를 사용하여 main에서는 release 버전만 사용함
+- 개인 branch는 개인당 2개씩 이용하여 한곳은 main merge 후 기본 CRUD를 탄탄히 다지기 위해 진행
 - 나머지 한곳은 main merge 추가 기능을 위해 실험적 개발을 진행
 
 
